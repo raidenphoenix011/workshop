@@ -28,15 +28,17 @@
 <hr>
 
 <form class='pure-form pure-form-aligned'>
-    
-<h2>Accenture</h2>
-
-<br/>
-
-    <label>Code: </label><input class='codebox' type='text' value='{{ Client.Code }}' disabled/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <label>Company Name: </label><input class='namebox' type='text' value='{{ Client.Name }}'/>
+<center><h2>{{ Client.Name }}</h2></center>
+    <table>
+    <tr>
+    <td><label>Code: </label></td>
+    <td><b>{{ Client.Code }}</b></td>
     </tr>
-    
+    <tr>
+    <td><label>Name: </label></td>
+    <td><input class='namebox' type='text' value='{{ Client.Name }}'/></td>
+    </tr>
+    </table>
 </form>
 
 <br/><br/>
