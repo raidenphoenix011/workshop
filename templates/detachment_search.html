@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<div class="sidebar gradient">
+    <hr class='navline navline1'/>
+    <h2 class='navtitle'>CLIENT RECORDS</h2>
+    <hr class='navline'/>
+    
+    <div class='sidebar-menu'>
+        <h4>Client Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listClients') }}' class='opt2'>View Client</a></li>
+            <li class="nobullets"><a href='{{ url_for('addClient') }}' class='opt2'>Add New Client</a></li>
+        </ul> 
+        <h4>Detachment Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listDetachments') }}' class='opt2'>View Detachment</a></li>
+        </ul> 
+    </div>
+
+</div>
+
+{% endblock sidebar %}
+
+{% block content %}
+
+<h1>Choose a Detachment</h1>
+
+<!--{% for company in companies %}
+{% endfor %}-->
+
+<div id="detachments">
+            <br/>
+            <form class='pure-form pure-form-aligned'>
+              <input type="text" class="search" placeholder="Search detachment" />
+            </form>
+            <br/>
+            <table class='search-results pure-table'>
+              <thead>
+                <tr>
+                  <th class="sort" data-sort="code">Company</th>
+                  <th class="sort" data-sort="name">Detachment Name</th>
+                  <th class="sort" data-sort="city">City</th>
+                  <th class="sort" data-sort="client">Company</th>
+                  <th class="sort" data-sort="status">Status</th>
+                </tr>
+              </thead>
+          
+              <tbody class="list">
+                  {% for DE in DEs %}
+                <tr>
+                  <td class="id" style="display:none;">{{ DE.ID }}</td>
+                  <td class="code">{{ DE.Code }}</td>
+                  <td class="name"><a href='{{ url_for( 'viewDetachment', ID=DE.ID ) }}'>{{ DE.Name }}</a></td>
+                  <td class="city">{{ DE.City }}</td>
+                  <td class="client">{{ DE.ClientName }}</td>
+                  <td class="status">{{ DE.Status }}</td>
+                </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+        </div>
+
+<!-------SCRIPT FOR ListJS search detachment ------>
+<script>
+var options = {
+  valueNames: [ 'id', 'code', 'name', 'city', 'client', 'status' ]
+};
+
+// Init list
+var detachmentList = new List('detachments', options);
+
+var idField = $('#id-field'),
+    codeField = $('#code-field'),
+    nameField = $('#name-field'),
+    cityField = $('#city-field'),
+    clientField = $('#client-field'),
+    statusField = $('#status-field');
+</script>
+    
+{% endblock content %}

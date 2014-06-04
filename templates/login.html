@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Eaglewatch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/css/pure-min.css">
+	<link rel="icon" type="image/png" href="/static/img/favicon.ico" />
+	<link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="/static/css/login.css" />
+    
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    </head>
+
+    <body>
+
+    	{% with messages = get_flashed_messages() %}
+		<div class="flashes">
+			{% if messages %}
+				<div class="flashes">
+				{% for message in messages %}
+					<div class="alert alert-info">
+					<center>
+
+						<strong>{{ message }}</strong>
+					</center>
+					</div>
+				{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		{% endwith %}
+
+
+	<div class="logo">
+	    <img class='logo' src='/static/img/company_logo.png' />
+	</div>
+	
+	<div class='form'>
+	    <form class="pure-form" method='post' action="./login">
+		<table>
+		    <tr>
+			<td><label>Username:&nbsp;</label></td>
+			<td><input name="username" type="text" autofocus required/></td>
+		    </tr>
+		    <tr>
+			<td><label>Password: </label></td>
+			<td><input name="password" type="password" required/></td>
+		    </tr>
+		</table>
+		<br/>
+		<div class="center">
+			<button type="submit" class="pure-button">Login</button>
+		</div>
+	    </form>
+	</div>
+
+
+    </body>
+</html>

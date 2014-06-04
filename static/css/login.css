@@ -1,0 +1,38 @@
+.logo {
+    margin-left:29%;
+    margin-top:5%;
+    position: relative;
+    height: 400px;
+    width: 400px;
+}
+.form{
+    margin-left:40%;
+    margin-right:40%;
+    margin-top:5%;
+    margin-bottom:2%;
+}
+
+td {
+    width:100px;
+    line-height: normal;
+}
+label{
+    width:50px;
+}
+.center {
+    text-align: center;
+}
+
+.login-lower {
+    position: relative;
+    left: 0%;
+    margin-top: 350px;
+    letter-spacing:1.5px;
+    }
+.login-center {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    margin-top: -195px;
+    margin-left: -150px;
+    }

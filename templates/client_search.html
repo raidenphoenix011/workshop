@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<div class="sidebar gradient">
+    <hr class='navline navline1'/>
+    <h2 class='navtitle'>CLIENT RECORDS</h2>
+    <hr class='navline'/>
+    
+    <div class='sidebar-menu'>
+        <h4>Client Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listClients') }}' class='opt2'>View Client</a></li>
+            <li class="nobullets"><a href='{{ url_for('addClient') }}' class='opt2'>Add New Client</a></li>
+        </ul> 
+        <h4>Detachment Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listDetachments') }}' class='opt2'>View Detachment</a></li>
+        </ul> 
+    </div>
+
+</div>
+
+{% endblock sidebar %}
+
+{% block content %}
+
+<h1>Choose a Client</h1>
+
+<!--{% for company in companies %}
+{% endfor %}-->
+
+<div id="clients">
+  <form class='pure-form pure-form-aligned'>
+    <input type="text" class="search" placeholder="Enter client code, name, city, or status" />
+  </form>
+  <br/>
+  <table class='search-results pure-table'>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="code">Code</th>
+        <th class="sort" data-sort="name">Client Name</th>
+	<th class="sort" data-sort="city">City</th>
+        <th class="sort" data-sort="status">Status</th>
+      </tr>
+    </thead>
+
+    <tbody class="list">
+        {% for Client in CLs %}
+      <tr>
+        <td class="id" style="display:none;"></td>
+        <td class="code">{{ Client.Code }}</td>
+        <td class="name"><a href='{{ url_for('viewClient', ID=Client.ID) }}'>{{ Client.Name }}</a></td>
+	    <td class="city">Taguig</td>
+        <td class="status">Active</td>
+       </tr>
+        {% endfor %}
+     
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+var options = {
+  valueNames: [ 'id', 'code', 'name', 'city', 'status' ]
+};
+
+// Init list
+var clientList = new List('clients', options);
+
+var idField = $('#id-field'),
+    codeField = $('#code-field'),
+    nameField = $('#name-field'),
+    cityField = $('#city-field'),
+    statusField = $('#status-field');
+
+refreshCallbacks();
+
+</script>
+    
+{% endblock content %}

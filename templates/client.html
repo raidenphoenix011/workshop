@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<div class="sidebar gradient">
+    <hr class='navline navline1'/>
+    <h2 class='navtitle'>CLIENT RECORDS</h2>
+    <hr class='navline'/>
+    
+    <div class='sidebar-menu'>
+        <h4>Client Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listClients') }}' class='opt2'>View Client</a></li>
+            <li class="nobullets"><a href='{{ url_for('addClient') }}' class='opt2'>Add New Client</a></li>
+        </ul> 
+        <h4>Detachment Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listDetachments') }}' class='opt2'>View Detachment</a></li>
+        </ul> 
+    </div>
+
+</div>
+
+{% endblock sidebar %}
+
+{% block content %}
+
+<h1>Client Information</h1>
+<hr>
+
+<form class='pure-form pure-form-aligned'>
+    
+<h2>Accenture</h2>
+
+<br/>
+
+    <label>Code: </label><input class='codebox' type='text' value='{{ Client.Code }}' disabled/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <label>Company Name: </label><input class='namebox' type='text' value='{{ Client.Name }}'/>
+    </tr>
+    
+</form>
+
+<br/><br/>
+    <!--{% for detachment in detachments %}-->
+    <!-- {% endfor %}-->
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Detachments</a></li>
+    <li><a href="#tabs-2">Basic Info</a></li>
+    <li><a href="#tabs-3">Contact Persons</a></li>
+  </ul>
+    <div id="tabs-1">
+        <div id="detachments">
+            <br/>
+            <form class='pure-form pure-form-aligned'>
+              <input type="text" class="search" placeholder="Search detachment" />
+            </form>
+            <br/>
+            <table class='search-results pure-table'>
+              <thead>
+                <tr>
+                  <th class="sort" data-sort="code">Code</th>
+                  <th class="sort" data-sort="name">Detachment Name</th>
+                  <th class="sort" data-sort="city">City</th>
+                  <th class="sort" data-sort="status">Status</th>
+                </tr>
+              </thead>
+          
+              <tbody class="list">
+                  {% for Detachment in Detachments %}
+                <tr>
+       
+                  <td class="id" style="display:none;">{{ Detachment.ID}}</td>
+                  <td class="code">{{ Detachment.Code }}</td>
+                  <td class="name"><a href="{{ url_for('viewDetachment', ID=Client.ID) }}">{{ Detachment.Name }}</a></td>
+                  <td class="city">{{ Detachment.City }}</td>
+                  <td class="status">{{ Detachment.Status }}</td>
+                </tr>
+                  {% endfor %}
+ 
+              </tbody>
+            </table>
+        </div>
+        <br><br/>
+        <form method='link' action='/detachments/get'>
+            <button class='pure-button'>Add New Detachment</button>
+        </form>
+  </div>
+  <div id="tabs-2">
+    <form class='pure-form pure-form-aligned'>
+    <table>
+        <tr>
+            <td><label>Status: </label></td>
+            <td>
+            <select name="status">
+                    <option value="P">Pending</option>
+                    <option value="A">Active</option>
+                    <option value="T">Terminated</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Date Started: </label></td>
+            <td><input id='start_date' type='date' value=''/></td>
+        </tr>
+        <tr>
+            <td><label>City: </label></td>
+            <td><select name="city">
+                    <option value=Alaminos>Alaminos</option>
+                    <option value=Angeles>Angeles</option>
+                    <option value=Antipolo>Antipolo</option>
+                    <option value=Bacolod>Bacolod</option>
+                    <option value=Baguio>Baguio</option>
+                    <option value=Balanga>Balanga</option>
+                    <option value=Batangas >Batangas</option>
+                    <option value=Biñan >Biñan</option>
+                    <option value=Bisilig >Bisilig</option>
+                    <option value=Butuan >Butuan</option>
+                    <option value=Cabanatuan >Cabanatuan</option>
+                    <option value=Cadiz >Cadiz</option>
+                    <option value=Cagayan de Oro >Cagayan de Oro</option>
+                    <option value=Calamba >Calamba</option>
+                    <option value=Calapan >Calapan</option>
+                    <option value=Calbayog >Calbayog</option>
+                    <option value=Caloocan >Caloocan</option>
+                    <option value=Carcar >Carcar</option>
+                    <option value=Cauayan >Cauayan</option>
+                    <option value=Cavite >Cavite</option>
+                    <option value=Cebu >Cebu</option>
+                    <option value=Cotabato >Cotabato</option>
+                    <option value=Dagupan >Dagupan</option>
+                    <option value=Danao >Danao</option>
+                    <option value=Dasmariñas >Dasmariñas</option>
+                    <option value=Davao >Davao</option>
+                    <option value=Digos >Digos</option>
+                    <option value=Dipolog >Dipolog</option>
+                    <option value=Dumaguete >Dumaguete</option>
+                    <option value=Escalante >Escalante</option>
+                    <option value=Gapan >Gapan</option>
+                    <option value=General Santos >General Santos</option>
+                    <option value=Gingoog >Gingoog</option>
+                    <option value=Iligan >Iligan</option>
+                    <option value=Iloilo >Iloilo</option>
+                    <option value=Iraga >Iraga</option>
+                    <option value=Isabela >Isabela</option>
+                    <option value=Kidapawan >Kidapawan</option>
+                    <option value=Kornadal >Kornadal</option>
+                    <option value=Laoag >Laoag</option>
+                    <option value=Lapu-lapu >Lapu-lapu</option>
+                    <option value=Las Piñas >Las Piñas</option>
+                    <option value=Legazpi >Legazpi</option>
+                    <option value=Lipa >Lipa</option>
+                    <option value=Lucena >Lucena</option>
+                    <option value=Makati >Makati</option>
+                    <option value=Malabon >Malabon</option>
+                    <option value=Malaybalay >Malaybalay</option>
+                    <option value=Malolos >Malolos</option>
+                    <option value=Mandaluyong >Mandaluyong</option>
+                    <option value=Mandaue >Mandaue</option>
+                    <option value=Manila >Manila</option>
+                    <option value=Marawi >Marawi</option>
+                    <option value=Marikina >Marikina</option>
+                    <option value=Masbate >Masbate</option>
+                    <option value=Mati >Mati</option>
+                    <option value=Meycauayan >Meycauayan</option>
+                    <option value=Muñoz >Muñoz</option>
+                    <option value=Muntinlupa >Muntinlupa</option>
+                    <option value=Naga >Naga</option>
+                    <option value=Navotas >Navotas</option>
+                    <option value=Olongapo >Olongapo</option>
+                    <option value=Ormoc >Ormoc</option>
+                    <option value=Oroquieta >Oroquieta</option>
+                    <option value=Ozamis >Ozamis</option>
+                    <option value=Pagadian >Pagadian</option>
+                    <option value=Panabo >Panabo</option>
+                    <option value=Parañaque >Parañaque</option>
+                    <option value=Pasay >Pasay</option>
+                    <option value=Pasig >Pasig</option>
+                    <option value=Puerto Princesa >Puerto Princesa</option>
+                    <option value=Quezon City >Quezon City</option>
+                    <option value=Roxas >Roxas</option>
+                    <option value=Sagay >Sagay</option>
+                    <option value=Samal >Samal</option>
+                    <option value=San Carlos >San Carlos</option>
+                    <option value=San Fernando >San Fernando</option>
+                    <option value=San Jose >San Jose</option>
+                    <option value=San Jose del Monte >San Jose del Monte</option>
+                    <option value=San Juan (del Monte)>San Juan (del Monte)</option>
+                    <option value=San Pablo >San Pablo</option>
+                    <option value=Santa Rosa >Santa Rosa</option>
+                    <option value=Santiago>Santiago</option>
+                    <option value=Silay >Silay</option>
+                    <option value=Sorsogon >Sorsogon</option>
+                    <option value=Surigao >Surigao</option>
+                    <option value=Tobaco >Tobaco</option>
+                    <option value=Tacloban >Tacloban</option>
+                    <option value=Tagaytay >Tagaytay</option>
+                    <option value=Tagbiliran >Tagbiliran</option>
+                    <option value=Taguig >Taguig</option>
+                    <option value=Tagum >Tagum</option>
+                    <option value=Talisay >Talisay</option>
+                    <option value=Tanauan >Tanauan</option>
+                    <option value=Tarlac >Tarlac</option>
+                    <option value=Toledo >Toledo</option>
+                    <option value=Trece Martires >Trece Martires</option>
+                    <option value=Tuguegarao >Tuguegarao</option>
+                    <option value=Urdaneta >Urdaneta</option>
+                    <option value=Valencia >Valencia</option>
+                    <option value=Valenzuela >Valenzuela</option>
+                    <option value=Victorias >Victorias</option>
+                    <option value=Vigan >Vigan</option>
+                    <option value=Zamboanga >Zamboanga</option>
+            </select></td>
+        </tr>
+        <tr>
+            <td><label>Address: </label></td>
+            <td><textarea name='address' cols='22' row='3'></textarea></td>
+            
+        </tr>
+
+
+    </table>
+    </form>
+  </div>
+  <div id="tabs-3">
+    <div id="contacts">
+    <form class='pure-form'>
+      <table class='pure-table'>
+        <thead>
+          <tr>
+            <th class="sort" data-sort="contact_name">Name</th>
+            <th class="sort" data-sort="position">Position</th>
+            <th class="sort" data-sort="number">Contact Number</th>
+            <th colspan="2">
+              <input type="text" class="search" placeholder="Search contact" id='search_contact' />
+            </th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          <tr>
+            <td class="contact_id" style="display:none;">1</td>
+            <td class="contact_name">Mr. Hugh Jackman</td>
+            <td class="position">Area Manager</td>
+            <td class="number">09178232323</td>
+            <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
+            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
+          </tr>
+          <tr>
+            <td class="contact_id" style="display:none;">2</td>
+            <td class="contact_name">Mr. Harry Styles</td>
+            <td class="position">Security Manager</td>
+            <td class="number">091783434333</td>
+            <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
+            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
+          </tr>
+          <tr>
+            <td class="contact_id" style="display:none;">3</td>
+            <td class="contact_name">Ms. Eva Longoria</td>
+            <td class="position">Secretary</td>
+            <td class="number">09178232323</td>
+            <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
+            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <br/>
+      <table>
+        <td class="contact_name">
+          <input type="hidden" id="contact_id-field" />
+          <input type="text" id="contact_name-field" placeholder="name" />
+        </td>
+        <td class="position">
+          <input type="text" id="position-field" placeholder="position" />
+        </td>
+        <td class="number">
+          <input type="text" id="number-field" placeholder="contact number" />
+        </td>
+        <td class="add">
+          <button id="add-btn" class="pure-button">Add to Contacts</button>
+          <button id="edit-btn" class="pure-button">Update Contact</button>
+        </td>
+      </table>
+    </form>
+    </div>
+  </div>
+
+</div>
+<br/>
+<div id='buttoncontainer'>
+<button id='save' class='pure-button save'>Save Changes</button>
+</div>
+
+<!-------SCRIPT FOR ListJS search detachment ------>
+<script>
+var options = {
+  valueNames: [ 'id', 'code', 'name', 'city', 'status' ]
+};
+
+// Init list
+var detachmentList = new List('detachments', options);
+
+var idField = $('#id-field'),
+    codeField = $('#code-field'),
+    nameField = $('#name-field'),
+    cityField = $('#city-field'),
+    statusField = $('#status-field');
+</script>
+
+<!------SCRIPT FOR ListJS search contact ------->
+<script>
+var options2 = {
+  valueNames: [ 'contact_id', 'contact_name', 'position', 'number' ]
+};
+
+// Init list
+var contactList = new List('contacts', options2);
+
+var contact_idField = $('#contact_id-field'),
+    contact_nameField = $('#contact_name-field'),
+    positionField = $('#position-field'),
+    numberField = $('#number-field'),
+    addBtn = $('#add-btn'),
+    editBtn = $('#edit-btn').hide(),
+    removeBtns = $('.remove-item-btn'),
+    editBtns = $('.edit-item-btn');
+
+// Sets callbacks to the buttons in the list
+refreshCallbacks();
+
+addBtn.click(function() {
+  contactList.add({
+    contact_id: Math.floor(Math.random()*110000),
+    contact_name: contact_nameField.val(),
+    position: positionField.val(),
+    number: numberField.val()
+  });
+  clearFields();
+  refreshCallbacks();
+});
+
+editBtn.click(function() {
+  var item = contactList.get('contact_id', contact_idField.val())[0];
+  item.values({
+    contact_id:contact_idField.val(),
+    contact_name: contact_nameField.val(),
+    position: positionField.val(),
+    number: numberField.val()
+  });
+  clearFields();
+  editBtn.hide();
+  addBtn.show();
+});
+
+function refreshCallbacks() {
+  // Needed to add new buttons to jQuery-extended object
+  removeBtns = $(removeBtns.selector);
+  editBtns = $(editBtns.selector);
+  
+  removeBtns.click(function() {
+    var itemId = $(this).closest('tr').find('.contact_id').text();
+    contactList.remove('contact_id', itemId);
+  });
+  
+  editBtns.click(function() {
+    var itemId = $(this).closest('tr').find('.contact_id').text();
+    var itemValues = contactList.get('contact_id', itemId)[0].values();
+    contact_idField.val(itemValues.contact_id);
+    contact_nameField.val(itemValues.contact_name);
+    positionField.val(itemValues.position);
+    numberField.val(itemValues.number);
+    
+    editBtn.show();
+    addBtn.hide();
+  });
+}
+
+function clearFields() {
+  contact_nameField.val('');
+  positionField.val('');
+  numberField.val('');
+}    
+</script>    
+
+    
+{% endblock content %}
