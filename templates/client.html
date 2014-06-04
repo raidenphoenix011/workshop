@@ -36,7 +36,7 @@
     </tr>
     <tr>
     <td><label>Name: </label></td>
-    <td><input class='namebox' type='text' value='{{ Client.Name }}'/></td>
+    <td><input class='namebox' type='text' name='client_name' value='{{ Client.Name }}'/></td>
     </tr>
     </table>
 </form>
@@ -54,7 +54,7 @@
         <div id="detachments">
             <br/>
             <form class='pure-form pure-form-aligned'>
-              <input type="text" class="search" placeholder="Search detachment" />
+              <label>Search: </label><input type="text" class="search" placeholder="enter code, name, city, or status" />
             </form>
             <br/>
             <table class='search-results pure-table'>
@@ -91,22 +91,12 @@
     <form class='pure-form pure-form-aligned'>
     <table>
         <tr>
-            <td><label>Status: </label></td>
-            <td>
-            <select name="status">
-                    <option value="P">Pending</option>
-                    <option value="A">Active</option>
-                    <option value="T">Terminated</option>
-            </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Date Started: </label></td>
-            <td><input id='start_date' type='date' value=''/></td>
+            <td><label>Landline: </label></td>
+            <td><input type='text' name='client_landline' value='{{ Client.Landline }}'/></td>
         </tr>
         <tr>
             <td><label>City: </label></td>
-            <td><select name="city">
+            <td><select name='client_city' id='client_city' name="city">
                     <option value=Alaminos>Alaminos</option>
                     <option value=Angeles>Angeles</option>
                     <option value=Antipolo>Antipolo</option>
@@ -214,8 +204,8 @@
             </select></td>
         </tr>
         <tr>
-            <td><label>Address: </label></td>
-            <td><textarea name='address' cols='22' row='3'></textarea></td>
+            <td><label> Billing Address: </label></td>
+            <td><textarea name='client_address' cols='24' row='6'>{{ Client.BillingAddress }}</textarea></td>
             
         </tr>
 
@@ -380,7 +370,13 @@ function clearFields() {
   positionField.val('');
   numberField.val('');
 }    
-</script>    
+</script>
+
+<script>
+
+    $("#client_city").val("{{ Client.City }}")
+
+</script>
 
     
 {% endblock content %}

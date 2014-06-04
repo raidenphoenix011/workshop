@@ -25,14 +25,13 @@
 {% block content %}
 
 <h1>Choose a Client</h1>
-
-<!--{% for company in companies %}
-{% endfor %}-->
+<br/>
 
 <div id="clients">
   <form class='pure-form pure-form-aligned'>
-    <input type="text" class="search" placeholder="Enter client code, name, city, or status" />
+    <label>Search: </label><input type="text" class="search" placeholder="Enter client code, name, city, or status" />
   </form>
+  <br/>
   <br/>
   <table class='search-results pure-table'>
     <thead>
@@ -40,7 +39,6 @@
         <th class="sort" data-sort="code">Code</th>
         <th class="sort" data-sort="name">Client Name</th>
 	<th class="sort" data-sort="city">City</th>
-        <th class="sort" data-sort="status">Status</th>
       </tr>
     </thead>
 
@@ -50,8 +48,7 @@
         <td class="id" style="display:none;"></td>
         <td class="code">{{ Client.Code }}</td>
         <td class="name"><a href='{{ url_for('viewClient', ID=Client.ID) }}'>{{ Client.Name }}</a></td>
-	    <td class="city">Taguig</td>
-        <td class="status">Active</td>
+	<td class="city">{{ Client.City }}</td>
        </tr>
         {% endfor %}
      
@@ -62,7 +59,7 @@
 
 <script>
 var options = {
-  valueNames: [ 'id', 'code', 'name', 'city', 'status' ]
+  valueNames: [ 'id', 'code', 'name', 'city' ]
 };
 
 // Init list
@@ -71,8 +68,7 @@ var clientList = new List('clients', options);
 var idField = $('#id-field'),
     codeField = $('#code-field'),
     nameField = $('#name-field'),
-    cityField = $('#city-field'),
-    statusField = $('#status-field');
+    cityField = $('#city-field');
 
 refreshCallbacks();
 
