@@ -131,6 +131,16 @@ def getEmployee(val):
       #FieldEmployeeList.append(FieldEmployee)
       #row = cur.fetchone()
   return FieldEmployee
+    
+def getFEName(val):
+  try: 
+    cur.execute("select FirstName, LastName from FieldEmployees where ID = %s" % (val))
+    res = cur.fetchone()
+    return res[0]
+  except MySQLdb.Error, e:
+    print str(e.args[0]) + ': ' + str(e.args[1])
+    #print 'Error retrieving data from the database'
+    return None
 
 def getAllFieldEmployees():
   #sql = "SELECT f.ID, ft.Description, f.FECode, f.DisplayCode, f.Suffix, f.LastName, f.FirstName, f.MiddleName, f.Landline, f.MobileNo, f.Address, f.BirthDate, f.Gender, f.CivilStatus, f.Dependents,f.Skills, f.DateHired, f.DateResigned, f.FieldEmpStatus, f.CholStatus, f.FileStatus FROM FieldEmployees f INNER JOIN FieldEmployeeTypes ft ON f.Type = ft.Type ;"
@@ -226,6 +236,7 @@ def getClientContactPersons(val):
       row = cur.fetchone()
   return ClientContactPersonsList
 
+    
 
 def getDetachmentContactPersons(val):
   res = SubList("DetachmentContactPersons", "DetachID", val)
@@ -236,3 +247,37 @@ def getDetachmentContactPersons(val):
       DetachmentContactPersonsList.append(DetachmentContactPerson)
       row = cur.fetchone()
   return DetachmentContactPersonsList
+
+    
+def getAllSSSLoans():
+  res = List("SSSLoans")
+  SSSLoanList = []
+  for row in res:
+    if row is not None:
+      SSSLoan = SSSLoans.SSSLoans( int(row[0]), int(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]) )
+      SSSLoanList.append(SSSLoan)
+      row = cur.fetchone()
+  return SSSLoanList    
+
+    
+def getAllPagibigCalamityLoans():
+  res = List("PagibigCalamityLoans")
+  PagibigCalamityLoanList = []
+  for row in res:
+    if row is not None:
+      PagibigCalamityLoan = PagibigCalamityLoans.PagibigCalamityLoans( int(row[0]), int(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]) )
+      PagibigCalamityLoanList.append(PagibigCalamityLoan)
+      row = cur.fetchone()
+  return PagibigCalamityLoanList    
+
+def getAllPagibigSalaryLoans():
+  res = List("PagibigSalaryLoans")
+  PagibigSalaryLoanList = []
+  for row in res:
+    if row is not None:
+      PagibigSalaryLoan = PagibigSalaryLoans.PagibigSalaryLoans( int(row[0]), int(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]) )
+      PagibigSalaryLoanList.append(PagibigSalaryLoan)
+      row = cur.fetchone()
+  return PagibigSalaryLoanList    
+    
+    
