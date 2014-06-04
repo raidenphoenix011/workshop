@@ -1,6 +1,7 @@
 import db
 class ClientContactPersons(object):
-  def __init__(self, ClientID, Suffix, LastName, FirstName, MiddleName, Landline, MobileNo, BirthDate):
+  def __init__(self, ID, ClientID, Suffix, LastName, FirstName, MiddleName, Landline, MobileNo, BirthDate):
+    self.ID=ID
     self.ClientID=ClientID 
     self.Suffix=Suffix
     self.LastName=LastName 

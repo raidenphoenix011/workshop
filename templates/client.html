@@ -83,7 +83,7 @@
             </table>
         </div>
         <br><br/>
-        <form method='link' action='/detachments/get'>
+        <form method='link' action='{{ url_for('addDetachment') }}'>
             <button class='pure-button'>Add New Detachment</button>
         </form>
   </div>
@@ -206,9 +206,7 @@
         <tr>
             <td><label> Billing Address: </label></td>
             <td><textarea name='client_address' cols='24' row='6'>{{ Client.BillingAddress }}</textarea></td>
-            
         </tr>
-
 
     </table>
     </form>
@@ -216,42 +214,30 @@
   <div id="tabs-3">
     <div id="contacts">
     <form class='pure-form'>
+      <label>Search: </label><input type="text" class="search" placeholder="enter name or position" id='search_contact' />
+      <br/><br/>
       <table class='pure-table'>
         <thead>
           <tr>
             <th class="sort" data-sort="contact_name">Name</th>
-            <th class="sort" data-sort="position">Position</th>
-            <th class="sort" data-sort="number">Contact Number</th>
+            <th class="sort" data-sort="landline">Landline no.</th>
+            <th class="sort" data-sort="mobile">Mobile no.</th>
             <th colspan="2">
-              <input type="text" class="search" placeholder="Search contact" id='search_contact' />
+              
             </th>
           </tr>
         </thead>
         <tbody class="list">
+        {% for CP in ContactPersons %}
           <tr>
-            <td class="contact_id" style="display:none;">1</td>
-            <td class="contact_name">Mr. Hugh Jackman</td>
-            <td class="position">Area Manager</td>
-            <td class="number">09178232323</td>
+            <td name='contact_id' class="contact_id" style="display:none;">{{ CP.ID }}</td>
+            <td name='contact_name' class="contact_name">{{ CP.FirstName }}</td>
+            <td name='landline' class="landline">{{ CP.Landline }}</td>
+            <td name='mobile' class="mobile">{{ CP.MobileNo }}</td>
             <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
             <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
           </tr>
-          <tr>
-            <td class="contact_id" style="display:none;">2</td>
-            <td class="contact_name">Mr. Harry Styles</td>
-            <td class="position">Security Manager</td>
-            <td class="number">091783434333</td>
-            <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
-            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-          </tr>
-          <tr>
-            <td class="contact_id" style="display:none;">3</td>
-            <td class="contact_name">Ms. Eva Longoria</td>
-            <td class="position">Secretary</td>
-            <td class="number">09178232323</td>
-            <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
-            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-          </tr>
+        {% endfor %}
         </tbody>
       </table>
       <br/>
@@ -284,23 +270,22 @@
 <!-------SCRIPT FOR ListJS search detachment ------>
 <script>
 var options = {
-  valueNames: [ 'id', 'code', 'name', 'city', 'status' ]
+  valueNames: [ 'contact_id', 'contact_name', 'landline', 'mobile' ]
 };
 
 // Init list
 var detachmentList = new List('detachments', options);
 
-var idField = $('#id-field'),
-    codeField = $('#code-field'),
-    nameField = $('#name-field'),
-    cityField = $('#city-field'),
-    statusField = $('#status-field');
+var contact_idField = $('#contact_id-field'),
+    contact_nameField = $('#contact_name-field'),
+    landlineField = $('#landline-field'),
+    mobileField = $('#mobile-field');
 </script>
 
 <!------SCRIPT FOR ListJS search contact ------->
 <script>
 var options2 = {
-  valueNames: [ 'contact_id', 'contact_name', 'position', 'number' ]
+  valueNames: [ 'contact_id', 'contact_name', 'landline', 'mobile' ]
 };
 
 // Init list
@@ -308,8 +293,8 @@ var contactList = new List('contacts', options2);
 
 var contact_idField = $('#contact_id-field'),
     contact_nameField = $('#contact_name-field'),
-    positionField = $('#position-field'),
-    numberField = $('#number-field'),
+    landlineField = $('#landline-field'),
+    mobileField = $('#mobile-field'),
     addBtn = $('#add-btn'),
     editBtn = $('#edit-btn').hide(),
     removeBtns = $('.remove-item-btn'),
@@ -322,8 +307,8 @@ addBtn.click(function() {
   contactList.add({
     contact_id: Math.floor(Math.random()*110000),
     contact_name: contact_nameField.val(),
-    position: positionField.val(),
-    number: numberField.val()
+    landline: landlineField.val(),
+    mobile: mobileField.val()
   });
   clearFields();
   refreshCallbacks();
@@ -334,8 +319,8 @@ editBtn.click(function() {
   item.values({
     contact_id:contact_idField.val(),
     contact_name: contact_nameField.val(),
-    position: positionField.val(),
-    number: numberField.val()
+    landline: landlineField.val(),
+    mobile: mobileField.val()
   });
   clearFields();
   editBtn.hide();
@@ -357,8 +342,8 @@ function refreshCallbacks() {
     var itemValues = contactList.get('contact_id', itemId)[0].values();
     contact_idField.val(itemValues.contact_id);
     contact_nameField.val(itemValues.contact_name);
-    positionField.val(itemValues.position);
-    numberField.val(itemValues.number);
+    landlineField.val(itemValues.landline);
+    mobileField.val(itemValues.mobile);
     
     editBtn.show();
     addBtn.hide();
@@ -367,8 +352,8 @@ function refreshCallbacks() {
 
 function clearFields() {
   contact_nameField.val('');
-  positionField.val('');
-  numberField.val('');
+  landlineield.val('');
+  mobileField.val('');
 }    
 </script>
 

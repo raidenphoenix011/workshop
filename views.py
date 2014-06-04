@@ -104,7 +104,7 @@ def listClients(user=None):
 def viewClient(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), user=escape(session['user']))
+      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -127,6 +127,15 @@ def viewDetachment(ID, user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
+@app.route('/detachments/add', methods=['POST', 'GET'])
+def addDetachment(user=None): 
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      return render_template('detachment_blank.html', user=escape(session['user']))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+    
 @app.route('/manhours/detachments', methods=['POST', 'GET'])
 def listDetachmentsManhour(user=None):
   if 'usertype' in session:

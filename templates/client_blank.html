@@ -29,7 +29,7 @@
 
 <form class='pure-form pure-form-aligned'>
     
-<h2>Accenture</h2>
+<center><h2>New Client</h2></center>
 
 <br/>
 
@@ -81,7 +81,7 @@
             </table>
         </div>
         <br><br/>
-        <form method='link' action='/detachments/get'>
+        <form method='link' action='{{ url_for('addDetachment') }}'>
             <button class='pure-button'>Add New Detachment</button>
         </form>
   </div>
@@ -132,9 +132,9 @@
         <tbody class="list">
           <tr>
             <td class="contact_id" style="display:none;">1</td>
-            <td class="contact_name">Mr. Hugh Jackman</td>
-            <td class="position">Area Manager</td>
-            <td class="number">09178232323</td>
+            <td class="contact_name"></td>
+            <td class="position"></td>
+            <td class="number"></td>
             <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
             <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
           </tr>
