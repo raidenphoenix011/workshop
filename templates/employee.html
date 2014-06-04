@@ -65,6 +65,7 @@
         <td><label>Status: </label></td>
         <td>
             <select id='status' name="status">
+                <option value="{{ FE.EmpStatus }}" Selected>{{ FE.EmpStatus }}</option>
                 <option value="active">Active</option>
                 <option value="awol">AWOL</option>
                 <option value="resigned">Resigned</option>
@@ -76,6 +77,7 @@
         <td><label>Position: </label></td>
         <td>
             <select id="position" name="position">
+                <option value="{{ FE.Type  }}" Selected>{{ FE.Type }}</option>
                 <option value="SG">Security Guard</option>
                 <option value="SV">Supervisor</option>
                 <option value="LG">Lady Guard</option>
@@ -89,7 +91,7 @@
     </tr>
     <tr>
         <td><label>Date Resigned: </label></td>
-        <td><input name='date_resigned' type='date' value=''/></td>
+        <td><input name='date_resigned' type='date' value='{{ FE.Dateresigned }}'/></td>
     </tr>
     </table>
     </form>
@@ -101,6 +103,7 @@
             <td><label>Gender: </label></td>
             <td>
             <select name="gender">
+                <option value="{{ FE.Gender  }}" Selected>{{ FE.Gender }}</option>
                 <option value="m">Male</option>
                 <option value="f">Female</option>
              </select>
@@ -122,7 +125,7 @@
         </tr>
         <tr>
             <td><label>Birthdate: </label></td>
-            <td><input name='birthdate' type='date' value=''/></td>
+            <td><input name='birthdate' type='date' value='{{ FE.Birthdate }}'/></td>
         </tr>
     </table>
     </form>
@@ -134,6 +137,7 @@
             <td><label>Civil Status: </label></td>
             <td>
                 <select name="civil_status">
+                      <option value="{{ FE.CivilStatus  }}" Selected>{{ FE.CivilStatus }}</option>
                     <option value="s">Single</option>
                     <option value="m">Married</option>
                     <option value="l">Live-in</option>
@@ -151,13 +155,14 @@
   </div>
   <div id="tabs-4">
     <form class='pure-form pure-form-aligned'>
-    <label>Skills: </label><input name='skills' type='text' value=''/><br/>
+    <label>Skills: </label><input name='skills' type='text' value='{{ FE.Skills }}'/><br/>
     </form>
   </div>
   <div id="tabs-5">
     <form class='pure-form pure-form-aligned'>
     <label>Health Status:</label>
     <select name="health_status">
+         <option value="{{ FE.CholesterolStatus  }}" Selected>{{ FE.CholesterolStatus }}</option>
         <option value="cleared">Cleared</option>
         <option value="hypertensive">Hypertensive</option>
     </select>
@@ -167,6 +172,7 @@
     <form class='pure-form pure-form-aligned'>
     <label>201 Document Status:</label>
     <select name="201_status">
+        <option value="{{ FE.FileStatus  }}" Selected>{{ FE.FileStatus }}</option>
         <option value="cleared">Cleared</option>
         <option value="expired">Expired</option>
     </select>
