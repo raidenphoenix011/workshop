@@ -58,7 +58,7 @@ def admin(user=None):
     if session['usertype'] != 'ADM':
       flash('Unauthorized access')
       return redirect(url_for('logout'))
-    return render_template('admin.html', user=escape(session['user']))
+    return render_template('admin.html', OEs = db.getAllOfficeEmployees(), user=escape(session['user']))
 
 @app.route('/employees', methods=['POST', 'GET'])
 def listEmployees(user=None):

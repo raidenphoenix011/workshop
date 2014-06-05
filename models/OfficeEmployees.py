@@ -1,10 +1,11 @@
 import db
-
     
 class OfficeEmployees(object):
-  def __init__(self, Code, Name, BillingAddress, Landline):
-        
-        self.Type=Type 
+
+  def __init__(self, ID, Type, Username, Password, Suffix, LastName, FirstName, MiddleName, Landline, MobileNo, Address, BirthDate, Gender, CivilStatus, Dependents, Position, DateHired, DateResigned, EmpStatus):
+
+        self.ID=ID 
+        self.Type=Type
         self.Username=Username
         self.Password=Password
         self.Suffix=Suffix
