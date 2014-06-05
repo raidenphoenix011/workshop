@@ -49,32 +49,14 @@
           <tr>
             <td class="id" style="display:none;">1</td>
             <td>1</td>
-            <td class="name">Juan dela Cruz</td>
-            <td class="loan">20000</td>
-            <td class="payment">500</td>
-            <td class="balance">10000</td>
-            <td class="datecreated">2014-01-01</td>
-            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-          </tr>
-          <tr>
-            <td class="id" style="display:none;">2</td>
-            <td>2</td>
-            <td class="name">Mike Santos</td>
-            <td class="loan">15000</td>
-            <td class="payment">300</td>
-            <td class="balance">9000</td>
-            <td class="datecreated">2014-02-01</td>
-            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-          </tr>
-          <tr>
-            <td class="id" style="display:none;">3</td>
-            <td>3</td>
-            <td class="name">Nick Simon</td>
-            <td class="loan">10000</td>
-            <td class="payment">200</td>
-            <td class="balance">1000</td>
-            <td class="datecreated">2013-12-01</td>
-            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
+            {% for PIS in PISs %}
+            <td class="name" >{{ PIS.FieldEmpName }}</td>
+            <td class="loan">{{ PIS.Amount }}</td>
+            <td class="payment">{{ PIS.MonthlyPay }} </td>
+            <td class="balance"> {{ PIS.Balance }} </td>
+            <td class="datecreated"> {{ PIS.DateCreated }} </td>
+            <td class="remove"><a class='button' href=''>Remove</a></td>
+            {% endfor %}
           </tr>
         </tbody>
       </table>
