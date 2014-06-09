@@ -292,4 +292,6 @@ def getAllPagibigSalaryLoans():
       PagibigSalaryLoan = PagibigSalaryLoans.PagibigSalaryLoans( int(row[0]), int(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]) )
       PagibigSalaryLoanList.append(PagibigSalaryLoan)
       row = cur.fetchone()
-  return PagibigSalaryLoanList    
+  return PagibigSalaryLoanList
+
+
