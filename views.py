@@ -183,8 +183,9 @@ def insertClient(user=None):
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
         client = Clients.Clients('0', '0', request.form['client_name'], request.form['client_address'], request.form['client_city'], request.form['client_landline'])
         db.insertClient(client)
+        clientID = db.getClientID(client.Name)
         flash('Client successfully added.')
-        return redirect(url_for('viewClient', ID='1'))
+        return redirect(url_for('viewClient', ID=clientID))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))

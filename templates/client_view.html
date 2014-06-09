@@ -28,36 +28,39 @@
     <hr>
     <span style='float:right;'>Client Code: <b>{{ Client.Code }}</b></span>
     <br/>
-    <center><h2>{{ Client.Name }}</h2></center>
-    <table>
-        <tr>
-            <td><label>Landline: </label></td>
-            <td>{{ Client.Landline }}</td>
-        </tr>
-        <tr>
-            <td><label>City: </label></td>
-            <td>{{ Client.City }}</td>
-        </tr>
-        <tr>
-            <td><label> Billing Address: </label></td>
-            <td>{{ Client.BillingAddress }}</td>
-        </tr>
-    </table>
-    
-    <form class='pure-form pure-form-aligned' method='link' action='{{ url_for('editClient', ID=Client.ID) }}'>
-        <button class='pure-button editBtn' value='Edit Record'>Edit Record</button>
-    </form>
-    
-    <br/><br/><br/>
-    
+    <center><h1>{{ Client.Name }}</h1></center>
 
+    <br/>
     
     <div id="tabs">
         <ul>
-            <li><a href="#tabs-1">Detachments</a></li>
-            <li><a href="#tabs-2">Contact Persons</a></li>
+            <li><a href="#tabs-1">Basic Info</a></li>
+            <li><a href="#tabs-2">Detachments</a></li>
+            <li><a href="#tabs-3">Contact Persons</a></li>
         </ul>
         <div id="tabs-1">
+            <br/>
+            <table>
+                <tr>
+                    <td><label>Landline: </label></td>
+                    <td>{{ Client.Landline }}</td>
+                </tr>
+                <tr>
+                    <td><label>City: </label></td>
+                    <td>{{ Client.City }}</td>
+                </tr>
+                <tr>
+                    <td><label> Billing Address: </label></td>
+                    <td>{{ Client.BillingAddress }}</td>
+                </tr>
+            </table>
+    
+            <form class='pure-form pure-form-aligned' method='link' action='{{ url_for('editClient', ID=Client.ID) }}'>
+                <button class='pure-button editBtn' value='Edit Record'>Edit Record</button>
+            </form>
+            <br/><br/>
+        </div>
+        <div id="tabs-2">
             <div id="detachments">
                 <br/>
                 <form class='pure-form pure-form-aligned'>
@@ -89,10 +92,10 @@
             </div>
             <br><br/>
             <form method='link' action='{{ url_for('addDetachment', ID = Client.ID) }}'> 
-                <button class='pure-button'>Add New Detachment</button>
+                <button class='pure-button btn'>Add New Detachment</button><br/><br/>
             </form>
         </div>
-        <div id="tabs-2">
+        <div id="tabs-3">
             <br/>
             <table class='pure-table'>
                 <thead id='CPth'>

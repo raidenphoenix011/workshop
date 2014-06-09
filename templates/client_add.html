@@ -24,11 +24,10 @@
 
 {% block content %}
 <form class='pure-form pure-form-aligned' method='post' action='{{ url_for('insertClient') }}'>
-    <input type='hidden' name='client_id' value='1'/>
     
     <h1>Add New Client</h1>
     <hr>    
-    <span style='float:right;'>Client Code: <b><input type='text' name='client_code' value='C00000'/></b></span>
+
     <br/>
     
     <table>
@@ -159,7 +158,6 @@
     <br/><br/><br/>
     <input type='submit' class='pure-button' value='Submit'/>
     <input style='float:right;' type='reset' class='pure-button' value='Reset'/>
-
     </form>
 
 <!-------SCRIPT FOR ListJS search detachment ------>

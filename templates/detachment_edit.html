@@ -23,22 +23,26 @@
 
 
 {% block content %}
-<h1>Add New Detachment</h1>
-<h3>{{ client }}</h3>
+<h1>Detachment Information</h1>
 <hr>
-<br/>
+
+<center><h2>{{ DE.Name }}</h2></center>
+
 <form class='pure-form pure-form-aligned'>
+    
     <table>
         <tr>
             <td><label>Code: </label></td>
-            <td><input type='text' value='{{ maxID }}' disabled></td>
+            <td><b><span name='DEcode' id='det_code'>{{ DE.Code }}</span></b></td>
         </tr>
         <tr>
             <td><label>Name: </label></td>
-            <td><input name='DEname' id='det_name' class='namebox' type='text' value=''/></td>
+            <td><input name='DEname' id='det_name' class='namebox' type='text' value='{{ DE.Name }}'/></td>
         </tr>
     </table>
+    
 </form>
+
 
 <br/>
 <div id="tabs">
@@ -63,19 +67,19 @@
         </tr>
         <tr>
             <td><label>Start Date: </label></td>
-            <td><input type='date' value=''/></td>
+            <td><input type='date' value='{{DE.StartDate}}'/></td>
         </tr>
         <tr>
             <td><label>Termination Date: </label></td>
-            <td><input type='date' value=''/></td>
+            <td><input type='date' value='{{DE.EndDate}}'/></td>
         </tr>
         <tr>
             <td><label>City: </label></td>
-            <td><input type='text' value=''/></td>
+            <td><input type='text' value='{{DE.City}}'/></td>
         </tr>
         <tr>
             <td><label>Address: </label></td>
-            <td><textarea cols='22' rows='2'></textarea></td>
+            <td><textarea cols='22' rows='2'>{{DE.Address}}</textarea></td>
         </tr>
     </table>
     </form>

@@ -51,7 +51,7 @@
                 <tr>
                   <td class="id" style="display:none;">{{ DE.ID }}</td>
                   <td class="code">{{ DE.Code }}</td>
-                  <td class="name"><a href="{{ url_for('viewDetachment', ID=Client.ID) }}">{{ DE.Name }}</a></td>
+                  <td class="name"><a href="{{ url_for('viewDetachment', ID=DE.ID) }}">{{ DE.Name }}</a></td>
                   <td class="city">{{ DE.City }}</td>
                   <td class="client">{{ DE.ClientName }}</td>
                   <td class="status">{{ DE.Status }}</td>

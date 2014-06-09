@@ -187,6 +187,7 @@ def saveClient(client):
   except:
     print 'Error saving client'
 
+#NEW
 def insertClient(client):
   sql = "call addClient(%s, %s, %s, %s)"
   params = (client.Name, client.BillingAddress, client.City, client.Landline)
@@ -251,7 +252,19 @@ def getClientName(val):
     print str(e.args[0]) + ': ' + str(e.args[1])
     #print 'Error retrieving data from the database'
     return None
-
+  
+#NEW
+def getClientID(name):
+  sql = "select ID from Clients where Name = %s"
+  try: 
+    cur.execute("select ID from Clients where Name = '%s'" % (name))
+    res = cur.fetchone()
+    return res[0]
+  except MySQLdb.Error, e:
+    print str(e.args[0]) + ': ' + str(e.args[1])
+    print 'Error retrieving data from the database'
+    return None
+  
 def getClientContactPersons(val):
   res = SubList("ClientContactPersons", "ClientID", val)
   ClientContactPersonsList = []

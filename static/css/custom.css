@@ -93,6 +93,10 @@ td {
     float:right;
 }
 
+.btn {
+    float:right;
+}
+
 /* CLIENT FORM client.html*/
 .codebox {
     width:110px;
