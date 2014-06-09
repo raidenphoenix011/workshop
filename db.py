@@ -253,8 +253,6 @@ def getClientContactPersons(val):
       row = cur.fetchone()
   return ClientContactPersonsList
 
-    
-
 def getDetachmentContactPersons(val):
   res = SubList("DetachmentContactPersons", "DetachID", val)
   DetachmentContactPersonsList = []
@@ -264,12 +262,6 @@ def getDetachmentContactPersons(val):
       DetachmentContactPersonsList.append(DetachmentContactPerson)
       row = cur.fetchone()
   return DetachmentContactPersonsList
-
-<<<<<<< HEAD
-
-
-
-=======
     
 def getAllSSSLoans():
   res = List("SSSLoans")
@@ -301,6 +293,3 @@ def getAllPagibigSalaryLoans():
       PagibigSalaryLoanList.append(PagibigSalaryLoan)
       row = cur.fetchone()
   return PagibigSalaryLoanList    
-    
-    
->>>>>>> FETCH_HEAD
