@@ -12,6 +12,7 @@ Clients = import_file.import_file('models/Clients.py')
 DetachmentContactPersons = import_file.import_file('models/DetachmentContactPersons.py')
 Detachments = import_file.import_file('models/Detachments.py')
 FieldEmployees = import_file.import_file('models/FieldEmployees.py')
+FieldEmployeesDB = import_file.import_file('models/FieldEmployeesDB.py')
 FieldEmployeeTypes = import_file.import_file('models/FieldEmployeeTypes.py')
 HolidayMOR = import_file.import_file('models/HolidayMOR.py')
 IncentiveMOR = import_file.import_file('models/IncentiveMOR.py')
@@ -24,7 +25,7 @@ PagibigSalaryLoans = import_file.import_file('models/PagibigSalaryLoans.py')
 PayrollRecord = import_file.import_file('models/PayrollRecord.py')
 PersonalPayables = import_file.import_file('models/PersonalPayables.py')
 Rates = import_file.import_file('models/Rates.py')
-RateType = import_file.import_file('models/RateType.py')
+RateTypes = import_file.import_file('models/RateTypes.py')
 Receivables = import_file.import_file('models/Receivables.py')
 SSSContributions = import_file.import_file('models/SSSContributions.py')
 SSSLoans = import_file.import_file('models/SSSLoans.py')
@@ -127,10 +128,6 @@ def listClients(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-#@app.route('/clients/get/<ID>', methods=['POST', 'GET'])
-#def client(ID, user=None):
-  #client = getClient(ID)
-  #return render_template('client.html',Client = client, user=escape(session['user']))
 @app.route('/clients/get/<ID>', methods=['POST', 'GET'])
 def viewClient(ID, user=None):
   if 'usertype' in session:
