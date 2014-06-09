@@ -85,8 +85,11 @@ td {
     width:150px;
 }
 
+.saveBtn {
+    float:right;
+}
 
-#save {
+.editBtn {
     float:right;
 }
 

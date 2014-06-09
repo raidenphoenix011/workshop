@@ -132,7 +132,7 @@ def listClients(user=None):
 def viewClient(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), script="$('#tabs').tabs({ selected: 2});", user=escape(session['user']))
+      return render_template('client_view.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), script="$('#tabs').tabs({ selected: 2});", user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))

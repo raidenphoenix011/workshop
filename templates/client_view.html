@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<div class="sidebar gradient">
+    <hr class='navline navline1'/>
+    <h2 class='navtitle'>CLIENT RECORDS</h2>
+    <hr class='navline'/>
+    
+    <div class='sidebar-menu'>
+        <h4>Client Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listClients') }}' class='opt2'>View Client</a></li>
+            <li class="nobullets"><a href='{{ url_for('addClient') }}' class='opt2'>Add New Client</a></li>
+        </ul> 
+        <h4>Detachment Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listDetachments') }}' class='opt2'>View Detachment</a></li>
+        </ul> 
+    </div>
+
+</div>
+
+{% endblock sidebar %}
+
+{% block content %}
+
+    <h1>Client Information</h1>
+    <hr>
+    <span style='float:right;'>Client Code: <b>{{ Client.Code }}</b></span>
+    <br/>
+    <center><h2>{{ Client.Name }}</h2></center>
+    <table>
+        <tr>
+            <td><label>Landline: </label></td>
+            <td>{{ Client.Landline }}</td>
+        </tr>
+        <tr>
+            <td><label>City: </label></td>
+            <td>{{ Client.City }}</td>
+        </tr>
+        <tr>
+            <td><label> Billing Address: </label></td>
+            <td>{{ Client.BillingAddress }}</td>
+        </tr>
+    </table>
+    
+    <br/><br/>
+    
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Detachments</a></li>
+            <li><a href="#tabs-2">Contact Persons</a></li>
+        </ul>
+        <div id="tabs-1">
+            <div id="detachments">
+                <br/>
+                <form class='pure-form pure-form-aligned'>
+                    <label>Search: </label><input type="text" class="search" placeholder="enter code, name, city, or status" />
+                    <br/>
+                </form>
+                <br/><br/>
+                <table class='search-results pure-table'>
+                    <thead>
+                        <tr>
+                            <th class="sort" data-sort="code">Code</th>
+                            <th class="sort" data-sort="name">Detachment Name</th>
+                            <th class="sort" data-sort="city">City</th>
+                            <th class="sort" data-sort="status">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        {% for Detachment in Detachments %}
+                        <tr>
+                            <td class="id" style="display:none;">{{ Detachment.ID}}</td>
+                            <td class="code">{{ Detachment.Code }}</td>
+                            <td class="name"><a href="{{ url_for('viewDetachment', ID=Client.ID) }}">{{ Detachment.Name }}</a></td>
+                            <td class="city">{{ Detachment.City }}</td>
+                            <td class="status">{{ Detachment.Status }}</td>
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+            <br><br/>
+            <form method='link' action='{{ url_for('addDetachment') }}'> 
+                <button class='pure-button'>Add New Detachment</button>
+            </form>
+        </div>
+        <div id="tabs-2">
+            <br/>
+            <table class='pure-table'>
+                <thead id='CPth'>
+                    <tr>
+                        <th>Name</th>
+                        <th>Landline</th>
+                        <th>Mobile</th>
+                        <th>Birthdate</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id='CPtd'>
+                    {% for CP in ContactPersons %}
+                    <tr>
+                        <td>{{ CP.FirstName }} {{ CP.LastName }}
+                        <td>{{ CP.Landline }}</td>
+                        <td>{{ CP.MobileNo }}</td>
+                        <td>{{ CP.BirthDate }}</td>
+                        <td><form method='link' action=''><button class='pure-button'>Edit</button></form></td>
+                        <td><form method='link' action=''><button class='pure-button'>Delete</button></form></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br/>
+            <input type='button' class="pure-button" value='Add new contact'/>
+            <br />
+        </div>
+    </div>
+    <br/>
+    <form class='pure-form pure-form-aligned' method='link' action=''>
+        <button class='pure-button editBtn' value='Edit Record'>Edit Record</button>
+    </form>
+
+<!-------SCRIPT FOR ListJS search detachment ------>
+<script>
+var options = {
+  valueNames: [ 'id', 'code', 'name', 'city', 'status' ]
+};
+
+// Init list
+var detachmentList = new List('detachments', options);
+
+var idField = $('#id-field'),
+    codeField = $('#code-field'),
+    nameField = $('#name-field'),
+    cityField = $('#city-field'),
+    statusField = $('#status-field');
+</script>
+    
+{% endblock content %}
