@@ -187,6 +187,15 @@ def saveClient(client):
   except:
     print 'Error saving client'
 
+def insertClient(client):
+  sql = "call addClient(%s, %s, %s, %s)"
+  params = (client.Name, client.BillingAddress, client.City, client.Landline)
+  try:
+    cur.execute(sql, params)
+    mysql.commit()
+  except:
+    print 'Error saving client'
+    
 def save(status):
   sql = 'update EnrollmentStatus set status=%s'
   try:

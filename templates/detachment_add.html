@@ -23,26 +23,22 @@
 
 
 {% block content %}
-<h1>Detachment Information</h1>
+<h1>Add New Detachment</h1>
+<h3>{{ client }}</h3>
 <hr>
-
-<center><h2>New Detachment</h2></center>
-
+<br/>
 <form class='pure-form pure-form-aligned'>
-    
     <table>
         <tr>
             <td><label>Code: </label></td>
-            <td><b><span name='DEcode' id='det_code'></span></b></td>
+            <td><input type='text' value='{{ maxID }}' disabled></td>
         </tr>
         <tr>
             <td><label>Name: </label></td>
             <td><input name='DEname' id='det_name' class='namebox' type='text' value=''/></td>
         </tr>
     </table>
-    
 </form>
-
 
 <br/>
 <div id="tabs">

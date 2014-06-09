@@ -44,7 +44,13 @@
         </tr>
     </table>
     
-    <br/><br/>
+    <form class='pure-form pure-form-aligned' method='link' action='{{ url_for('editClient', ID=Client.ID) }}'>
+        <button class='pure-button editBtn' value='Edit Record'>Edit Record</button>
+    </form>
+    
+    <br/><br/><br/>
+    
+
     
     <div id="tabs">
         <ul>
@@ -82,7 +88,7 @@
                 </table>
             </div>
             <br><br/>
-            <form method='link' action='{{ url_for('addDetachment') }}'> 
+            <form method='link' action='{{ url_for('addDetachment', ID = Client.ID) }}'> 
                 <button class='pure-button'>Add New Detachment</button>
             </form>
         </div>
@@ -118,9 +124,7 @@
         </div>
     </div>
     <br/>
-    <form class='pure-form pure-form-aligned' method='link' action=''>
-        <button class='pure-button editBtn' value='Edit Record'>Edit Record</button>
-    </form>
+
 
 <!-------SCRIPT FOR ListJS search detachment ------>
 <script>
