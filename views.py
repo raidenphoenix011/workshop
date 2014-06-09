@@ -1,5 +1,33 @@
 from flask import Flask, flash, render_template, session, escape, request, redirect, url_for
 import db, hashlib
+import import_file, logging
+
+Allowances = import_file.import_file('models/Allowances.py')
+AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
+ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
+Clients = import_file.import_file('models/Clients.py')
+DetachmentContactPersons = import_file.import_file('models/DetachmentContactPersons.py')
+Detachments = import_file.import_file('models/Detachments.py')
+FieldEmployees = import_file.import_file('models/FieldEmployees.py')
+FieldEmployeeTypes = import_file.import_file('models/FieldEmployeeTypes.py')
+HolidayMOR = import_file.import_file('models/HolidayMOR.py')
+IncentiveMOR = import_file.import_file('models/IncentiveMOR.py')
+Logs = import_file.import_file('models/Logs.py')
+ManHourLogs = import_file.import_file('models/ManHourLogs.py')
+OfficeEmployees = import_file.import_file('models/OfficeEmployees.py')
+OfficeEmployeeTypes = import_file.import_file('models/OfficeEmployeeTypes.py')
+PagibigCalamityLoans = import_file.import_file('models/PagibigCalamityLoans.py')
+PagibigSalaryLoans = import_file.import_file('models/PagibigSalaryLoans.py')
+PayrollRecord = import_file.import_file('models/PayrollRecord.py')
+PersonalPayables = import_file.import_file('models/PersonalPayables.py')
+Rates = import_file.import_file('models/Rates.py')
+RateType = import_file.import_file('models/RateType.py')
+Receivables = import_file.import_file('models/Receivables.py')
+SSSContributions = import_file.import_file('models/SSSContributions.py')
+SSSLoans = import_file.import_file('models/SSSLoans.py')
+UniformDeposits = import_file.import_file('models/UniformDeposits.py')
+
+
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
@@ -104,10 +132,27 @@ def listClients(user=None):
 def viewClient(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), user=escape(session['user']))
+      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), script="$('#tabs').tabs({ selected: 2});", user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
+
+@app.route('/clients/save', methods=['POST', 'GET'])
+def saveClient(user=None):
+  client = Clients.Clients(request.form['client_id'], request.form['client_code'], request.form['client_name'], request.form['client_address'], request.form['client_city'], request.form['client_landline'])
+  db.saveClient(client)
+  return redirect(url_for('viewClient', ID=client.ID))
+
+@app.route('/clients/delete', methods=['POST', 'GET'])
+def deleteClientContactPerson(ID, ContactID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      #db.deleteClientContactPerson(ContactID)
+      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), script="$('#tabs').tabs({ selected: 3});", user=escape(session['user']))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+    
 
 @app.route('/clients/add', methods=['POST', 'GET'])
 def addClient(user=None): 
@@ -139,8 +184,11 @@ def addDetachment(user=None):
 @app.route('/manhours/detachments', methods=['POST', 'GET'])
 def listDetachmentsManhour(user=None):
   if 'usertype' in session:
-    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('detachment_search_manhour.html', user=escape(session['user']))
+    if session['usertype'] == 'ADM' or session['usertype'] == 'MO':
+      listDE = db.getAllDetachments()
+      for DE in listDE:
+        DE.setClientName(DE.ClientID)
+      return render_template('detachment_search_manhour.html', DEs = listDE, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -166,7 +214,7 @@ def manhour(user=None):
 @app.route('/detachments/lists/', methods=['POST', 'GET'])
 def listDetachments(user=None):
   if 'usertype' in session:
-    if session['usertype'] == 'ADM' or session['usertype'] == 'Bi0':
+    if session['usertype'] == 'ADM' or session['usertype'] == 'BiO':
       listDE = db.getAllDetachments()
       for DE in listDE:
         DE.setClientName(DE.ClientID)

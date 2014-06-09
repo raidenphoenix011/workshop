@@ -24,22 +24,26 @@
 
 {% block content %}
 
+<form class='pure-form pure-form-aligned' method='post' action='{{ url_for('saveClient') }}'>
 <h1>Client Information</h1>
 <hr>
 
-<form class='pure-form pure-form-aligned'>
+
 <center><h2>{{ Client.Name }}</h2></center>
     <table>
     <tr>
     <td><label>Code: </label></td>
-    <td><b>{{ Client.Code }}</b></td>
+    <td><b>{{ Client.Code }}</b>
+    <input type='hidden' name='client_id' value='{{ Client.ID }}'/>
+    <input type='hidden' name='client_code' value='{{ Client.Code }}'/>
+    </td>
     </tr>
     <tr>
     <td><label>Name: </label></td>
     <td><input class='namebox' type='text' name='client_name' value='{{ Client.Name }}'/></td>
     </tr>
     </table>
-</form>
+
 
 <br/><br/>
     <!--{% for detachment in detachments %}-->
@@ -56,7 +60,7 @@
             <form class='pure-form pure-form-aligned'>
               <label>Search: </label><input type="text" class="search" placeholder="enter code, name, city, or status" />
             </form>
-            <br/>
+            <br/><br/>
             <table class='search-results pure-table'>
               <thead>
                 <tr>
@@ -88,7 +92,7 @@
         </form>
   </div>
   <div id="tabs-2">
-    <form class='pure-form pure-form-aligned'>
+ 
     <table>
         <tr>
             <td><label>Landline: </label></td>
@@ -97,6 +101,7 @@
         <tr>
             <td><label>City: </label></td>
             <td><select name='client_city' id='client_city' name="city">
+                    <option value='{{ Client.City }}' default>{{ Client.City }}</option>
                     <option value=Alaminos>Alaminos</option>
                     <option value=Angeles>Angeles</option>
                     <option value=Antipolo>Antipolo</option>
@@ -209,62 +214,54 @@
         </tr>
 
     </table>
-    </form>
+
   </div>
   <div id="tabs-3">
-    <div id="contacts">
     <form class='pure-form'>
-      <label>Search: </label><input type="text" class="search" placeholder="enter name or position" id='search_contact' />
-      <br/><br/>
-      <table class='pure-table'>
-        <thead>
-          <tr>
-            <th class="sort" data-sort="contact_name">Name</th>
-            <th class="sort" data-sort="landline">Landline no.</th>
-            <th class="sort" data-sort="mobile">Mobile no.</th>
-            <th colspan="2">
-              
-            </th>
-          </tr>
+       <table class='pure-table'>
+        <thead id='CPth'>
+        <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Landline No.</th>
+            <th>Mobile No.</th>
+            <th>Birthdate</th>
+            <th></th>
+        </tr>
         </thead>
-        <tbody class="list">
+        <tbody id='CPtd'>
         {% for CP in ContactPersons %}
-          <tr>
-            <td name='contact_id' class="contact_id" style="display:none;">{{ CP.ID }}</td>
-            <td name='contact_name' class="contact_name">{{ CP.FirstName }}</td>
-            <td name='landline' class="landline">{{ CP.Landline }}</td>
-            <td name='mobile' class="mobile">{{ CP.MobileNo }}</td>
-            <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
-            <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-          </tr>
+        <tr>
+            <td><input id='' class="cell" name='' type='text' value='{{ CP.FirstName }}'></td>
+            <td><input id='' class="cell" name='' type='text' value='{{ CP.LastName }}'></td>
+            <td><input id='' class="cell" name='' type='text' value='{{ CP.Landline }}'></td>
+            <td><input id='' class="cell" name='' type='text' value='{{ CP.MobileNo }}'></td>
+            <td><input id='' class="cell" name='' type='date' value='{{ CP.Birthdate }}'></td>
+            <td><button class='pure-button'>Delete</button></td>
+        <tr>
         {% endfor %}
-        </tbody>
-      </table>
-      <br/>
-      <table>
-        <td class="contact_name">
-          <input type="hidden" id="contact_id-field" />
-          <input type="text" id="contact_name-field" placeholder="name" />
-        </td>
-        <td class="position">
-          <input type="text" id="position-field" placeholder="position" />
-        </td>
-        <td class="number">
-          <input type="text" id="number-field" placeholder="contact number" />
-        </td>
-        <td class="add">
-          <button id="add-btn" class="pure-button">Add to Contacts</button>
-          <button id="edit-btn" class="pure-button">Update Contact</button>
-        </td>
-      </table>
-    </form>
-    </div>
-  </div>
+        <tr class='tr_clone entry'>
+            <td><input id='' class="cell" name='' type='text' placeholder=''></td>
+            <td><input id='' class="cell" name='' type='text' placeholder=''></td>
+            <td><input id='' class="cell" name='' type='text' placeholder=''></td>
+            <td><input id='' class="cell" name='' type='text' placeholder=''></td>
+            <td><input id='' class="cell" name='' type='date' placeholder=''></td>
+        <tr>
+</tbody>
+    </table>
+       </form>
+    <br/>
+    <input type='button' class="pure-button tr_clone_add" value='Add new entry'/>
+    <br />
+    
+
 
 </div>
 <br/>
 <div id='buttoncontainer'>
-<button id='save' class='pure-button save'>Save Changes</button>
+
+<input id='save' class='pure-button save' type='submit' value='Submit'/>
+</form>
 </div>
 
 <!-------SCRIPT FOR ListJS search detachment ------>
@@ -363,5 +360,16 @@ function clearFields() {
 
 </script>
 
+
+<script type="text/javascript">
+$( ".tr_clone_add" ).click(function(event) {
+    var $clone = $( ".entry:last" ).clone();
+    $clone.find('.cell').val('');
+    $clone.appendTo( "#CPtd" );
+});
+</script>
+<script>
+    {{ script }}
+</script>
     
 {% endblock content %}

@@ -20,20 +20,22 @@
 
 {% block content %}
 
-<h1>Accenture Manhours</h1>
+<h1>Manhour Records</h1>
 <hr>
+<center><h2>UP Diliman </h2></center>
 <!--{% for company in companies %}
 {% endfor %}-->
 <br/>
 <div id="periods">
-  <form class='pure-form pure-form-aligned' method='link' action='{{ url_for('manhour') }}'>
-    <button class='pure-button'>Add New Manhour Record</button>
-  </form>
+  <form style='width:100%;" class='pure-form pure-form-aligned' method='link' action='{{ url_for('manhour') }}'>
+    <center><button class='pure-button'>Add New Manhour Record</button></center>
+  <center></form>
   <br/><br/><br/>
   <form class='pure-form pure-form-aligned'>
     <label>Search Record: </label><input type="text" class="search" placeholder="Enter period code, start date, or end date" />
-  </form>
+  </form></center>
   <br/>
+    <center>
   <table class='search-results pure-table'>
     <thead>
       <tr>
@@ -67,7 +69,7 @@
     </tbody>
   </table>
 </div>
-
+</center>
 
 <script>
 var options = {

@@ -34,7 +34,7 @@
 	    <div class="pure-g-r">
 		<div class="pure-u-1-1">
 		    <div class="div-img">
-			<img class='top-logo' src='/static/img/company_logo.png' />
+			<a href='{{ url_for('login') }}'><img class='top-logo' src='/static/img/company_logo.png' /></a>
 		    </div>
 		    <div class='corner'>
 		    </div>
@@ -42,7 +42,7 @@
 			<h1 class='companyname'>EAGLEWATCH</h1>
 		    </div>
 		    <div class='top-user'>
-			<p id='userinfo'>Welcome, {{ user }}! <form class='logout-form' method='link' action='../logout'><button class='pure-button'>Logout</button></form></p> 
+			<p id='userinfo'>Welcome, {{ user }}! <form class='logout-form' method='link' action='{{ url_for('logout') }}'><button class='pure-button'>Logout</button></form></p> 
 		    </div>
 		</div>
 	    </div>

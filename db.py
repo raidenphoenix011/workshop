@@ -74,7 +74,7 @@ def checkPW(value):
     else:
       return None
   except MySQLdb.Error, e:
-    print str(e.args[0]) + ': ' + str(e.args[1])
+    print str(e.args[0])
     return None
 
 def getUserType(username):
@@ -166,8 +166,25 @@ def getClient(val):
       Client = Clients.Clients( str(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]))
       #FieldEmployeeList.append(FieldEmployee)
       #row = cur.fetchone()
-  return Client    
+  return Client
 
+def saveClient(client):
+  sql = "update Clients set Name=%s, BillingAddress=%s, City=%s, Landline=%s where ID=%s"
+  params = (client.Name, client.BillingAddress, client.City, client.Landline, client.ID)
+  try:
+    cur.execute(sql, params)
+    mysql.commit()
+  except:
+    print 'Error saving client'
+
+def save(status):
+  sql = 'update EnrollmentStatus set status=%s'
+  try:
+    cur.execute(sql, status)
+    mysql.commit()
+  except:
+    print 'Error changing status in db'
+    
 def getAllDetachmentsbyID(val):
   #sql = "SELECT * FROM FieldEmployees"
   #res = getAll(sql)
@@ -236,3 +253,7 @@ def getDetachmentContactPersons(val):
       DetachmentContactPersonsList.append(DetachmentContactPerson)
       row = cur.fetchone()
   return DetachmentContactPersonsList
+
+
+
+

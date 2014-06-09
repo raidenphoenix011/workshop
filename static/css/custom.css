@@ -117,6 +117,12 @@ td {
     width:225px;
 }
 
+#CPth {
+    text-align: center;
+}
+#CPtd input {
+    width:100%;
+}
 /*ADMIN NAVBAR*/
 
 a.opt:link,a:visited

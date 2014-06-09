@@ -28,7 +28,3 @@ class Clients(object):
     sql = "update Clients set %s=%s where ID = %s"
     params =(prop, val, self.ID)
     return db.set(sql,params)
-
-
-    
-    
