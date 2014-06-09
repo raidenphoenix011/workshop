@@ -320,16 +320,37 @@ def viewPayables(user=None):
 def viewLoansSSS(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BeO' or session['usertype'] == 'ADM':
-      return render_template('loan_SSS.html', user=escape(session['user']))
+
+#      listDE = db.getAllDetachments()
+#      for DE in listDE:
+#        DE.setClientName(DE.ClientID)
+#      return render_template('detachment_search.html', DEs = listDE, user=escape(session['user']))
+     listSSS = db.getAllSSSLoans()
+     for SSS in listSSS:
+        SSS.setFEName(SSS.FieldEmpID) 
+        return render_template('loan_SSS.html', SSSs = listSSS, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
+
+@app.route('/benefits/SSS/<ID>', methods=['POST', 'GET'])
+def deleteLoansSSS(ID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BeO' or session['usertype'] == 'ADM':
+      return redirect(url_for('viewLoanSSS'))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))  
 
 @app.route('/benefits/pagibig_calamity', methods=['POST', 'GET'])
 def viewLoansCalamity(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BeO' or session['usertype'] == 'ADM':
-      return render_template('loan_PagibigCalamity.html', user=escape(session['user']))
+       listPIC = db.getAllPagibigCalamityLoans()
+       for PIC in listPIC:
+        PIC.setFEName(PIC.FieldEmpID) 
+
+        return render_template('loan_PagibigCalamity.html', PICs= listPIC, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -338,7 +359,11 @@ def viewLoansCalamity(user=None):
 def viewLoansSalary(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BeO' or session['usertype'] == 'ADM':
-      return render_template('loan_PagibigSalary.html', user=escape(session['user']))
+      listPIS = db.getAllPagibigSalaryLoans()
+      for PIS in listPIS:
+        PIS.setFEName(PIS.FieldEmpID) 
+
+        return render_template('loan_PagibigSalary.html', PISs=listPIS, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
