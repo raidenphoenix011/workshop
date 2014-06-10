@@ -2,6 +2,25 @@ import MySQLdb, hashlib, cgi, cgitb; cgitb.enable()
 import import_file, logging
 from flask import flash
 
+
+
+
+
+###########################
+
+
+# DONT USE THIS! FOR REFERENCE ONLY. USE THE ONE IN THE 'models' FOLDER
+
+
+
+#########
+
+
+
+
+
+
+
 Allowances = import_file.import_file('models/Allowances.py')
 AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
 ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
