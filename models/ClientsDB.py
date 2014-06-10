@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-import db, import_file
-Clients = import_file.import_file('Clients')
-
-def getAllClients():
-  res = db.List("Clients")
-  ClientList = []
-  for row in res:
-    if row is not None:
-      Client = Clients.Clients( int(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]) )
-      ClientList.append(Client)
-      row = db.cur.fetchone()
-  return ClientList
-
-def getClient(val):
-  res = db.SubList("Clients", "ID", val)
-  for row in res:
-    if row is not None:
-      Client = Clients.Clients( str(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]))
-  return Client
-=======
 import db, import_file, MySQLdb
 Clients = import_file.import_file('Clients')
 
@@ -82,4 +61,3 @@ def getClientID(name):
     print str(e.args[0]) + ': ' + str(e.args[1])
     print 'Error retrieving data from the database'
     return None
->>>>>>> c9e5dac83acf4b96337960900277a7a396e23b87

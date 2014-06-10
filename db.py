@@ -1,9 +1,7 @@
-import MySQLdb, hashlib, cgi, cgitb; cgitb.enable()
+import MySQLdb, hashlib, import_file
 import logging
 from flask import flash
 
-<<<<<<< HEAD
-=======
 Allowances = import_file.import_file('models/Allowances.py')
 AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
 ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
@@ -29,7 +27,6 @@ SSSContributions = import_file.import_file('models/SSSContributions.py')
 SSSLoans = import_file.import_file('models/SSSLoans.py')
 UniformDeposits = import_file.import_file('models/UniformDeposits.py')
 
->>>>>>> c9e5dac83acf4b96337960900277a7a396e23b87
 mysql = MySQLdb.connect('localhost','AdminPayroll','Password','Eaglewatch')
 cur = mysql.cursor()
 
@@ -62,9 +59,6 @@ def SubList(tableName, foreignKey, value):
   sql = "SELECT * FROM %s WHERE %s = '%s'" % (tableName, foreignKey, value)
   res = getAll(sql)
   return res
-<<<<<<< HEAD
-  
-=======
 
 def checkPW(value):
   try: 
@@ -321,6 +315,3 @@ def getAllPagibigSalaryLoans():
       PagibigSalaryLoanList.append(PagibigSalaryLoan)
       row = cur.fetchone()
   return PagibigSalaryLoanList
-
-
->>>>>>> c9e5dac83acf4b96337960900277a7a396e23b87

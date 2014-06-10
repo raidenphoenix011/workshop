@@ -2,7 +2,7 @@ import db
 
 class ManHourLogs(object):
 
-  def __init__(self, ID, DetachID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, BirthDate):
+  def __init__(self, ID, DetachID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, DateCreated, PeriodCode):
     self.ID = ID
     self.DetachID = DetachID
     self.NoOfFullDays = NoOfFullDays

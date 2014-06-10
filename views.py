@@ -5,38 +5,6 @@ from flask import Flask, flash, render_template, session, escape, request, redir
 import db, hashlib
 import import_file, logging
 
-<<<<<<< HEAD
-=======
-Allowances = import_file.import_file('models/Allowances.py')
-AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
-ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
-ClientContactPersonsDB = import_file.import_file('models/ClientContactPersonsDB.py')
-Clients = import_file.import_file('models/Clients.py')
-ClientsDB = import_file.import_file('models/ClientsDB.py')
-DetachmentContactPersons = import_file.import_file('models/DetachmentContactPersons.py')
-Detachments = import_file.import_file('models/Detachments.py')
-DetachmentsDB = import_file.import_file('models/DetachmentsDB.py')
-FieldEmployees = import_file.import_file('models/FieldEmployees.py')
-FieldEmployeesDB = import_file.import_file('models/FieldEmployeesDB.py')
-FieldEmployeeTypes = import_file.import_file('models/FieldEmployeeTypes.py')
-HolidayMOR = import_file.import_file('models/HolidayMOR.py')
-IncentiveMOR = import_file.import_file('models/IncentiveMOR.py')
-Logs = import_file.import_file('models/Logs.py')
-ManHourLogs = import_file.import_file('models/ManHourLogs.py')
-OfficeEmployees = import_file.import_file('models/OfficeEmployees.py')
-OfficeEmployeeTypes = import_file.import_file('models/OfficeEmployeeTypes.py')
-PagibigCalamityLoans = import_file.import_file('models/PagibigCalamityLoans.py')
-PagibigSalaryLoans = import_file.import_file('models/PagibigSalaryLoans.py')
-PayrollRecord = import_file.import_file('models/PayrollRecord.py')
-PersonalPayables = import_file.import_file('models/PersonalPayables.py')
-Rates = import_file.import_file('models/Rates.py')
-RateTypes = import_file.import_file('models/RateTypes.py')
-Receivables = import_file.import_file('models/Receivables.py')
-SSSContributions = import_file.import_file('models/SSSContributions.py')
-SSSLoans = import_file.import_file('models/SSSLoans.py')
-UniformDeposits = import_file.import_file('models/UniformDeposits.py')
->>>>>>> c9e5dac83acf4b96337960900277a7a396e23b87
-
 AllowancesDB = import_file.import_file('models/AllowancesDB')
 AuthorizedManHoursDB = import_file.import_file('models/AuthorizedManHoursDB')
 ClientsDB = import_file.import_file('models/ClientsDB')
@@ -90,32 +58,20 @@ def login():
     elif session['usertype'] == 'BeO':
         return redirect(url_for('viewPeriodsBenefits'))
     elif session['usertype'] == 'RO':
-        #Receivable Officer
         return redirect(url_for('viewPeriodsBenefits'))
     elif session['usertype'] == 'DO':
-        #Deployment Officer
         return redirect(url_for('viewPeriodsBenefits'))
 
   elif request.method == 'POST':
-    #check = db.isUsernameExisting(request.form['username'], request.form['password'])
     if OfficeEmployeesDB.login(request.form['username'], request.form['password']):
       session['usertype'] = OfficeEmployeesDB.getOfficeEmployee(request.form['username']).Type
       session['user'] = request.form['username']
-      #print session['usertype']
       return redirect(url_for('login'))
     else:
-<<<<<<< HEAD
       flash('Please check your login credentials')
       return redirect(url_for('login'))
-
-=======
-       flash('Please check your login credentials.')
-       return redirect(url_for('login'))
->>>>>>> c9e5dac83acf4b96337960900277a7a396e23b87
   else:
     return render_template('login.html')
-
-#----------------------
 
 @app.route('/logout')
 def logout():
@@ -250,9 +206,6 @@ def addDetachment(ID, user=None):
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
-    
-    
-#-----------------------
 
 @app.route('/manhours/detachments', methods=['POST', 'GET'])
 def listDetachmentsManhour(user=None):
