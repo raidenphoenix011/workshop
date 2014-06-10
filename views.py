@@ -238,7 +238,6 @@ def addClientContact(ClientID, user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-<<<<<<< HEAD
 @app.route('/clients/get/contacts/insert', methods=['POST', 'GET'])
 def insertClientContact(user=None): 
   if 'usertype' in session:
