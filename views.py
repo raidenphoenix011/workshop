@@ -238,6 +238,7 @@ def addClientContact(ClientID, user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
+<<<<<<< HEAD
 @app.route('/clients/get/contacts/insert', methods=['POST', 'GET'])
 def insertClientContact(user=None): 
   if 'usertype' in session:
@@ -258,11 +259,6 @@ def deleteClientContact(ID, ContactID, user=None):
       ClientContactPersonsDB.deleteContact(ContactID)
       flash('Contact Person successfully deleted.')
       return redirect(url_for('viewClient', ID=ID))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-
-# DETACHMENTS -----------------------------------------
 
 @app.route('/detachments/lists/', methods=['POST', 'GET'])
 def listDetachments(user=None):
@@ -342,14 +338,14 @@ def addManhour(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/manhour', methods=['POST', 'GET'])
-def manhour(user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('manhour.html', user=escape(session['user']), dept='manhour')
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
+@app.route('/manhours/<ID>/<Code>', methods=['POST', 'GET'])
+def manhour(ID, Code, user=None):
+    if 'usertype' in session:
+        if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
+            return render_template('manhour.html', Log=ManHourLogsDB.getLog2(ID, Code), user=escape(session['user']), dept='manhour')
+        else:
+            flash('Unauthorized access')
+            return redirect(url_for('logout'))
 
 @app.route('/manhours/detachments', methods=['POST', 'GET'])
 def listDetachmentsManhour(user=None):
@@ -399,7 +395,7 @@ def viewPayroll(user=None):
 def viewPeriodsManhour(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('period_search_manhour.html', DE=DetachmentsDB.getDetachment(ID), user=escape(session['user']))
+      return render_template('period_search_manhour.html', DE=DetachmentsDB.getDetachment(ID), MH=ManHourLogsDB.getLog(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
