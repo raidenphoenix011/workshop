@@ -14,7 +14,7 @@
         </ul> 
         <h4>Detachment Information</h4>
         <ul class="right">
-            <li class="nobullets"><a href='' class='opt2'>View Detachment</a></li>
+            <li class="nobullets"><a href='{{ url_for('listDetachments') }}' class='opt2'>View Detachment</a></li>
         </ul> 
     </div>
 
@@ -24,7 +24,7 @@
 
 {% block content %}
 <h1>Detachment Information</h1>
-<h3>Client: </h3>
+<h3>Client: {{ client }}</h3>
 <hr>
 <span style='float:right;'>Detachment Code: <b>{{ DE.Code }}</b></span>
 <br/>
@@ -79,7 +79,7 @@
     <table>
         <tr>
             <td><label>Effective Date: </label></td>
-            <td><input type='date' value=''/></td>
+            <td></td>
         </tr>
         <tr>
             <td><label>Rate type:</label></td>
@@ -163,65 +163,34 @@
     </form>
   </div>
     <div id="tabs-4">
-        <div id="contacts">
-        <form class='pure-form'>
-          <table class='pure-table'>
-            <thead>
-              <tr>
-                <th class="sort" data-sort="contact_name">Name</th>
-                <th class="sort" data-sort="position">Position</th>
-                <th class="sort" data-sort="number">Contact Number</th>
-                <th colspan="2">
-                  <input type="text" class="search" placeholder="Search contact" id='search_contact' />
-                </th>
-              </tr>
-            </thead>
-            <tbody class="list">
-              <tr>
-                <td class="contact_id" style="display:none;">1</td>
-                <td class="contact_name">Mr. Hugh Jackman</td>
-                <td class="position">Area Manager</td>
-                <td class="number">09178232323</td>
-                <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
-                <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-              </tr> 
-              <tr>
-                <td class="contact_id" style="display:none;">2</td>
-                <td class="contact_name">Mr. Harry Styles</td>
-                <td class="position">Security Manager</td>
-                <td class="number">091783434333</td>
-                <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
-                <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-              </tr>
-              <tr>
-                <td class="contact_id" style="display:none;">3</td>
-                <td class="contact_name">Ms. Eva Longoria</td>
-                <td class="position">Secretary</td>
-                <td class="number">09178232323</td>
-                <td class="edit"><button class="edit-item-btn pure-button">Update</button></td>
-                <td class="remove"><button class="remove-item-btn pure-button">Remove</button></td>
-              </tr>
-            </tbody>
-          </table>
-          <br/>
-          <table>
-            <td class="contact_name">
-              <input type="hidden" id="contact_id-field" />
-              <input type="text" id="contact_name-field" placeholder="name" />
-            </td>
-            <td class="position">
-              <input type="text" id="position-field" placeholder="position" />
-            </td>
-            <td class="number">
-              <input type="text" id="number-field" placeholder="contact number" />
-            </td>
-            <td class="add">
-              <button id="add-btn" class="pure-button">Add to Contacts</button>
-              <button id="edit-btn" class="pure-button">Update Contact</button>
-            </td>
-          </table>
-        </form>
-        </div>
+        <br/>
+            <table class='pure-table'>
+                <thead id='CPth'>
+                    <tr>
+                        <th>Name</th>
+                        <th>Landline</th>
+                        <th>Mobile</th>
+                        <th>Birthdate</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id='CPtd'>
+                    {% for CP in ContactPersons %}
+                    <tr>
+                        <td>{{ CP.FirstName }} {{ CP.LastName }}
+                        <td>{{ CP.Landline }}</td>
+                        <td>{{ CP.MobileNo }}</td>
+                        <td>{{ CP.BirthDate }}</td>
+                        <td><form method='link' action=''><button class='pure-button'>Edit</button></form></td>
+                        <td><form method='link' action=''><button class='pure-button'>Delete</button></form></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br/>
+            <input type='button' class="pure-button" value='Add new contact'/>
+            <br />
   </div>
 
 

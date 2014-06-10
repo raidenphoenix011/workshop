@@ -112,18 +112,20 @@
                 <tbody id='CPtd'>
                     {% for CP in ContactPersons %}
                     <tr>
-                        <td>{{ CP.FirstName }} {{ CP.LastName }}
+                        <td>{{ CP.FirstName }} {{ CP.LastName }} {{ CP.Suffix }}</td>
                         <td>{{ CP.Landline }}</td>
                         <td>{{ CP.MobileNo }}</td>
                         <td>{{ CP.BirthDate }}</td>
-                        <td><form method='link' action=''><button class='pure-button'>Edit</button></form></td>
+                        <td><form method='link' action='{{ url_for('editClientContact', ID=Client.ID, ContactID=CP.ID) }}'><button class='pure-button'>Edit</button></form></td>
                         <td><form method='link' action=''><button class='pure-button'>Delete</button></form></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             <br/>
-            <input type='button' class="pure-button" value='Add new contact'/>
+            <form method='link' action='{{ url_for('addClientContact', ClientID = Client.ID) }}'>
+            <button class="pure-button"/>Add New Contact</button>
+            </form>
             <br />
         </div>
     </div>
