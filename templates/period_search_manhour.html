@@ -22,7 +22,9 @@
 
 <h1>Manhour Records</h1>
 <hr>
-<center><h2> {{ DE.ID }} </h2></center>
+{% for D in DE %}
+<center><h2> {{ D.Name }} </h2></center>
+{% endfor %}
 <!--{% for company in companies %}
 {% endfor %}-->
 <br/>
