@@ -2,7 +2,8 @@ import db
 
 class DetachmentContactPersons(object):
 
-  def __init__(self, DetachID, Suffix, LastName, FirstName, MiddleName, Landline, MobileNo, BirthDate):
+  def __init__(self, ID, DetachID, Suffix, LastName, FirstName, MiddleName, Landline, MobileNo, BirthDate):
+    self.ID = ID
     self.DetachID = DetachID
     self.Suffix = Suffix
     self.LastName = LastName

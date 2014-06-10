@@ -23,7 +23,7 @@
 {% endblock sidebar %}
 
 {% block content %}
-<form class='pure-form pure-form-aligned' method='post' action='{{ url_for('saveClient') }}'>
+<form class='pure-form pure-form-aligned' method='post' action='{{ url_for('updateClient') }}'>
     <input type='hidden' name='client_id' value='{{ Client.ID }}'/>
     <input type='hidden' name='client_code' value='{{ Client.Code }}'/>
     
