@@ -1,4 +1,5 @@
-import db, SSSLoans, cgi, cgitb; cgitb.enable()
+import db, import_file
+SSSLoans = import_file.import_file('SSSLoans')
 
 def getAllSSSLoans():
   res = db.List("SSSLoans")

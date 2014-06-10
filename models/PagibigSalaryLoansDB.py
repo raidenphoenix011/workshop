@@ -1,4 +1,5 @@
-import db, PagibigSalaryLoans, cgi, cgitb; cgitb.enable()
+import db, import_file
+PagibigSalaryLoans = import_file.import_file('PagibigSalaryLoans')
 
 def getAllPagibigSalaryLoans():
   res = db.List("PagibigSalaryLoans")

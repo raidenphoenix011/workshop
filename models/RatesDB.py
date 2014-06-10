@@ -1,4 +1,5 @@
-import db, Rates, cgi, cgitb; cgitb.enable()
+import db, import_file
+Rates = import_file.import_file('Rates')
 
 def getRates():
   res = db.List("Rates")

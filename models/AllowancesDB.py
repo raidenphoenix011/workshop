@@ -1,4 +1,5 @@
-import db, Allowances, cgi, cgitb; cgitb.enable()
+import db, import_file
+Allowances = import_file.import_file('Allowances')
 
 def getAllowances():
   res = db.List("Allowances")

@@ -1,4 +1,5 @@
-import db, AuthorizedManHours, cgi, cgitb; cgitb.enable()
+import db, import_file
+AuthorizedManHours = import_file.import_file('AuthorizedManHours')
 
 def getAuthorizedManHours():
   res = db.List("AuthorizedManHours")

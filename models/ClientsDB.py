@@ -1,4 +1,5 @@
-import db, Clients, cgi, cgitb; cgitb.enable()
+import db, import_file
+Clients = import_file.import_file('Clients')
 
 def getAllClients():
   res = db.List("Clients")

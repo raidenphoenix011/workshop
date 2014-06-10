@@ -1,4 +1,5 @@
-import db, ClientContactPersons, cgi, cgitb; cgitb.enable()
+import db, import_file
+ClientContactPersons = import_file.import_file('ClientContactPersons')
 
 def getAllClientContactPersons():
   res = db.List("ClientContactPersons")

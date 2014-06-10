@@ -1,4 +1,5 @@
-import db, PayrollRecord, cgi, cgitb; cgitb.enable()
+import db, import_file
+PayrollRecord = import_file.import_file('PayrollRecord')
 
 def getPayrollRecords():
   res = db.List("PayrollRecord")

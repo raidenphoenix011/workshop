@@ -1,4 +1,5 @@
-import db, RateTypes, cgi, cgitb; cgitb.enable()
+import db, import_file
+RateTypes = import_file.import_file('RateTypes')
 
 def getRateTypes():
   res = db.List("RateTypes")

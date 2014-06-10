@@ -1,4 +1,5 @@
-import db, SSSContributions, cgi, cgitb; cgitb.enable()
+import db, import_file
+SSSContributions = import_file.import_file('SSSContributions')
 
 def getSSSContributions():
   res = db.List("SSSContributions")

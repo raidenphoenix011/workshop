@@ -1,4 +1,5 @@
-import db, PersonalPayables, cgi, cgitb; cgitb.enable()
+import db, import_file
+PersonalPayables = import_file.import_file('PersonalPayables')
 
 def getPersonalPayables():
   res = db.List("PersonalPayables")

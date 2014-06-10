@@ -1,4 +1,5 @@
-import db, OfficeEmployees, hashlib, cgi, cgitb; cgitb.enable()
+import db, hashlib, import_file
+OfficeEmployees = import_file.import_file('OfficeEmployees')
 
 def getOfficeEmployees():
   res = db.List("OfficeEmployees")

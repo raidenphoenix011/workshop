@@ -1,4 +1,5 @@
-import db, Receivables, cgi, cgitb; cgitb.enable()
+import db, import_file
+Receivables = import_file.import_file('Receivables')
 
 def getReceivables():
   res = db.List("Receivables")

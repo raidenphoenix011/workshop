@@ -1,4 +1,5 @@
-import db, IncentiveMOR, cgi, cgitb; cgitb.enable()
+import db, import_file
+IncentiveMOR = import_file.import_file('IncentiveMOR')
 
 def getAllIncentiveMOR():
   res = db.List("IncentiveMOR")

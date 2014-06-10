@@ -1,4 +1,5 @@
-import db, UniformDeposits, cgi, cgitb; cgitb.enable()
+import db, import_file
+UniformDeposits = import_file.import_file('UniformDeposits')
 
 def getUniformDeposits():
   res = db.List("UniformDeposits")

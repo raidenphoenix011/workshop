@@ -1,4 +1,5 @@
-import db, FieldEmployeeTypes, cgi, cgitb; cgitb.enable()
+import db, import_file
+FieldEmployeeTypes = import_file.import_file('FieldEmployeeTypes')
 
 def getFieldEmployeeTypes():
   res = db.List("FieldEmployeeTypes")

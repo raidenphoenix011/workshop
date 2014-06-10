@@ -1,4 +1,5 @@
-import db, Logs, cgi, cgitb; cgitb.enable()
+import db, import_file
+Logs = import_file.import_file('Logs')
 
 def getLogs():
   res = db.List("Logs")

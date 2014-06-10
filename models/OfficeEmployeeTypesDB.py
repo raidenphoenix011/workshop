@@ -1,4 +1,5 @@
-import db, OfficeEmployeeTypes, cgi, cgitb; cgitb.enable()
+import db, import_file
+OfficeEmployeeTypes = import_file.import_file('OfficeEmployeeTypes')
 
 def getOfficeEmployeeTypes():
   res = db.List("OfficeEmployeeTypes")

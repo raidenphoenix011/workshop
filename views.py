@@ -96,7 +96,7 @@ def admin(user=None):
 def listEmployees(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'HR' or session['usertype'] == 'ADM':
-      return render_template('employee_search.html', FEs = db.getAllFieldEmployees(), user=escape(session['user']))
+      return render_template('employee_search.html', FEs = FieldEmployeesDB.getAllFieldEmployees(), user=escape(session['user']))
     else:
       flash('Unauthorized user access')
       return redirect(url_for('logout'))

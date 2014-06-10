@@ -1,4 +1,5 @@
-import db, HolidayMOR, cgi, cgitb; cgitb.enable()
+import db, import_file
+HolidayMOR = import_file.import_file('HolidayMOR')
 
 def getAllHolidayMOR():
   res = db.List("HolidayMOR")

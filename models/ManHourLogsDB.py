@@ -1,4 +1,5 @@
-import db, ManHourLogs, cgi, cgitb; cgitb.enable()
+import db, import_file
+ManHourLogs = import_file.import_file('ManHourLogs')
 
 def getManHourLogs():
   res = db.List("ManHourLogs")

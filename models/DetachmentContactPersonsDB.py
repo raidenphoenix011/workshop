@@ -1,4 +1,5 @@
-import db, DetachmentContactPersons, cgi, cgitb; cgitb.enable()
+import db, import_file
+DetachmentContactPersons = import_file.import_file('DetachmentContactPersons')
 
 def getDetachmentContactPersons():
   res = db.List("DetachmentContactPersons")
