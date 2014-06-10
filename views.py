@@ -30,6 +30,7 @@ SSSContributions = import_file.import_file('models/SSSContributions.py')
 SSSLoans = import_file.import_file('models/SSSLoans.py')
 UniformDeposits = import_file.import_file('models/UniformDeposits.py')
 
+
 AllowancesDB = import_file.import_file('models/AllowancesDB')
 AuthorizedManHoursDB = import_file.import_file('models/AuthorizedManHoursDB')
 ClientsDB = import_file.import_file('models/ClientsDB')
