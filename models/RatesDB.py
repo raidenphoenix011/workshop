@@ -11,7 +11,7 @@ def getRates():
       row = cur.fetchone()
   return RatesList
 
-def getCurrentRate(val):
+def getRate(val):
   res = db.SubList("Rates", "ID", val)
   for row in res:
     if row is not None:

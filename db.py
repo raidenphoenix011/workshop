@@ -1,5 +1,5 @@
-import MySQLdb, hashlib, cgi, cgitb; cgitb.enable()
-import import_file, logging
+import MySQLdb, hashlib, import_file
+import logging
 from flask import flash
 
 
@@ -49,9 +49,9 @@ UniformDeposits = import_file.import_file('models/UniformDeposits.py')
 mysql = MySQLdb.connect('localhost','AdminPayroll','Password','Eaglewatch')
 cur = mysql.cursor()
 
-def getOne(sql, params):
+def get(sql):
   try: 
-    cur.execute(sql, params)
+    cur.execute(sql)
     res = cur.fetchone()
     return res
   except MySQLdb.Error, e:
@@ -75,7 +75,7 @@ def List(tableName):
   return res
 
 def SubList(tableName, foreignKey, value):
-  sql = "SELECT * FROM %s WHERE %s = %s" % (tableName, foreignKey, value)
+  sql = "SELECT * FROM %s WHERE %s = '%s'" % (tableName, foreignKey, value)
   res = getAll(sql)
   return res
 
@@ -334,5 +334,3 @@ def getAllPagibigSalaryLoans():
       PagibigSalaryLoanList.append(PagibigSalaryLoan)
       row = cur.fetchone()
   return PagibigSalaryLoanList
-
-

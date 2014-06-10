@@ -8,15 +8,10 @@ import import_file, logging
 Allowances = import_file.import_file('models/Allowances.py')
 AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
 ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
-ClientContactPersonsDB = import_file.import_file('models/ClientContactPersonsDB.py')
 Clients = import_file.import_file('models/Clients.py')
-ClientsDB = import_file.import_file('models/ClientsDB.py')
 DetachmentContactPersons = import_file.import_file('models/DetachmentContactPersons.py')
-DetachmentContactPersonsDB = import_file.import_file('models/DetachmentContactPersonsDB.py')
 Detachments = import_file.import_file('models/Detachments.py')
-DetachmentsDB = import_file.import_file('models/DetachmentsDB.py')
 FieldEmployees = import_file.import_file('models/FieldEmployees.py')
-FieldEmployeesDB = import_file.import_file('models/FieldEmployeesDB.py')
 FieldEmployeeTypes = import_file.import_file('models/FieldEmployeeTypes.py')
 HolidayMOR = import_file.import_file('models/HolidayMOR.py')
 IncentiveMOR = import_file.import_file('models/IncentiveMOR.py')
@@ -34,6 +29,32 @@ Receivables = import_file.import_file('models/Receivables.py')
 SSSContributions = import_file.import_file('models/SSSContributions.py')
 SSSLoans = import_file.import_file('models/SSSLoans.py')
 UniformDeposits = import_file.import_file('models/UniformDeposits.py')
+
+
+AllowancesDB = import_file.import_file('models/AllowancesDB')
+AuthorizedManHoursDB = import_file.import_file('models/AuthorizedManHoursDB')
+ClientsDB = import_file.import_file('models/ClientsDB')
+ClientContactPersonsDB = import_file.import_file('models/ClientContactPersonsDB')
+DetachmentContactPersonsDB = import_file.import_file('models/DetachmentContactPersonsDB')
+DetachmentsDB = import_file.import_file('models/DetachmentsDB')
+FieldEmployeesDB = import_file.import_file('models/FieldEmployeesDB')
+FieldEmployeeTypesDB = import_file.import_file('models/FieldEmployeeTypesDB')
+HolidayMORDB = import_file.import_file('models/HolidayMORDB')
+IncentiveMORDB = import_file.import_file('models/IncentiveMORDB')
+LogsDB = import_file.import_file('models/LogsDB')
+ManHourLogsDB = import_file.import_file('models/ManHourLogsDB')
+OfficeEmployeesDB = import_file.import_file('models/OfficeEmployeesDB')
+OfficeEmployeeTypesDB = import_file.import_file('models/OfficeEmployeeTypesDB')
+PagibigCalamityLoansDB = import_file.import_file('models/PagibigCalamityLoansDB')
+PagibigSalaryLoansDB = import_file.import_file('models/PagibigSalaryLoansDB')
+PayrollRecordDB = import_file.import_file('models/PayrollRecordDB')
+PersonalPayablesDB = import_file.import_file('models/PersonalPayablesDB')
+RatesDB = import_file.import_file('models/RatesDB')
+RateTypeDB = import_file.import_file('models/RateTypesDB')
+ReceivablesDB = import_file.import_file('models/ReceivablesDB')
+SSSContributionsDB = import_file.import_file('models/SSSContributionsDB')
+SSSLoansDB = import_file.import_file('models/SSSLoansDB')
+UniformDepositsDB = import_file.import_file('models/UniformDepositsDB')
 
 
 app = Flask(__name__)
@@ -64,24 +85,20 @@ def login():
     elif session['usertype'] == 'BeO':
         return redirect(url_for('viewPeriodsBenefits'))
     elif session['usertype'] == 'RO':
-        #Receivable Officer
         return redirect(url_for('viewPeriodsBenefits'))
     elif session['usertype'] == 'DO':
-        #Deployment Officer
         return redirect(url_for('viewPeriodsBenefits'))
+
   elif request.method == 'POST':
-    check = db.isUsernameExisting(request.form['username'], request.form['password'])
-    if check:
+    if OfficeEmployeesDB.login(request.form['username'], request.form['password']):
+      session['usertype'] = OfficeEmployeesDB.getOfficeEmployee(request.form['username']).Type
       session['user'] = request.form['username']
-      session['usertype'] = db.getUserType(request.form['username'])
       return redirect(url_for('login'))
     else:
-       flash('Please check your login credentials.')
-       return redirect(url_for('login'))
+      flash('Please check your login credentials')
+      return redirect(url_for('login'))
   else:
     return render_template('login.html')
-
-#----------------------
 
 @app.route('/logout')
 def logout():
@@ -96,7 +113,7 @@ def admin(user=None):
     if session['usertype'] != 'ADM':
       flash('Unauthorized access')
       return redirect(url_for('logout'))
-    return render_template('admin.html', user=escape(session['user']))
+    return render_template('admin.html', OEs = OfficeEmployeesDB.getOfficeEmployees(), user=escape(session['user']))
 
 @app.route('/employees', methods=['POST', 'GET'])
 def listEmployees(user=None):
@@ -185,7 +202,10 @@ def insertClient(user=None):
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
-    
+
+
+# CLIENT CONTACT PERSONS -------------------------
+
 @app.route('/clients/get/<ID>/contacts/get/<ContactID>/edit', methods=['POST', 'GET'])
 def editClientContact(ID, ContactID, user=None):
   if 'usertype' in session:
@@ -209,7 +229,6 @@ def updateClientContact(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-
 @app.route('/clients/get/<ClientID>/contacts/add', methods=['POST', 'GET'])
 def addClientContact(ClientID, user=None): 
   if 'usertype' in session:
@@ -232,69 +251,13 @@ def insertClientContact(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-#notworking
-@app.route('/clients/delete', methods=['POST', 'GET'])
-def deleteClientContactPerson(ID, ContactID, user=None):
+@app.route('/clients/get/<ID>/contacts/<ContactID>/delete', methods=['POST', 'GET'])
+def deleteClientContact(ID, ContactID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      #db.deleteClientContactPerson(ContactID)
-      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), script="$('#tabs').tabs({ selected: 3});", user=escape(session['user']))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-
-@app.route('/detachments/get/<ID>', methods=['POST', 'GET'])
-def viewDetachment(ID, user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('detachment_view.html', DE = DetachmentsDB.getDetachment(ID), client = ClientsDB.getClientName(ID), ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-
-@app.route('/clients/get/<ID>/detachments/add/', methods=['POST', 'GET'])
-def addDetachment(ID, user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        maxID=2;
-        client = ClientsDB.getClientName(ID)
-        return render_template('detachment_add.html', user=escape(session['user']), client=client, maxID=maxID)
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-    
-    
-#-----------------------
-
-@app.route('/manhours/detachments', methods=['POST', 'GET'])
-def listDetachmentsManhour(user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'ADM' or session['usertype'] == 'MO':
-      listDE = db.getAllDetachments()
-      for DE in listDE:
-        DE.setClientName(DE.ClientID)
-      return render_template('detachment_search_manhour.html', DEs = listDE, user=escape(session['user']))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-
-@app.route('/manhours/detachments/get/id/add', methods=['POST', 'GET'])
-def addManhour(user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('detachment_search_manhour.html', user=escape(session['user']), navtitle='MANHOUR RECORDS', mode='manhour')
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-
-@app.route('/manhour', methods=['POST', 'GET'])
-def manhour(user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('manhour.html', user=escape(session['user']), dept='manhour')
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
+      ClientContactPersonsDB.deleteContact(ContactID)
+      flash('Contact Person successfully deleted.')
+      return redirect(url_for('viewClient', ID=ID))
 
 @app.route('/detachments/lists/', methods=['POST', 'GET'])
 def listDetachments(user=None):
@@ -304,6 +267,89 @@ def listDetachments(user=None):
       for DE in listDE:
         DE.setClientName(DE.ClientID)
       return render_template('detachment_search.html', DEs = listDE, user=escape(session['user']))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/detachments/get/<ID>', methods=['POST', 'GET'])
+def viewDetachment(ID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      DE = DetachmentsDB.getDetachment(ID)
+      return render_template('detachment_view.html', DE = DE, Client = ClientsDB.getClient(DE.ClientID), ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/get/<ID>/detachments/add/', methods=['POST', 'GET'])
+def addDetachment(ID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        Client = ClientsDB.getClient(ID)
+        return render_template('detachment_add.html', user=escape(session['user']), Client=Client)
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/get/<ID>/detachments/insert', methods=['POST', 'GET'])
+def insertDetachment(ID, user=None): 
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        detachment = Detachments.Detachments('0', ID, '1', '0', request.form['name'], request.form['address'], request.form['city'], request.form['start'], '0000-00-00', request.form['status'])
+        DetachmentsDB.insertDetachment(detachment)
+        flash('Detachment successfully added.')
+        return redirect(url_for('viewDetachment', ID=ID))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/<ClientID>/detachments/get/<DetachID>/edit', methods=['POST', 'GET'])
+def editDetachment(ClientID, DetachID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        Client=ClientsDB.getClient(ClientID)
+        Detachment=DetachmentsDB.getDetachment(DetachID)
+        return render_template('detachment_edit.html', Client=Client, Detachment=Detachment)
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))    
+
+@app.route('/detachments/update', methods=['POST', 'GET'])
+def updateDetachment(user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        detachment = Detachments.Detachments(request.form['ID'], request.form['client_ID'], '1', request.form['code'], request.form['name'], request.form['address'], request.form['city'], request.form['start_date'], request.form['end_date'], request.form['status'] )
+        DetachmentsDB.updateDetachment(detachment)
+        flash('Detachment information successfully updated.')
+        return redirect(url_for('viewDetachment', ID=detachment.ID))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+    
+                    
+@app.route('/manhours/detachments/get/id/add', methods=['POST', 'GET'])
+def addManhour(user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
+      return render_template('detachment_search_manhour.html', user=escape(session['user']), navtitle='MANHOUR RECORDS', mode='manhour')
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/manhours/<ID>/<Code>', methods=['POST', 'GET'])
+def manhour(ID, Code, user=None):
+    if 'usertype' in session:
+        if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
+            return render_template('manhour.html', Log=ManHourLogsDB.getLog2(ID, Code), user=escape(session['user']), dept='manhour')
+        else:
+            flash('Unauthorized access')
+            return redirect(url_for('logout'))
+
+@app.route('/manhours/detachments', methods=['POST', 'GET'])
+def listDetachmentsManhour(user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'ADM' or session['usertype'] == 'MO':
+      return render_template('detachment_search_manhour.html', DEs = DetachmentsDB.getAllDetachments(), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -343,16 +389,16 @@ def viewPayroll(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/manhours/detachments/get/ID/records', methods=['POST', 'GET'])
-def viewPeriodsManhour(user=None):
+@app.route('/manhours/detachments/get/<ID>/records', methods=['POST', 'GET'])
+def viewPeriodsManhour(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('period_search_manhour.html', user=escape(session['user']))
+      return render_template('period_search_manhour.html', DE=DetachmentsDB.getDetachment(ID), MH=ManHourLogsDB.getLog(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/payroll/detachments/get/ID/records', methods=['POST', 'GET'])
+@app.route('/payroll/detachments/get/<ID>/records', methods=['POST', 'GET'])
 def viewPeriodsPayroll(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'PrO' or session['usertype'] == 'ADM':

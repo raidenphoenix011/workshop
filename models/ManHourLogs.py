@@ -2,9 +2,10 @@ import db
 
 class ManHourLogs(object):
 
-  def __init__(self, ID, DetachID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, BirthDate):
+  def __init__(self, ID, DetachID, FieldEmpID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, DateCreated, PeriodCode):
     self.ID = ID
     self.DetachID = DetachID
+    self.FieldEmpID = FieldEmpID
     self.NoOfFullDays = NoOfFullDays
     self.NightHours = NightHours
     self.RegHours = RegHours
@@ -15,8 +16,8 @@ class ManHourLogs(object):
     self.PeriodCode = PeriodCode
 
   def save(self):
-    sql = "insert into ManHourLogs (ID, DetachID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, DateCreated, PeriodCode) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    params = (self.ID, self.DetachID, self.NoOfFullDays, self.NightHours, self.RegHours, self.OTHours, self.LegHolidayHours, self.SpeHolidayHours, self.DateCreated, self.PeriodCode)
+    sql = "insert into ManHourLogs (ID, DetachID, FieldEmpID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, DateCreated, PeriodCode) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    params = (self.ID, self.DetachID, self.FieldEmpID, self.NoOfFullDays, self.NightHours, self.RegHours, self.OTHours, self.LegHolidayHours, self.SpeHolidayHours, self.DateCreated, self.PeriodCode)
     return db.ins(sql, params)
 
   def get(prop):

@@ -39,7 +39,8 @@ def updateContact(contact):
     db.mysql.commit()
   except:
     print 'Error saving contact'
-    
+
+#OK
 def insertContact(contact):
   sql = "call addClientCP(%s, %s, %s, %s, %s, %s, %s, %s)"
   params = (contact.ClientID, contact.Suffix, contact.LastName, contact.FirstName, contact.MiddleName, contact.Landline, contact.MobileNo, contact.BirthDate)
@@ -48,3 +49,12 @@ def insertContact(contact):
     db.mysql.commit()
   except:
     print 'Error inserting contact'
+    
+#OK
+def deleteContact(ID):
+  sql = "delete from ClientContactPersons where ID=%s" % ID
+  try:
+    db.cur.execute(sql)
+    db.mysql.commit()
+  except:
+    print 'Error saving contact'
