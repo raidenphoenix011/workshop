@@ -24,7 +24,7 @@
 
 {% block content %}
 <h1>Detachment Information</h1>
-<h3>Client: {{ client }}</h3>
+<h3>Client: {{ Client.Name }}</h3>
 <hr>
 <span style='float:right;'>Detachment Code: <b>{{ DE.Code }}</b></span>
 <br/>
@@ -40,7 +40,6 @@
   </ul>
     <div id="tabs-1">
     <br/>
-    <form class='pure-form pure-form-aligned' method='link' action=''>
     <table>
         <tr>
             <td><label>Status: </label></td>
@@ -69,10 +68,10 @@
             <td>{{DE.Address}}</td>
         </tr>
     </table>
-
-    <button class='pure-button editBtn' value='Edit Record'>Edit Record</button>
-    <br/><br/>
+    <form class='pure-form' method='link' action="{{ url_for('editDetachment', ClientID=Client.ID, DetachID=DE.ID) }}">
+        <button class='pure-button editBtn'>Edit Record</button>
     </form>
+    <br/><br/>
   </div>
   <div id="tabs-2">
     <form class='pure-form pure-form-aligned'>

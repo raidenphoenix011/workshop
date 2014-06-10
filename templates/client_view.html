@@ -117,7 +117,7 @@
                         <td>{{ CP.MobileNo }}</td>
                         <td>{{ CP.BirthDate }}</td>
                         <td><form method='link' action='{{ url_for('editClientContact', ID=Client.ID, ContactID=CP.ID) }}'><button class='pure-button'>Edit</button></form></td>
-                        <td><form method='link' action=''><button class='pure-button'>Delete</button></form></td>
+                        <td><form method='link' action='{{ url_for('deleteClientContact', ID=Client.ID, ContactID=CP.ID) }}'><button class='pure-button'>Delete</button></form></td>
                     </tr>
                     {% endfor %}
                 </tbody>
