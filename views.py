@@ -271,13 +271,12 @@ def listDetachments(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/detachments/get/<DetachID>', methods=['POST', 'GET'])
-def viewDetachment(DetachID, user=None):
+@app.route('/detachments/get/<ID>', methods=['POST', 'GET'])
+def viewDetachment(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      DE = DetachmentsDB.getDetachment(DetachID)
-      #Client = ClientsDB.getClientByDetach(DetachID)
-      return render_template('detachment_view.html', DE = DE, Client = ClientsDB.getClient(DE.ClientID), ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(DetachID), user=escape(session['user']))
+      DE = DetachmentsDB.getDetachment(ID)
+      return render_template('detachment_view.html', DE = DE, Client = ClientsDB.getClient(DE.ClientID), ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
