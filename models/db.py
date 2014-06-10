@@ -34,4 +34,3 @@ def SubList(tableName, foreignKey, value):
   sql = "SELECT * FROM %s WHERE %s = '%s'" % (tableName, foreignKey, value)
   res = getAll(sql)
   return res
-  
