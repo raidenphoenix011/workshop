@@ -5,6 +5,32 @@ from flask import Flask, flash, render_template, session, escape, request, redir
 import db, hashlib
 import import_file, logging
 
+Allowances = import_file.import_file('models/Allowances.py')
+AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
+ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
+Clients = import_file.import_file('models/Clients.py')
+DetachmentContactPersons = import_file.import_file('models/DetachmentContactPersons.py')
+Detachments = import_file.import_file('models/Detachments.py')
+FieldEmployees = import_file.import_file('models/FieldEmployees.py')
+FieldEmployeeTypes = import_file.import_file('models/FieldEmployeeTypes.py')
+HolidayMOR = import_file.import_file('models/HolidayMOR.py')
+IncentiveMOR = import_file.import_file('models/IncentiveMOR.py')
+Logs = import_file.import_file('models/Logs.py')
+ManHourLogs = import_file.import_file('models/ManHourLogs.py')
+OfficeEmployees = import_file.import_file('models/OfficeEmployees.py')
+OfficeEmployeeTypes = import_file.import_file('models/OfficeEmployeeTypes.py')
+PagibigCalamityLoans = import_file.import_file('models/PagibigCalamityLoans.py')
+PagibigSalaryLoans = import_file.import_file('models/PagibigSalaryLoans.py')
+PayrollRecord = import_file.import_file('models/PayrollRecord.py')
+PersonalPayables = import_file.import_file('models/PersonalPayables.py')
+Rates = import_file.import_file('models/Rates.py')
+RateTypes = import_file.import_file('models/RateTypes.py')
+Receivables = import_file.import_file('models/Receivables.py')
+SSSContributions = import_file.import_file('models/SSSContributions.py')
+SSSLoans = import_file.import_file('models/SSSLoans.py')
+UniformDeposits = import_file.import_file('models/UniformDeposits.py')
+
+
 AllowancesDB = import_file.import_file('models/AllowancesDB')
 AuthorizedManHoursDB = import_file.import_file('models/AuthorizedManHoursDB')
 ClientsDB = import_file.import_file('models/ClientsDB')
@@ -29,6 +55,7 @@ ReceivablesDB = import_file.import_file('models/ReceivablesDB')
 SSSContributionsDB = import_file.import_file('models/SSSContributionsDB')
 SSSLoansDB = import_file.import_file('models/SSSLoansDB')
 UniformDepositsDB = import_file.import_file('models/UniformDepositsDB')
+
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
@@ -143,7 +170,7 @@ def editClient(ID, user=None):
       return redirect(url_for('logout'))
 
 @app.route('/clients/save', methods=['POST', 'GET'])
-def saveClient(user=None):
+def updateClient(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
         client = Clients.Clients(request.form['client_id'], request.form['client_code'], request.form['client_name'], request.form['client_address'], request.form['client_city'], request.form['client_landline'])
@@ -154,17 +181,6 @@ def saveClient(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-#notworking
-@app.route('/clients/delete', methods=['POST', 'GET'])
-def deleteClientContactPerson(ID, ContactID, user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      #db.deleteClientContactPerson(ContactID)
-      return render_template('client.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), script="$('#tabs').tabs({ selected: 3});", user=escape(session['user']))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-    
 @app.route('/clients/add', methods=['POST', 'GET'])
 def addClient(user=None): 
   if 'usertype' in session:
@@ -173,7 +189,7 @@ def addClient(user=None):
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
- 
+
 @app.route('/clients/insert', methods=['POST', 'GET'])
 def insertClient(user=None): 
   if 'usertype' in session:
@@ -187,43 +203,61 @@ def insertClient(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/detachments/get/<ID>', methods=['POST', 'GET'])
-def viewDetachment(ID, user=None):
+
+# CLIENT CONTACT PERSONS -------------------------
+
+@app.route('/clients/get/<ID>/contacts/get/<ContactID>/edit', methods=['POST', 'GET'])
+def editClientContact(ID, ContactID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('detachment_view.html', DE = DetachmentsDB.getDetachment(ID), user=escape(session['user']))
+        Client=ClientsDB.getClient(ID)
+        Contact=ClientContactPersonsDB.getClientContactPerson(ContactID)
+        return render_template('client_contact_edit.html', Client=Client, Contact=Contact)
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/clients/get/<ID>/detachments/add/', methods=['POST', 'GET'])
-def addDetachment(ID, user=None):
+@app.route('/clients/contacts/update', methods=['POST', 'GET'])
+def updateClientContact(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        maxID=2;
-        client = ClientsDB.getClientName(ID)
-        return render_template('detachment_add.html', user=escape(session['user']), client=client, maxID=maxID)
+        contact = ClientContactPersons.ClientContactPersons(request.form['id'], request.form['clientid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], request.form['birthdate'])
+        ClientContactPersonsDB.updateContact(contact)
+        flash('Contact information successfully updated.')
+        return redirect(url_for('viewClient', ID=contact.ClientID))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/manhours/detachments/get/id/add', methods=['POST', 'GET'])
-def addManhour(user=None):
+@app.route('/clients/get/<ClientID>/contacts/add', methods=['POST', 'GET'])
+def addClientContact(ClientID, user=None): 
   if 'usertype' in session:
-    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('detachment_search_manhour.html', user=escape(session['user']), navtitle='MANHOUR RECORDS', mode='manhour')
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      return render_template('client_contact_add.html', Client = ClientsDB.getClient(ClientID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/manhours/<ID>/<Code>', methods=['POST', 'GET'])
-def manhour(ID, Code, user=None):
+@app.route('/clients/get/contacts/insert', methods=['POST', 'GET'])
+def insertClientContact(user=None): 
   if 'usertype' in session:
-    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('manhour.html', Log=ManHourLogsDB.getLog2(ID, Code), user=escape(session['user']), dept='manhour')
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        contact = ClientContactPersons.ClientContactPersons('0', request.form['clientid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], request.form['birthdate'])
+        ClientContactPersonsDB.insertContact(contact)
+        clientID = contact.ClientID
+        flash('Contact successfully added.')
+        return redirect(url_for('viewClient', ID=clientID))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
+
+@app.route('/clients/get/<ID>/contacts/<ContactID>/delete', methods=['POST', 'GET'])
+def deleteClientContact(ID, ContactID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      ClientContactPersonsDB.deleteContact(ContactID)
+      flash('Contact Person successfully deleted.')
+      return redirect(url_for('viewClient', ID=ID))
 
 @app.route('/detachments/lists/', methods=['POST', 'GET'])
 def listDetachments(user=None):
@@ -236,6 +270,80 @@ def listDetachments(user=None):
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
+
+@app.route('/detachments/get/<ID>', methods=['POST', 'GET'])
+def viewDetachment(ID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      DE = DetachmentsDB.getDetachment(ID)
+      return render_template('detachment_view.html', DE = DE, Client = ClientsDB.getClient(DE.ClientID), ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/get/<ID>/detachments/add/', methods=['POST', 'GET'])
+def addDetachment(ID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        Client = ClientsDB.getClient(ID)
+        return render_template('detachment_add.html', user=escape(session['user']), Client=Client)
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/get/<ID>/detachments/insert', methods=['POST', 'GET'])
+def insertDetachment(ID, user=None): 
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        detachment = Detachments.Detachments('0', ID, '1', '0', request.form['name'], request.form['address'], request.form['city'], request.form['start'], '0000-00-00', request.form['status'])
+        DetachmentsDB.insertDetachment(detachment)
+        flash('Detachment successfully added.')
+        return redirect(url_for('viewDetachment', ID=ID))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/<ClientID>/detachments/get/<DetachID>/edit', methods=['POST', 'GET'])
+def editDetachment(ClientID, DetachID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        Client=ClientsDB.getClient(ClientID)
+        Detachment=DetachmentsDB.getDetachment(DetachID)
+        return render_template('detachment_edit.html', Client=Client, Detachment=Detachment)
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))    
+
+@app.route('/detachments/update', methods=['POST', 'GET'])
+def updateDetachment(user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        detachment = Detachments.Detachments(request.form['ID'], request.form['client_ID'], '1', request.form['code'], request.form['name'], request.form['address'], request.form['city'], request.form['start_date'], request.form['end_date'], request.form['status'] )
+        DetachmentsDB.updateDetachment(detachment)
+        flash('Detachment information successfully updated.')
+        return redirect(url_for('viewDetachment', ID=detachment.ID))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+    
+                    
+@app.route('/manhours/detachments/get/id/add', methods=['POST', 'GET'])
+def addManhour(user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
+      return render_template('detachment_search_manhour.html', user=escape(session['user']), navtitle='MANHOUR RECORDS', mode='manhour')
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/manhours/<ID>/<Code>', methods=['POST', 'GET'])
+def manhour(ID, Code, user=None):
+    if 'usertype' in session:
+        if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
+            return render_template('manhour.html', Log=ManHourLogsDB.getLog2(ID, Code), user=escape(session['user']), dept='manhour')
+        else:
+            flash('Unauthorized access')
+            return redirect(url_for('logout'))
 
 @app.route('/manhours/detachments', methods=['POST', 'GET'])
 def listDetachmentsManhour(user=None):
