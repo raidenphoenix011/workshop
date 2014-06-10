@@ -21,7 +21,7 @@ PagibigSalaryLoans = import_file.import_file('models/PagibigSalaryLoans.py')
 PayrollRecord = import_file.import_file('models/PayrollRecord.py')
 PersonalPayables = import_file.import_file('models/PersonalPayables.py')
 Rates = import_file.import_file('models/Rates.py')
-RateType = import_file.import_file('models/RateType.py')
+RateTypes = import_file.import_file('models/RateTypes.py')
 Receivables = import_file.import_file('models/Receivables.py')
 SSSContributions = import_file.import_file('models/SSSContributions.py')
 SSSLoans = import_file.import_file('models/SSSLoans.py')
@@ -187,6 +187,16 @@ def saveClient(client):
   except:
     print 'Error saving client'
 
+#NEW
+def insertClient(client):
+  sql = "call addClient(%s, %s, %s, %s)"
+  params = (client.Name, client.BillingAddress, client.City, client.Landline)
+  try:
+    cur.execute(sql, params)
+    mysql.commit()
+  except:
+    print 'Error saving client'
+    
 def save(status):
   sql = 'update EnrollmentStatus set status=%s'
   try:
@@ -242,7 +252,19 @@ def getClientName(val):
     print str(e.args[0]) + ': ' + str(e.args[1])
     #print 'Error retrieving data from the database'
     return None
-
+  
+#NEW
+def getClientID(name):
+  sql = "select ID from Clients where Name = %s"
+  try: 
+    cur.execute("select ID from Clients where Name = '%s'" % (name))
+    res = cur.fetchone()
+    return res[0]
+  except MySQLdb.Error, e:
+    print str(e.args[0]) + ': ' + str(e.args[1])
+    print 'Error retrieving data from the database'
+    return None
+  
 def getClientContactPersons(val):
   res = SubList("ClientContactPersons", "ClientID", val)
   ClientContactPersonsList = []

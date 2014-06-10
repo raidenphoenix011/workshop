@@ -1,26 +1,27 @@
 import db
 
-class HolidayMOR(object):
+class RateTypes(object):
 
   def __init__(self, Type, Description):
     self.Type = Type
     self.Description = Description
     
   def save(self):
-    sql = "insert into HolidayMOR (type, description) values (%s, %s)"
+    sql = "insert into RateTypes (type, description) values (%s, %s)"
     params = (self.type, self.description)
     db.ins(sql, params)
 
-  def getDescription(HolidayMorType):
-    sql = "select Description from HolidayMOR where Type = %s"
-    return db.getOne(sql, HolidayMorType)   
+  def getDescription(RateTypes):
+    sql = "select Description from RateTypes where Type = %s"
+    return db.getOne(sql, RateTypes)  
+
   
   def get(prop):
-    sql = "select %s from HolidayMOR where ID=%s"
+    sql = "select %s from RateTypes where ID=%s"
     params =(prop, self.ID)
     return db.getOne(sql, params)
     
   def set(prop, val):
-    sql = "update HolidayMOR set %s=%s where ID = %s"
+    sql = "update RateTypes set %s=%s where ID = %s"
     params =(prop, val, self.ID)
     return db.set(sql,params)
