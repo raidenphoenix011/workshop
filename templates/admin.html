@@ -26,4 +26,28 @@
 
     <h1>Welcome!</h1>
 
+    <br />
+    <h4>System users:</h4>
+    <table class='search-results pure-table'>
+      <thead>
+        <tr>
+          <th class="sort" data-sort="client">Username</th>
+          <th class="sort" data-sort="city">Type</th>
+          <th class="sort" data-sort="name">First Name</th>
+          <th class="sort" data-sort="code">Last Name</th>
+          <th class="sort" data-sort="status">Status</th>
+        </tr>
+      </thead>
+  
+      <tbody class="list">
+          {% for OE in OEs %}
+        <tr>
+          <td class="username">{{ OE.Username }}</td>
+          <td class="type">{{ OE.Type }}</a></td>
+          <td class="firstname">{{ OE.FirstName }}</td>
+          <td class="lastname">{{ OE.LastName }}</td>
+          <td class="status">{{ OE.EmpStatus }}</td>
+        </tr>
+          {% endfor %}
+
 {% endblock content%}

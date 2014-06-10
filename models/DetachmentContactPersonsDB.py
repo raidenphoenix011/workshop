@@ -1,3 +1,4 @@
+
 import db, import_file
 DetachmentContactPersons = import_file.import_file('DetachmentContactPersons')
 
@@ -20,3 +21,4 @@ def getDetachmentContactPersons(val):
       DetachmentContactPersonsList.append(DetachmentContactPerson)
       row = db.cur.fetchone()
   return DetachmentContactPersonsList
+

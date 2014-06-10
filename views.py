@@ -8,15 +8,10 @@ import import_file, logging
 Allowances = import_file.import_file('models/Allowances.py')
 AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
 ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
-ClientContactPersonsDB = import_file.import_file('models/ClientContactPersonsDB.py')
 Clients = import_file.import_file('models/Clients.py')
-ClientsDB = import_file.import_file('models/ClientsDB.py')
 DetachmentContactPersons = import_file.import_file('models/DetachmentContactPersons.py')
-DetachmentContactPersonsDB = import_file.import_file('models/DetachmentContactPersonsDB.py')
 Detachments = import_file.import_file('models/Detachments.py')
-DetachmentsDB = import_file.import_file('models/DetachmentsDB.py')
 FieldEmployees = import_file.import_file('models/FieldEmployees.py')
-FieldEmployeesDB = import_file.import_file('models/FieldEmployeesDB.py')
 FieldEmployeeTypes = import_file.import_file('models/FieldEmployeeTypes.py')
 HolidayMOR = import_file.import_file('models/HolidayMOR.py')
 IncentiveMOR = import_file.import_file('models/IncentiveMOR.py')
@@ -34,6 +29,31 @@ Receivables = import_file.import_file('models/Receivables.py')
 SSSContributions = import_file.import_file('models/SSSContributions.py')
 SSSLoans = import_file.import_file('models/SSSLoans.py')
 UniformDeposits = import_file.import_file('models/UniformDeposits.py')
+
+AllowancesDB = import_file.import_file('models/AllowancesDB')
+AuthorizedManHoursDB = import_file.import_file('models/AuthorizedManHoursDB')
+ClientsDB = import_file.import_file('models/ClientsDB')
+ClientContactPersonsDB = import_file.import_file('models/ClientContactPersonsDB')
+DetachmentContactPersonsDB = import_file.import_file('models/DetachmentContactPersonsDB')
+DetachmentsDB = import_file.import_file('models/DetachmentsDB')
+FieldEmployeesDB = import_file.import_file('models/FieldEmployeesDB')
+FieldEmployeeTypesDB = import_file.import_file('models/FieldEmployeeTypesDB')
+HolidayMORDB = import_file.import_file('models/HolidayMORDB')
+IncentiveMORDB = import_file.import_file('models/IncentiveMORDB')
+LogsDB = import_file.import_file('models/LogsDB')
+ManHourLogsDB = import_file.import_file('models/ManHourLogsDB')
+OfficeEmployeesDB = import_file.import_file('models/OfficeEmployeesDB')
+OfficeEmployeeTypesDB = import_file.import_file('models/OfficeEmployeeTypesDB')
+PagibigCalamityLoansDB = import_file.import_file('models/PagibigCalamityLoansDB')
+PagibigSalaryLoansDB = import_file.import_file('models/PagibigSalaryLoansDB')
+PayrollRecordDB = import_file.import_file('models/PayrollRecordDB')
+PersonalPayablesDB = import_file.import_file('models/PersonalPayablesDB')
+RatesDB = import_file.import_file('models/RatesDB')
+RateTypeDB = import_file.import_file('models/RateTypesDB')
+ReceivablesDB = import_file.import_file('models/ReceivablesDB')
+SSSContributionsDB = import_file.import_file('models/SSSContributionsDB')
+SSSLoansDB = import_file.import_file('models/SSSLoansDB')
+UniformDepositsDB = import_file.import_file('models/UniformDepositsDB')
 
 
 app = Flask(__name__)
@@ -64,24 +84,20 @@ def login():
     elif session['usertype'] == 'BeO':
         return redirect(url_for('viewPeriodsBenefits'))
     elif session['usertype'] == 'RO':
-        #Receivable Officer
         return redirect(url_for('viewPeriodsBenefits'))
     elif session['usertype'] == 'DO':
-        #Deployment Officer
         return redirect(url_for('viewPeriodsBenefits'))
+
   elif request.method == 'POST':
-    check = db.isUsernameExisting(request.form['username'], request.form['password'])
-    if check:
+    if OfficeEmployeesDB.login(request.form['username'], request.form['password']):
+      session['usertype'] = OfficeEmployeesDB.getOfficeEmployee(request.form['username']).Type
       session['user'] = request.form['username']
-      session['usertype'] = db.getUserType(request.form['username'])
       return redirect(url_for('login'))
     else:
-       flash('Please check your login credentials.')
-       return redirect(url_for('login'))
+      flash('Please check your login credentials')
+      return redirect(url_for('login'))
   else:
     return render_template('login.html')
-
-#----------------------
 
 @app.route('/logout')
 def logout():
@@ -96,7 +112,7 @@ def admin(user=None):
     if session['usertype'] != 'ADM':
       flash('Unauthorized access')
       return redirect(url_for('logout'))
-    return render_template('admin.html', user=escape(session['user']))
+    return render_template('admin.html', OEs = OfficeEmployeesDB.getOfficeEmployees(), user=escape(session['user']))
 
 @app.route('/employees', methods=['POST', 'GET'])
 def listEmployees(user=None):
@@ -262,21 +278,6 @@ def addDetachment(ID, user=None):
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
-    
-    
-#-----------------------
-
-@app.route('/manhours/detachments', methods=['POST', 'GET'])
-def listDetachmentsManhour(user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'ADM' or session['usertype'] == 'MO':
-      listDE = db.getAllDetachments()
-      for DE in listDE:
-        DE.setClientName(DE.ClientID)
-      return render_template('detachment_search_manhour.html', DEs = listDE, user=escape(session['user']))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
 
 @app.route('/manhours/detachments/get/id/add', methods=['POST', 'GET'])
 def addManhour(user=None):
@@ -304,6 +305,15 @@ def listDetachments(user=None):
       for DE in listDE:
         DE.setClientName(DE.ClientID)
       return render_template('detachment_search.html', DEs = listDE, user=escape(session['user']))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/manhours/detachments', methods=['POST', 'GET'])
+def listDetachmentsManhour(user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'ADM' or session['usertype'] == 'MO':
+      return render_template('detachment_search_manhour.html', DEs = DetachmentsDB.getAllDetachments(), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -343,16 +353,16 @@ def viewPayroll(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/manhours/detachments/get/ID/records', methods=['POST', 'GET'])
-def viewPeriodsManhour(user=None):
+@app.route('/manhours/detachments/get/<ID>/records', methods=['POST', 'GET'])
+def viewPeriodsManhour(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('period_search_manhour.html', user=escape(session['user']))
+      return render_template('period_search_manhour.html', DE=DetachmentsDB.getDetachment(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/payroll/detachments/get/ID/records', methods=['POST', 'GET'])
+@app.route('/payroll/detachments/get/<ID>/records', methods=['POST', 'GET'])
 def viewPeriodsPayroll(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'PrO' or session['usertype'] == 'ADM':
