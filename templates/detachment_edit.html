@@ -27,7 +27,10 @@
 <h3>Client: {{ Client.Name }}</h3>
 <hr>
 <br/>
-<form class='pure-form pure-form-aligned' method='post' action=''>
+<form class='pure-form pure-form-aligned' method='post' action="{{ url_for('updateDetachment') }}">
+    <input type='hidden' name='ID' value='{{ Detachment.ID }}'/>
+    <input type='hidden' name='client_ID' value='{{ Client.ID }}'/>
+    <input type='hidden' name='code' value='{{ Detachment.Code }}'/>
     <table>
         <tr>
             <td><label>Detachment Name: </label></td>
@@ -60,7 +63,7 @@
         </tr>
         <tr>
             <td><label>City: </label></td>
-            <td><select name='client_city' id='client_city' name="city">
+            <td><select name='city'>
                     <option value='{{ Detachment.City }}' default>{{ Detachment.City }}</option>
                     <option value=Alaminos>Alaminos</option>
                     <option value=Angeles>Angeles</option>

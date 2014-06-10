@@ -24,11 +24,11 @@
 
 {% block content %}
 <h1>Detachment Information</h1>
-<h3>Client: {{ Client.Name }}</h3>
 <hr>
 <span style='float:right;'>Detachment Code: <b>{{ DE.Code }}</b></span>
 <br/>
-<center><h1>{{ DE.Name }}</h1></center>
+<h1>{{ DE.Name }}</h1>
+<h3><a href='{{ url_for('viewClient', ID=Client.ID) }}'>{{ Client.Name }}</a></h3>
 
 <br/>
 <div id="tabs">
