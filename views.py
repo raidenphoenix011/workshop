@@ -276,7 +276,9 @@ def viewDetachment(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
       DE = DetachmentsDB.getDetachment(ID)
-      return render_template('detachment_view.html', DE = DE, Client = ClientsDB.getClient(DE.ClientID), ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
+      ClientID = DE.ClientID
+      Client = ClientsDB.getClient(ClientID)
+      return render_template('detachment_view.html', DE = DE, Client = Client, ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
