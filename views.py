@@ -196,7 +196,6 @@ def insertClient(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-
 @app.route('/detachments/get/<ID>', methods=['POST', 'GET'])
 def viewDetachment(ID, user=None):
   if 'usertype' in session:
