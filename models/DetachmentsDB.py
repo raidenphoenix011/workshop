@@ -12,7 +12,7 @@ def getAllDetachments():
       row = db.cur.fetchone()
   return DetachmentsList
 
-def getDetachments(val):
+def getDetachment(val):
   res = db.SubList("Detachments", "ID", val)
   DetachmentsList = []
   for row in res:

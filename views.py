@@ -214,7 +214,7 @@ def listDetachmentsManhour(user=None):
       listDE = db.getAllDetachments()
       for DE in listDE:
         DE.setClientName(DE.ClientID)
-      return render_template('detachment_search_manhour.html', DEs = listDE, user=escape(session['user']))
+      return render_template('detachment_search_manhour.html', DEs = DetachmentsDB.getAllDetachments(), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -284,11 +284,11 @@ def viewPayroll(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/manhours/detachments/get/ID/records', methods=['POST', 'GET'])
-def viewPeriodsManhour(user=None):
+@app.route('/manhours/detachments/get/<ID>/records', methods=['POST', 'GET'])
+def viewPeriodsManhour(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('period_search_manhour.html', user=escape(session['user']))
+      return render_template('period_search_manhour.html', DE=DetachmentsDB.getDetachment(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
