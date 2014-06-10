@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<div class="sidebar gradient">
+    <hr class='navline navline1'/>
+    <h2 class='navtitle'>CLIENT RECORDS</h2>
+    <hr class='navline'/>
+    
+    <div class='sidebar-menu'>
+        <h4>Client Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listClients') }}' class='opt2'>View Client</a></li>
+            <li class="nobullets"><a href='{{ url_for('addClient') }}' class='opt2'>Add New Client</a></li>
+        </ul> 
+        <h4>Detachment Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='' class='opt2'>View Detachment</a></li>
+        </ul> 
+    </div>
+
+</div>
+{% endblock sidebar %}
+
+
+{% block content %}
+<h1>Add New Detachment</h1>
+<h3>Client: {{ client }}</h3>
+<hr>
+<br/>
+<form class='pure-form pure-form-aligned'>
+    <table>
+        <tr>
+            <td><label>Detachment Name: </label></td>
+            <td><input name='DEname' id='det_name' class='namebox' type='text' value=''/></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><label>Status: </label></td>
+            <td>
+                <select name="det_status">
+                    <option value="P">Pending</option>
+                    <option value="A">Active</option>
+                    <option value="T">Terminated</option>
+                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Start Date: </label></td>
+            <td><input type='date' value=''/></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><label>City: </label></td>
+            <td><input type='text' value=''/></td>
+        </tr>
+        <tr>
+            <td><label>Address: </label></td>
+            <td><textarea cols='22' rows='3'></textarea></td>
+        </tr>
+        
+    </table>
+
+
+    <br/>
+    <br/>
+
+    <input type='submit' class='pure-button' value='Submit'/>
+    <input style='float:right;' type='reset' class='pure-button' value='Reset'/>
+    </form>
+
+
+<!------SCRIPT FOR ListJS search contact ------->
+<script>
+var client_options = {
+  valueNames: [ 'contact_id', 'contact_name', 'position', 'number' ]
+};
+
+// Init list
+var contactList = new List('contacts', client_options);
+
+var contact_idField = $('#contact_id-field'),
+    contact_nameField = $('#contact_name-field'),
+    positionField = $('#position-field'),
+    numberField = $('#number-field'),
+    addBtn = $('#add-btn'),
+    editBtn = $('#edit-btn').hide(),
+    removeBtns = $('.remove-item-btn'),
+    editBtns = $('.edit-item-btn');
+
+// Sets callbacks to the buttons in the list
+refreshCallbacks();
+
+addBtn.click(function() {
+  contactList.add({
+    contact_id: Math.floor(Math.random()*110000),
+    contact_name: contact_nameField.val(),
+    position: positionField.val(),
+    number: numberField.val()
+  });
+  clearFields();
+  refreshCallbacks();
+});
+
+editBtn.click(function() {
+  var item = contactList.get('contact_id', contact_idField.val())[0];
+  item.values({
+    contact_id:contact_idField.val(),
+    contact_name: contact_nameField.val(),
+    position: positionField.val(),
+    number: numberField.val()
+  });
+  clearFields();
+  editBtn.hide();
+  addBtn.show();
+});
+
+function refreshCallbacks() {
+  // Needed to add new buttons to jQuery-extended object
+  removeBtns = $(removeBtns.selector);
+  editBtns = $(editBtns.selector);
+  
+  removeBtns.click(function() {
+    var itemId = $(this).closest('tr').find('.contact_id').text();
+    contactList.remove('contact_id', itemId);
+  });
+  
+  editBtns.click(function() {
+    var itemId = $(this).closest('tr').find('.contact_id').text();
+    var itemValues = contactList.get('contact_id', itemId)[0].values();
+    contact_idField.val(itemValues.contact_id);
+    contact_nameField.val(itemValues.contact_name);
+    positionField.val(itemValues.position);
+    numberField.val(itemValues.number);
+    
+    editBtn.show();
+    addBtn.hide();
+  });
+}
+
+function clearFields() {
+  contact_nameField.val('');
+  positionField.val('');
+  numberField.val('');
+}    
+</script>    
+{% endblock content %}

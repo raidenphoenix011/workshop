@@ -24,64 +24,54 @@
 
 {% block content %}
 <h1>Detachment Information</h1>
+<h3>Client: </h3>
 <hr>
-
-<center><h2>New Detachment</h2></center>
-
-<form class='pure-form pure-form-aligned'>
-    
-    <table>
-        <tr>
-            <td><label>Code: </label></td>
-            <td><b><span name='DEcode' id='det_code'></span></b></td>
-        </tr>
-        <tr>
-            <td><label>Name: </label></td>
-            <td><input name='DEname' id='det_name' class='namebox' type='text' value=''/></td>
-        </tr>
-    </table>
-    
-</form>
-
+<span style='float:right;'>Detachment Code: <b>{{ DE.Code }}</b></span>
+<br/>
+<center><h1>{{ DE.Name }}</h1></center>
 
 <br/>
 <div id="tabs">
   <ul>
-    <li><a href="#tabs-1">Basic</a></li>
+    <li><a href="#tabs-1">Basic Info</a></li>
     <li><a href="#tabs-2">Payroll Rates</a></li>
     <li><a href="#tabs-3">Allowances</a></li>
     <li><a href="#tabs-4">Contact Persons</a></li>
   </ul>
     <div id="tabs-1">
-    <form class='pure-form pure-form-aligned'>
+    <br/>
+    <form class='pure-form pure-form-aligned' method='link' action=''>
     <table>
         <tr>
             <td><label>Status: </label></td>
-            <td>
-                <select name="det_status">
-                    <option value="P">Pending</option>
-                    <option value="A">Active</option>
-                    <option value="T">Terminated</option>
-                 </select>
-            </td>
+            <td>{{ DE.Status}}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
         </tr>
         <tr>
             <td><label>Start Date: </label></td>
-            <td><input type='date' value=''/></td>
+            <td>{{DE.StartDate}}</td>
         </tr>
         <tr>
-            <td><label>Termination Date: </label></td>
-            <td><input type='date' value=''/></td>
+            <td><label>End Date: </label></td>
+            <td>{{DE.EndDate}}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
         </tr>
         <tr>
             <td><label>City: </label></td>
-            <td><input type='text' value=''/></td>
+            <td>{{DE.City}}</td>
         </tr>
         <tr>
             <td><label>Address: </label></td>
-            <td><textarea cols='22' rows='2'></textarea></td>
+            <td>{{DE.Address}}</td>
         </tr>
     </table>
+
+    <button class='pure-button editBtn' value='Edit Record'>Edit Record</button>
+    <br/><br/>
     </form>
   </div>
   <div id="tabs-2">
@@ -237,9 +227,7 @@
 
 </div>
 <br/>
-<div id='buttoncontainer'>
-<button id='save' class='pure-button save'>Save Changes</button>
-</div>
+    
 
 
 <!------SCRIPT FOR ListJS search contact ------->
