@@ -9,8 +9,10 @@ Allowances = import_file.import_file('models/Allowances.py')
 AuthorizedManHours = import_file.import_file('models/AuthorizedManHours.py')
 ClientContactPersons = import_file.import_file('models/ClientContactPersons.py')
 Clients = import_file.import_file('models/Clients.py')
+ClientsDB = import_file.import_file('models/ClientsDB.py')
 DetachmentContactPersons = import_file.import_file('models/DetachmentContactPersons.py')
 Detachments = import_file.import_file('models/Detachments.py')
+DetachmentsDB = import_file.import_file('models/DetachmentsDB.py')
 FieldEmployees = import_file.import_file('models/FieldEmployees.py')
 FieldEmployeesDB = import_file.import_file('models/FieldEmployeesDB.py')
 FieldEmployeeTypes = import_file.import_file('models/FieldEmployeeTypes.py')
@@ -123,7 +125,7 @@ def addFieldEmployee(user=None):
 def listClients(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('client_search.html', goto='listDetachments', CLs=db.getAllClients(), user=escape(session['user']))
+      return render_template('client_search.html', goto='listDetachments', CLs=ClientsDB.getAllClients(), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -132,7 +134,7 @@ def listClients(user=None):
 def viewClient(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('client_view.html', Client = db.getClient(ID), Detachments = db.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), user=escape(session['user']))
+      return render_template('client_view.html', Client = ClientsDB.getClient(ID), Detachments = DetachmentsDB.getAllDetachmentsbyID(ID), ContactPersons = db.getClientContactPersons(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))

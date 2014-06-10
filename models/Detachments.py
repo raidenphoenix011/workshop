@@ -1,7 +1,6 @@
 import db
 
 class Detachments(object):
-
   def __init__(self, ID, ClientID, RateID, Code, Name, Address, City, StartDate, EndDate, Status):
     self.ID=ID
     self.ClientID = ClientID
