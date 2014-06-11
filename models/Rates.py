@@ -2,7 +2,7 @@ import db
 
 class Rates(object):
 
-  def __init__(self, ID,DetachID, RateType, HolidayType, IncentiveType, Regular, Overtime, NDifferential, ECOLA, ThirteenMonth, PhilHealth, PagibigPrem, Incentive, LegalHoliday, SpecialHoliday, EffectiveDate):
+  def __init__(self, ID, DetachID, RateType, HolidayType, IncentiveType, Regular, Overtime, NDifferential, ECOLA, ThirteenMonth, PhilHealth, PagibigPrem, Incentive, LegalHoliday, SpecialHoliday, EffectiveDate):
     self.ID = ID
     self.DetachID = DetachID
     self.RateType = RateType

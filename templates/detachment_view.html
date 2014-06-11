@@ -73,68 +73,78 @@
     </form>
     <br/><br/>
   </div>
-  <div id="tabs-2">        
-    <table>
-        <tr>
-            <td><label>Effective Date: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>Rate type:</label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>Regular Hours: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>OT Hours: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>Night differential: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>ECOLA (daily): </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>Legal Holiday: </label></td>
-            <td></td>
-            <td><label>Mode of Release: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>Special Holiday: </label></td>
-            <td></td>
-            <td><label>Mode of Release: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>5-days Incentive: </label></td>
-            <td></td>
-            <td><label>Mode of Release: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>13th Month: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>Pag-ibig Premium: </label></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><label>PhilHealth Premium: </label></td>
-            <td></td>
-        </tr>
-    </table>
-    <br/>
+  <div id="tabs-2">
     <form method='link' action=''>
-        <button class='pure-button'>Edit Rates</button>
+        <button style='float:right;' class='pure-button'>Add New Rates</button>
     </form>
+    <br/><br/><br/>
+    <div id="accordion">
+        {% for R in Rate %}
+        <h3><b>{{ R.EffectiveDate }}</b></h3>
+            <div>
+                <table>
+                  <tr>
+                      <td><label>Rate type:</label></td>
+                      <td>{{ R.RateType }}</td>
+                  </tr>
+                  <tr>
+                      <td><label>Regular Hours: </label></td>
+                      <td>{{ R.Regular }}</td>
+                  </tr>
+                  <tr>
+                      <td><label>OT Hours: </label></td>
+                      <td>{{ R.Overtime }}</td>
+                  </tr>
+                  <tr>
+                      <td><label>Night differential: </label></td>
+                      <td>{{ R.NDifferential }}</td>
+                  </tr>
+                  <tr>
+                      <td><label>ECOLA (daily): </label></td>
+                      <td>{{ R.ECOLA }}</td>
+                  </tr>
+                  <tr>
+                      <td><label>Legal Holiday: </label></td>
+                      <td>{{ R.LegalHoliday }}</td>
+                      <td><label>Mode of Release: </label></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td><label>Special Holiday: </label></td>
+                      <td>{{ R.SpecialHoliday }}</td>
+                      <td><label>Mode of Release: </label></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td><label>5-days Incentive: </label></td>
+                      <td>{{ R.Incentive }}</td>
+                      <td><label>Mode of Release: </label></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td><label>13th Month: </label></td>
+                      <td>{{ R.ThirteenMonth }}</td>
+                  </tr>
+                  <tr>
+                      <td><label>Pag-ibig Premium: </label></td>
+                      <td>{{ R.PagibigPrem }}</td>
+                  </tr>
+                  <tr>
+                      <td><label>PhilHealth Premium: </label></td>
+                      <td>{{ R.PhilHealth }}</td>
+                  </tr>
+              </table>
+                
+            <form method='link' action=''>
+                <button style='float:right;' class='pure-button'>Edit Rates</button>
+            </form>
+            </div>
+    {% endfor %}
+    </div>
+    
+  <br/>
   </div>
+  
   <div id="tabs-3">
     <form class='pure-form pure-form-aligned'>
         <tr>
@@ -144,7 +154,11 @@
     </form>
   </div>
     <div id="tabs-4">
-        <br/>
+            <form method='link' action='{{ url_for('addDetachmentContact', DetachID = DE.ID) }}'>
+            <button style='float:right;' class="pure-button"/>Add New Contact</button>
+            </form>
+            <br/>
+            <br/><br/>
             <table class='pure-table'>
                 <thead id='CPth'>
                     <tr>
@@ -169,13 +183,17 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <br/>
-            <form method='link' action='{{ url_for('addDetachmentContact', DetachID = DE.ID) }}'>
-            <button class="pure-button"/>Add New Contact</button>
-            </form>
-            <br />
+
   </div>
 </div>
 <br/>
-    
+
+  <script>
+  $(function() {
+    $( "#accordion" ).accordion();
+  });
+  </script>
+<script>
+    $('#accordion').accordion({heightStyle: 'content'});
+</script>
 {% endblock content %}

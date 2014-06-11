@@ -294,7 +294,9 @@ def viewDetachment(ID, user=None):
       ClientID = DE.ClientID
       Client = ClientsDB.getClient(ClientID)
       ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID)
-      return render_template('detachment_view.html', DE=DE, Client=Client, ContactPersons=ContactPersons, user=escape(session['user']))
+      Rates = RatesDB.getPayrollRate(ID)
+      Rates = sorted(Rates, key=lambda Rate: Rate.EffectiveDate, reverse=True)
+      return render_template('detachment_view.html', DE=DE, Client=Client, ContactPersons=ContactPersons, Rate=Rates, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))

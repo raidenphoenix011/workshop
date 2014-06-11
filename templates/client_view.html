@@ -63,7 +63,10 @@
         </div>
         <div id="tabs-2">
             <div id="detachments">
-                <br/>
+                <form method='link' action='{{ url_for('addDetachment', ID = Client.ID) }}'> 
+                    <button style='float:right;' class='pure-button'>Add New Detachment</button>
+                </form>
+                <br/><br/>
                 <form class='pure-form pure-form-aligned'>
                     <label>Search: </label><input type="text" class="search" placeholder="enter code, name, city, or status" />
                     <br/>
@@ -92,12 +95,13 @@
                 </table>
             </div>
             <br><br/>
-            <form method='link' action='{{ url_for('addDetachment', ID = Client.ID) }}'> 
-                <button class='pure-button'>Add New Detachment</button>
-            </form>
+
         </div>
         <div id="tabs-3">
-            <br/>
+            <form method='link' action='{{ url_for('addClientContact', ClientID = Client.ID) }}'>
+            <button style='float:right;' class="pure-button"/>Add New Contact</button>
+            </form>
+            <br/><br/><br/>
             <table class='pure-table'>
                 <thead id='CPth'>
                     <tr>
@@ -123,10 +127,7 @@
                 </tbody>
             </table>
             <br/>
-            <form method='link' action='{{ url_for('addClientContact', ClientID = Client.ID) }}'>
-            <button class="pure-button"/>Add New Contact</button>
-            </form>
-            <br />
+            
         </div>
     </div>
     <br/>
