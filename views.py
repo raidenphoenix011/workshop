@@ -276,7 +276,9 @@ def viewDetachment(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
       DE = DetachmentsDB.getDetachment(ID)
-      return render_template('detachment_view.html', DE = DE, Client = ClientsDB.getClient(DE.ClientID), ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
+      ClientID = DE.ClientID
+      Client = ClientsDB.getClient(ClientID)
+      return render_template('detachment_view.html', DE = DE, Client = Client, ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -297,6 +299,7 @@ def insertDetachment(ID, user=None):
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
         detachment = Detachments.Detachments('0', ID, '1', '0', request.form['name'], request.form['address'], request.form['city'], request.form['start'], '0000-00-00', request.form['status'])
         DetachmentsDB.insertDetachment(detachment)
+        ID = DetachmentsDB.getDetachmentID(detachment.Name)
         flash('Detachment successfully added.')
         return redirect(url_for('viewDetachment', ID=ID))
     else:
@@ -340,7 +343,10 @@ def addManhour(user=None):
 def manhour(ID, Code, user=None):
     if 'usertype' in session:
         if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-            return render_template('manhour.html', Log=ManHourLogsDB.getLog2(ID, Code), user=escape(session['user']), dept='manhour')
+            Detachment = DetachmentsDB.getDetachment(ID)
+            Log=ManHourLogsDB.getLog2(ID, Code)
+            Period = Log[0].PeriodCode
+            return render_template('manhour.html', Log=Log, Detachment=Detachment, Period=Period, user=escape(session['user']), dept='manhour')
         else:
             flash('Unauthorized access')
             return redirect(url_for('logout'))
@@ -393,7 +399,9 @@ def viewPayroll(user=None):
 def viewPeriodsManhour(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('period_search_manhour.html', DE=DetachmentsDB.getDetachment(ID), MH=ManHourLogsDB.getLog(ID), user=escape(session['user']))
+      DE = DetachmentsDB.getDetachment(ID)
+      MH = ManHourLogsDB.getLog(ID)
+      return render_template('period_search_manhour.html', DE=DE, MH=MH, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
