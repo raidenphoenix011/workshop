@@ -221,7 +221,11 @@ def editClientContact(ID, ContactID, user=None):
 def updateClientContact(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        contact = ClientContactPersons.ClientContactPersons(request.form['id'], request.form['clientid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], request.form['birthdate'])
+        if request.form['birthdate']:
+            birthdate = request.form['birthdate']
+        else:
+            birthdate = '0000-00-00'
+        contact = ClientContactPersons.ClientContactPersons(request.form['id'], request.form['clientid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], birthdate)
         ClientContactPersonsDB.updateContact(contact)
         flash('Contact information successfully updated.')
         return redirect(url_for('viewClient', ID=contact.ClientID))
@@ -242,11 +246,15 @@ def addClientContact(ClientID, user=None):
 def insertClientContact(user=None): 
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        contact = ClientContactPersons.ClientContactPersons('0', request.form['clientid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], request.form['birthdate'])
-        ClientContactPersonsDB.insertContact(contact)
-        clientID = contact.ClientID
-        flash('Contact successfully added.')
-        return redirect(url_for('viewClient', ID=clientID))
+      if request.form['birthdate']:
+        birthdate = request.form['birthdate']
+      else:
+        birthdate = '0000-00-00'
+      contact = ClientContactPersons.ClientContactPersons('0', request.form['clientid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], birthdate)
+      ClientContactPersonsDB.insertContact(contact)
+      clientID = contact.ClientID
+      flash('Contact successfully added.')
+      return redirect(url_for('viewClient', ID=clientID))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -321,13 +329,17 @@ def editDetachment(ClientID, DetachID, user=None):
 def updateDetachment(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        detachment = Detachments.Detachments(request.form['ID'], request.form['client_ID'], '1', request.form['code'], request.form['name'], request.form['address'], request.form['city'], request.form['start_date'], request.form['end_date'], request.form['status'] )
+        if request.form['end_date']:
+          enddate = request.form['end_date']
+        else:
+          enddate = '0000-00-00'
+        detachment = Detachments.Detachments(request.form['ID'], request.form['client_ID'], '1', request.form['code'], request.form['name'], request.form['address'], request.form['city'], request.form['start_date'], enddate, request.form['status'] )
         DetachmentsDB.updateDetachment(detachment)
         flash('Detachment information successfully updated.')
         return redirect(url_for('viewDetachment', ID=detachment.ID))
     else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
+        flash('Unauthorized access')
+        return redirect(url_for('logout'))
     
                     
 @app.route('/manhours/detachments/get/id/add', methods=['POST', 'GET'])
