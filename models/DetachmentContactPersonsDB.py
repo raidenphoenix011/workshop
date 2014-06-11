@@ -1,4 +1,3 @@
-
 import db, import_file
 DetachmentContactPersons = import_file.import_file('DetachmentContactPersons')
 
@@ -37,6 +36,15 @@ def updateContact(contact):
   params = (contact.Suffix, contact.LastName, contact.FirstName, contact.MiddleName, contact.Landline, contact.MobileNo, contact.BirthDate, contact.ID)
   try:
     db.cur.execute(sql, params)
+    db.mysql.commit()
+  except:
+    print 'Error saving contact'
+    
+#OK
+def deleteContact(ID):
+  sql = "delete from DetachmentContactPersons where ID=%s" % ID
+  try:
+    db.cur.execute(sql)
     db.mysql.commit()
   except:
     print 'Error saving contact'

@@ -182,7 +182,7 @@
                         <td>{{ CP.MobileNo }}</td>
                         <td>{{ CP.BirthDate }}</td>
                         <td><form method='link' action='{{ url_for('editDetachmentContact', DetachID=DE.ID, ContactID=CP.ID) }}'><button class='pure-button'>Edit</button></form></td>
-                        <td><form method='link' action=''><button class='pure-button'>Delete</button></form></td>
+                        <td><form method='link' action='{{ url_for('deleteDetachmentContact', ID=DE.ID, ContactID=CP.ID) }}'><button class='pure-button'>Delete</button></form></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -193,85 +193,7 @@
             </form>
             <br />
   </div>
-
-
 </div>
 <br/>
     
-
-
-<!------SCRIPT FOR ListJS search contact ------->
-<script>
-var client_options = {
-  valueNames: [ 'contact_id', 'contact_name', 'position', 'number' ]
-};
-
-// Init list
-var contactList = new List('contacts', client_options);
-
-var contact_idField = $('#contact_id-field'),
-    contact_nameField = $('#contact_name-field'),
-    positionField = $('#position-field'),
-    numberField = $('#number-field'),
-    addBtn = $('#add-btn'),
-    editBtn = $('#edit-btn').hide(),
-    removeBtns = $('.remove-item-btn'),
-    editBtns = $('.edit-item-btn');
-
-// Sets callbacks to the buttons in the list
-refreshCallbacks();
-
-addBtn.click(function() {
-  contactList.add({
-    contact_id: Math.floor(Math.random()*110000),
-    contact_name: contact_nameField.val(),
-    position: positionField.val(),
-    number: numberField.val()
-  });
-  clearFields();
-  refreshCallbacks();
-});
-
-editBtn.click(function() {
-  var item = contactList.get('contact_id', contact_idField.val())[0];
-  item.values({
-    contact_id:contact_idField.val(),
-    contact_name: contact_nameField.val(),
-    position: positionField.val(),
-    number: numberField.val()
-  });
-  clearFields();
-  editBtn.hide();
-  addBtn.show();
-});
-
-function refreshCallbacks() {
-  // Needed to add new buttons to jQuery-extended object
-  removeBtns = $(removeBtns.selector);
-  editBtns = $(editBtns.selector);
-  
-  removeBtns.click(function() {
-    var itemId = $(this).closest('tr').find('.contact_id').text();
-    contactList.remove('contact_id', itemId);
-  });
-  
-  editBtns.click(function() {
-    var itemId = $(this).closest('tr').find('.contact_id').text();
-    var itemValues = contactList.get('contact_id', itemId)[0].values();
-    contact_idField.val(itemValues.contact_id);
-    contact_nameField.val(itemValues.contact_name);
-    positionField.val(itemValues.position);
-    numberField.val(itemValues.number);
-    
-    editBtn.show();
-    addBtn.hide();
-  });
-}
-
-function clearFields() {
-  contact_nameField.val('');
-  positionField.val('');
-  numberField.val('');
-}    
-</script>    
 {% endblock content %}

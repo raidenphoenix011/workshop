@@ -318,6 +318,14 @@ def updateDetachmentContact(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
+@app.route('/detachments/get/<ID>/contacts/<ContactID>/delete', methods=['POST', 'GET'])
+def deleteDetachmentContact(ID, ContactID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      DetachmentContactPersonsDB.deleteContact(ContactID)
+      flash('Contact Person successfully deleted.')
+      return redirect(url_for('viewDetachment', ID=ID))
+
 @app.route('/clients/get/<ID>/detachments/add/', methods=['POST', 'GET'])
 def addDetachment(ID, user=None):
   if 'usertype' in session:
