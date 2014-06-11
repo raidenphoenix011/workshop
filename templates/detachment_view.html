@@ -181,14 +181,16 @@
                         <td>{{ CP.Landline }}</td>
                         <td>{{ CP.MobileNo }}</td>
                         <td>{{ CP.BirthDate }}</td>
-                        <td><form method='link' action=''><button class='pure-button'>Edit</button></form></td>
+                        <td><form method='link' action='{{ url_for('editDetachmentContact', DetachID=DE.ID, ContactID=CP.ID) }}'><button class='pure-button'>Edit</button></form></td>
                         <td><form method='link' action=''><button class='pure-button'>Delete</button></form></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             <br/>
-            <input type='button' class="pure-button" value='Add new contact'/>
+            <form method='link' action='{{ url_for('addDetachmentContact', DetachID = DE.ID) }}'>
+            <button class="pure-button"/>Add New Contact</button>
+            </form>
             <br />
   </div>
 

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<div class="sidebar gradient">
+    <hr class='navline navline1'/>
+    <h2 class='navtitle'>CLIENT RECORDS</h2>
+    <hr class='navline'/>
+    
+    <div class='sidebar-menu'>
+        <h4>Client Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listClients') }}' class='opt2'>View Client</a></li>
+            <li class="nobullets"><a href='{{ url_for('addClient') }}' class='opt2'>Add New Client</a></li>
+        </ul> 
+        <h4>Detachment Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listDetachments') }}' class='opt2'>View Detachment</a></li>
+        </ul> 
+    </div>
+
+</div>
+
+{% endblock sidebar %}
+
+{% block content %}
+
+<h1>Contact Person Information</h1>
+<h3>Detachment: {{ Detachment.Name }}</h3>
+<hr>
+
+<br/>
+<br/>
+ 
+<form class='pure-form' method='post' action="{{ url_for('updateDetachmentContact', DetachID=Detachment.ID) }}">
+    <input type='hidden' name='id' value='{{ Contact.ID }}'/>
+    <input type='hidden' name='detachid' value='{{ Detachment.ID }}'/>
+    <table>
+        <tr>
+            <td>First Name: </td>
+            <td><input type='text' name='firstname' value='{{ Contact.FirstName }}' required/></td>
+        </tr>
+        <tr>
+            <td>Middle Name: </td>
+            <td><input type='text' name='middlename' value='{{ Contact.MiddleName }}'/></td>
+        </tr>
+        <tr>
+            <td>Last Name: </td>
+            <td><input type='text' name='lastname' value='{{ Contact.LastName }}'/></td>
+        </tr>
+        <tr>
+            <td>Suffix: </td>
+            <td><input type='text' name='suffix' value='{{ Contact.Suffix }}'/></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Mobile No.: </td>
+            <td><input type='text' name='mobile' value='{{ Contact.MobileNo }}' /></td>
+        </tr>
+        <tr>
+            <td>Landline No.: </td>
+            <td><input type='text' name='landline' value='{{ Contact.Landline }}'/></td>
+        </tr>
+        <tr>
+            <td>Birthdate: </td>
+            <td><input type='date' id='birthdate' name='birthdate' value='{{ Contact.BirthDate }}' /></td>
+        </tr>
+    </table>
+    <br/>
+    <input class='pure-button' type='submit' value='Submit'/>
+    <input style='float:right;' type='reset' class='pure-button' value='Reset'/>
+</form>
+<br/>
+
+    
+{% endblock content %}
