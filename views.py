@@ -343,7 +343,10 @@ def addManhour(user=None):
 def manhour(ID, Code, user=None):
     if 'usertype' in session:
         if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-            return render_template('manhour.html', Log=ManHourLogsDB.getLog2(ID, Code), user=escape(session['user']), dept='manhour')
+            Detachment = DetachmentsDB.getDetachment(ID)
+            Log=ManHourLogsDB.getLog2(ID, Code)
+            Period = Log[0].PeriodCode
+            return render_template('manhour.html', Log=Log, Detachment=Detachment, Period=Period, user=escape(session['user']), dept='manhour')
         else:
             flash('Unauthorized access')
             return redirect(url_for('logout'))
@@ -396,7 +399,9 @@ def viewPayroll(user=None):
 def viewPeriodsManhour(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
-      return render_template('period_search_manhour.html', DE=DetachmentsDB.getDetachment(ID), MH=ManHourLogsDB.getLog(ID), user=escape(session['user']))
+      DE = DetachmentsDB.getDetachment(ID)
+      MH = ManHourLogsDB.getLog(ID)
+      return render_template('period_search_manhour.html', DE=DE, MH=MH, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
