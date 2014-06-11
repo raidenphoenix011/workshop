@@ -54,3 +54,15 @@ def updateDetachment(detachment):
     print str(e.args[0]) + ': ' + str(e.args[1])
     #print 'Error retrieving data from the database'
     return None
+  
+  
+#OK
+def getDetachmentID(name):
+  try: 
+    db.cur.execute("select ID from Detachments where Name = '%s'" % (name))
+    res = db.cur.fetchone()
+    return res[0]
+  except MySQLdb.Error, e:
+    print str(e.args[0]) + ': ' + str(e.args[1])
+    print 'Error retrieving data from the database'
+    return None

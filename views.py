@@ -299,6 +299,7 @@ def insertDetachment(ID, user=None):
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
         detachment = Detachments.Detachments('0', ID, '1', '0', request.form['name'], request.form['address'], request.form['city'], request.form['start'], '0000-00-00', request.form['status'])
         DetachmentsDB.insertDetachment(detachment)
+        ID = DetachmentsDB.getDetachmentID(detachment.Name)
         flash('Detachment successfully added.')
         return redirect(url_for('viewDetachment', ID=ID))
     else:
