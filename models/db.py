@@ -34,3 +34,8 @@ def SubList(tableName, foreignKey, value):
   sql = "SELECT * FROM %s WHERE %s = '%s'" % (tableName, foreignKey, value)
   res = getAll(sql)
   return res
+
+def SubList2(tableName, foreignKey1, value1, foreignKey2, value2):
+  sql = "SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'" % (tableName, foreignKey1, value1, foreignKey2, value2)
+  res = getAll(sql)
+  return res

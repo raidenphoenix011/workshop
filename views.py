@@ -422,7 +422,7 @@ def manhour(ID, Code, user=None):
             Detachment = DetachmentsDB.getDetachment(ID)
             Log=ManHourLogsDB.getLog2(ID, Code)
             Period = Log[0].PeriodCode
-            return render_template('manhour.html', Log=Log, Detachment=Detachment, Period=Period, user=escape(session['user']), dept='manhour')
+            return render_template('manhour.html', Log=Log, Detachment=Detachment, PeriodCode=Period, user=escape(session['user']), dept='manhour')
         else:
             flash('Unauthorized access')
             return redirect(url_for('logout'))
@@ -477,7 +477,7 @@ def viewPeriodsManhour(ID, user=None):
     if session['usertype'] == 'MO' or session['usertype'] == 'ADM':
       DE = DetachmentsDB.getDetachment(ID)
       MH = ManHourLogsDB.getLog(ID)
-      return render_template('period_search_manhour.html', DE=DE, MH=MH, user=escape(session['user']))
+      return render_template('period_search_manhour.html', Detachment=DE, MH=MH, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))

@@ -24,17 +24,17 @@
     <hr>
     <br/>
     <form class='pure-form pure-form-aligned' method='post' action=''>
-    {% for L in Log %}
+    
     <table>
         <tr>
             <td><label>Detachment Code: </label></td>
-            <td><input class='codebox' class="pure-input" name='detachment_name' type='text' value='{{ L.DetachID }}' disabled></td>
-            <td><label>Detachment Name: </label><input class='namebox' class="pure-input" name='detachment_name' type='text' value='{{ L.Name }}' disabled></td>
+            <td><input class='codebox' class="pure-input" name='detachment_name' type='text' value='{{ Detachment.ID }}' disabled></td>
+            <td><label>Detachment Name: </label><input class='namebox' class="pure-input" name='detachment_name' type='text' value='{{ Detachment.Name }}' disabled></td>
         </tr>
         <tr><td>&nbsp;</td></tr>
         <tr>
             <td><label for='period_code'>Period Code:</label></td>
-            <td><input id='period_code' class="pure-input-1-6" name='period_code' type='number' min='0' max='9999' value='{{ L.PeriodCode }}'></td>
+            <td><input id='period_code' class="pure-input-1-6" name='period_code' type='number' min='0' max='9999' value='{{ PeriodCode }}'></td>
             <td>Start date:&nbsp; <input id='from' name='' type='date'/>&nbsp;&nbsp; End date: <input id='to' name='' type='date'/>
             </td>
         </tr>
@@ -55,6 +55,7 @@
             </tr>
         </thead>
         <tbody id='tablebody'>
+            {% for L in Log %}
             <tr class='tr_clone entry'>
                 <td><input id='' class="cell" name='' type='text' placeholder='Name'></td>
                 <td><input id='' class="cell" name='' type='number' min='0' max='120' placeholder='reg hrs'></td>
@@ -64,9 +65,10 @@
                 <td><input id='' class="cell" name='' type='number' min='0' max='7' placeholder='special hol.'></td>
                 <td><input id='' class="cell" name='' type='number' min='0' max='7' placeholder='legal hol.'></td>
             <tr>
+            {% endfor %}
         </tbody>
     </table>
-    {% endfor %}
+
     <br/>
     <input type='button' class="pure-button tr_clone_add" value='Add new entry'/>
     <br />

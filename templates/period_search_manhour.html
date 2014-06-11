@@ -23,8 +23,8 @@
 <h1>Manhour Records</h1>
 <hr>
 
-{% for D in DE %}
-<center><h2> {{ D.Name }} </h2></center>
+
+<center><h2> {{ Detachment.Name }} </h2></center>
 
 <br/>
 <div id="periods">
@@ -49,12 +49,12 @@
     <tbody class="list">
       {% for M in MH %}
       <tr>
-         <td class="period"><a href='{{ url_for('manhour', ID=D.ID, Code=M.PeriodCode) }}'>{{ M.PeriodCode }}</a></td>
+         <td class="period"><a href='{{ url_for('manhour', ID=Detachment.ID, Code=M.PeriodCode) }}'>{{ M.PeriodCode }}</a></td>
          <td class="start">Start Date</td>
 	       <td class="end">End Date</td>
       </tr>
       {% endfor %}
-{% endfor %}
+
     </tbody>
   </table>
 </div>
