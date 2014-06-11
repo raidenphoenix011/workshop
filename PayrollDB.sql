@@ -13,21 +13,21 @@ CREATE TABLE FieldEmployees (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 Type VARCHAR(3) NOT NULL,
 FECode VARCHAR(8) UNIQUE KEY NOT NULL,
-DisplayCode VARCHAR(8) NOT NULL,
-Suffix VARCHAR(10) NOT NULL,
+DisplayCode VARCHAR(8),
+Suffix VARCHAR(10),
 LastName VARCHAR(30) NOT NULL,
 FirstName VARCHAR(30) NOT NULL,
-MiddleName VARCHAR(30) NOT NULL,
-Landline VARCHAR(14) NOT NULL,
-MobileNo VARCHAR(39) NOT NULL,
+MiddleName VARCHAR(30),
+Landline VARCHAR(14),
+MobileNo VARCHAR(39),
 Address VARCHAR(250) NOT NULL,
 BirthDate DATE NOT NULL,
 Gender CHAR(1) NOT NULL,
 CivilStatus VARCHAR(10) NOT NULL,
-Dependents INT NOT NULL,
-Skills VARCHAR(150) NOT NULL,
+Dependents INT,
+Skills VARCHAR(150),
 DateHired DATE NOT NULL,
-DateResigned DATE NOT NULL DEFAULT '0000-00-00',
+DateResigned DATE,
 FieldEmpStatus VARCHAR(8) NOT NULL,
 CholStatus VARCHAR(2) NOT NULL,
 FileStatus VARCHAR(3) NOT NULL,
@@ -40,18 +40,18 @@ Code VARCHAR(5) UNIQUE KEY NOT NULL,
 Name VARCHAR(30) NOT NULL,
 BillingAddress VARCHAR(200) NOT NULL,
 City VARCHAR(30) NOT NULL,
-Landline VARCHAR(14) NOT NULL
+Landline VARCHAR(14)
 );
 
 CREATE TABLE ClientContactPersons (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 ClientID INT NOT NULL,
-Suffix VARCHAR(5) NOT NULL,
+Suffix VARCHAR(5),
 LastName VARCHAR(30) NOT NULL,
 FirstName VARCHAR(30) NOT NULL,
-MiddleName VARCHAR(30) NOT NULL,
-Landline VARCHAR(14) NOT NULL,
-MobileNo VARCHAR(39) NOT NULL,
+MiddleName VARCHAR(30),
+Landline VARCHAR(14),
+MobileNo VARCHAR(39),
 BirthDate DATE NOT NULL,
 FOREIGN KEY (ClientID) REFERENCES Clients(ID) 
 );
@@ -70,52 +70,52 @@ Type VARCHAR(3) PRIMARY KEY,
 Description VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE Rates (
-ID INT AUTO_INCREMENT PRIMARY KEY,
-RateType VARCHAR(3) NOT NULL,
-HolidayType VARCHAR(2) NOT NULL,
-IncentiveType VARCHAR(2) NOT NULL,
-Regular DECIMAL(10,2) NOT NULL,
-Overtime DECIMAL(10,2) NOT NULL,
-NDifferential DECIMAL(10,2) NOT NULL,
-ECOLA DECIMAL(10,2) NOT NULL,
-ThirteenMonth DECIMAL(10,2) NOT NULL,
-PhilHealth DECIMAL(10,2) NOT NULL,
-PagibigPrem DECIMAL(10,2) NOT NULL,
-Incentive DECIMAL(10,2) NOT NULL,
-LegalHoliday DECIMAL(10,2) NOT NULL,
-SpecialHoliday DECIMAL(10,2) NOT NULL,
-EffectiveDate DATE NOT NULL,
-FOREIGN KEY (RateType) REFERENCES RateTypes(Type),
-FOREIGN KEY (HolidayType) REFERENCES HolidayMOR(Type),
-FOREIGN KEY (IncentiveType) REFERENCES IncentiveMOR(Type)
-);
-
 CREATE TABLE Detachments (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 ClientID INT NOT NULL,
-RateID INT NOT NULL,
 Code VARCHAR(7) NOT NULL,
 Name VARCHAR(30) NOT NULL,
 Address VARCHAR(200) NOT NULL,
 City VARCHAR(30) NOT NULL,
 StartDate DATE NOT NULL,
-EndDate DATE NOT NULL,
+EndDate DATE,
 Status VARCHAR(10) NOT NULL,
-FOREIGN KEY (ClientID) REFERENCES Clients(ID),
-FOREIGN KEY (RateID) REFERENCES Rates(ID)
+FOREIGN KEY (ClientID) REFERENCES Clients(ID)
 );
 
 CREATE TABLE DetachmentContactPersons (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 DetachID INT NOT NULL,
-Suffix VARCHAR(5) NOT NULL,
+Suffix VARCHAR(5),
 LastName VARCHAR(30) NOT NULL,
 FirstName VARCHAR(30) NOT NULL,
-MiddleName VARCHAR(30) NOT NULL,
-Landline VARCHAR(14) NOT NULL,
-MobileNo VARCHAR(39) NOT NULL,
+MiddleName VARCHAR(30),
+Landline VARCHAR(14),
+MobileNo VARCHAR(39),
 BirthDate DATE NOT NULL,
+FOREIGN KEY (DetachID) REFERENCES Detachments(ID)
+);
+
+CREATE TABLE Rates (
+ID INT AUTO_INCREMENT PRIMARY KEY,
+DetachID INT NOT NULL,
+RateType VARCHAR(3) NOT NULL,
+HolidayType VARCHAR(2) NOT NULL,
+IncentiveType VARCHAR(2) NOT NULL,
+Regular DECIMAL(10,2) NOT NULL,
+Overtime DECIMAL(10,2),
+NDifferential DECIMAL(10,2),
+ECOLA DECIMAL(10,2),
+ThirteenMonth DECIMAL(10,2),
+PhilHealth DECIMAL(10,2),
+PagibigPrem DECIMAL(10,2),
+Incentive DECIMAL(10,2),
+LegalHoliday DECIMAL(10,2),
+SpecialHoliday DECIMAL(10,2),
+EffectiveDate DATE NOT NULL,
+FOREIGN KEY (RateType) REFERENCES RateTypes(Type),
+FOREIGN KEY (HolidayType) REFERENCES HolidayMOR(Type),
+FOREIGN KEY (IncentiveType) REFERENCES IncentiveMOR(Type),
 FOREIGN KEY (DetachID) REFERENCES Detachments(ID)
 );
 
@@ -133,9 +133,9 @@ FOREIGN KEY (FieldEmpID) REFERENCES FieldEmployees(ID)
 CREATE TABLE AuthorizedManHours (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 DetachID INT NOT NULL,
-WorkingDays INT NOT NULL,
-Saturdays INT NOT NULL,
-Holidays INT NOT NULL,
+WorkingDays INT,
+Saturdays INT,
+Holidays INT,
 EffectiveDate DATE NOT NULL,
 FOREIGN KEY (DetachID) REFERENCES Detachments(ID)
 );
@@ -144,13 +144,15 @@ CREATE TABLE ManHourLogs(
 ID INT AUTO_INCREMENT PRIMARY KEY,
 DetachID INT NOT NULL,
 FieldEmpID INT NOT NULL,
-NoOfFullDays INT(2) NOT NULL,
-NightHours INT(5) NOT NULL,
-RegHours INT(5) NOT NULL,
-OTHours INT(5) NOT NULL,
-LegHolidayHours INT(5) NOT NULL,
-SpeHolidayHours INT(5) NOT NULL,
+NoOfFullDays INT(2),
+NightHours INT(5),
+RegHours INT(5),
+OTHours INT(5),
+LegHolidayHours INT(5),
+SpeHolidayHours INT(5),
 DateCreated DATE NOT NULL,
+StartDate DATE NOT NULL,
+EndDate DATE NOT NULL,
 PeriodCode VARCHAR(4) NOT NULL,
 FOREIGN KEY (DetachID) REFERENCES Detachments(ID),
 FOREIGN KEY (FieldEmpID) REFERENCES FieldEmployees(ID)
@@ -236,13 +238,13 @@ FOREIGN KEY (UniDepoID) REFERENCES UniformDeposits(ID)
 CREATE TABLE Receivables (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 FieldEmpID INT NOT NULL,
-CholFund DECIMAL(10,2) NOT NULL,
-EmpFileFund DECIMAL(10,2) NOT NULL,
-HolidayPay DECIMAL(10,2) NOT NULL,
-ThirteenMonthPay DECIMAL(10,2) NOT NULL,
-IncentivesPay DECIMAL(10,2) NOT NULL,
-UniAllowance DECIMAL(10,2) NOT NULL,
-UniDeposit DECIMAL(10,2) NOT NULL,
+CholFund DECIMAL(10,2),
+EmpFileFund DECIMAL(10,2),
+HolidayPay DECIMAL(10,2),
+ThirteenMonthPay DECIMAL(10,2),
+IncentivesPay DECIMAL(10,2),
+UniAllowance DECIMAL(10,2),
+UniDeposit DECIMAL(10,2),
 FOREIGN KEY (FieldEmpID) REFERENCES FieldEmployees(ID)
 );
 
@@ -256,20 +258,20 @@ ID INT AUTO_INCREMENT PRIMARY KEY,
 Type VARCHAR(10) NOT NULL,
 Username VARCHAR(50) UNIQUE KEY NOT NULL,
 Password VARCHAR(100) NOT NULL,
-Suffix VARCHAR(10) NOT NULL,
+Suffix VARCHAR(10),
 LastName VARCHAR(30) NOT NULL,
 FirstName VARCHAR(30) NOT NULL,
-MiddleName VARCHAR(30) NOT NULL,
-Landline VARCHAR(14) NOT NULL,
-MobileNo VARCHAR(39) NOT NULL,
+MiddleName VARCHAR(30),
+Landline VARCHAR(14),
+MobileNo VARCHAR(39),
 Address VARCHAR(250) NOT NULL,
 BirthDate DATE NOT NULL,
 Gender CHAR(1) NOT NULL,
 CivilStatus VARCHAR(10) NOT NULL,
-Dependents INT NOT NULL,
+Dependents INT,
 Position VARCHAR(50) NOT NULL,
 DateHired DATE NOT NULL,
-DateResigned DATE NOT NULL,
+DateResigned DATE,
 EmpStatus VARCHAR(15) NOT NULL,
 FOREIGN KEY (Type) REFERENCES OfficeEmployeeTypes(Type)
 );
@@ -465,7 +467,8 @@ END $$
 
 
 #Rate
-CREATE PROCEDURE addRate(	
+CREATE PROCEDURE addRate(
+	DetachID INT,
 	RateType VARCHAR(3),
 	HolidayType VARCHAR(2),
 	IncentiveType VARCHAR(2),
@@ -482,35 +485,33 @@ CREATE PROCEDURE addRate(
 	EffectiveDate DATE)
 BEGIN	
 	INSERT INTO Rates
-	(RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate)
+	(1,RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate)
 	VALUES
-	(RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate);
+	(1,RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate);
 
 END $$
 #CALL addRate(RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate);
 
 #Detachment
-CREATE PROCEDURE addDetachment(	
+CREATE PROCEDURE addDetachment(
 	ClientID INT,
-	RateID INT,
 	Name VARCHAR(30),
 	Address VARCHAR(200),
 	City VARCHAR(30),
 	StartDate DATE,
 	EndDate DATE,
 	Status VARCHAR(10))
-BEGIN	
+BEGIN
 	CALL getMaxIDByTB('Detachments',@NewID);
 	INSERT INTO Detachments
-	(ClientID,RateID,Code,Name,Address,City,StartDate,EndDate,Status)
+	(ClientID,Code,Name,Address,City,StartDate,EndDate,Status)
 	VALUES
-	(ClientID,RateID,generateCode('D',@NewID,7),Name,Address,City,StartDate,EndDate,Status);
+	(ClientID,generateCode('D',@NewID,7),Name,Address,City,StartDate,EndDate,Status);
 END $$
 
 CREATE PROCEDURE updateDetachment(	
 	iCode VARCHAR(7),
 	iClientID INT,
-	iRateID INT,
 	iName VARCHAR(30),
 	iAddress VARCHAR(200),
 	iCity VARCHAR(30),
@@ -521,7 +522,7 @@ BEGIN
 	CALL getMaxIDByTB('Detachments',@NewID);
 	UPDATE Detachments
 	SET
-	ClientID=iClientID,RateID=iRateID,Name=iName,Address=iAddress,City=iCity,StartDate=iStartDate,EndDate=iEndDate,Status=iStatus
+	ClientID=iClientID,Name=iName,Address=iAddress,City=iCity,StartDate=iStartDate,EndDate=iEndDate,Status=iStatus
 	WHERE
 	Code = iCode;
 END $$
@@ -545,7 +546,6 @@ BEGIN
 
 END $$
 #CALL addDetachmentCP(ClientID,Suffix,LastName,FirstName,MiddleName,Landline,MobileNo,BirthDate);
-
 
 CREATE PROCEDURE updateDetachmentCP(	
 	iID INT,
@@ -730,7 +730,7 @@ END $$
 
 #SSS Loans
 
-CREATE PROCEDURE addSSSLoan(	
+CREATE PROCEDURE addSSSLoan(
 	FieldEmpID INT,
 	Amount DECIMAL(10,2),
 	MonthlyPay DECIMAL(10,2))
@@ -759,7 +759,7 @@ CREATE PROCEDURE deleteSSSLoan(
 	iID INT,
 	iFieldEmpID INT)
 BEGIN
-	DELETE SSSLoans
+	DELETE FROM SSSLoans
 	WHERE
 	ID = iID AND FieldEmpID = iFieldEmpID;
 END $$
@@ -796,7 +796,7 @@ CREATE PROCEDURE deleteCalamityLoan(
 	iID INT,
 	iFieldEmpID INT)
 BEGIN
-	DELETE PagibigCalamityLoans
+	DELETE FROM PagibigCalamityLoans
 	WHERE
 	ID = iID AND FieldEmpID = iFieldEmpID;
 END $$
@@ -834,7 +834,7 @@ CREATE PROCEDURE deleteSalaryLoan(
 	iID INT,
 	iFieldEmpID INT)
 BEGIN
-	DELETE PagibigSalaryLoans
+	DELETE FROM PagibigSalaryLoans
 	WHERE
 	ID = iID AND FieldEmpID = iFieldEmpID;
 END $$
@@ -983,21 +983,11 @@ INSERT INTO ClientContactPersons
 VALUES
 (1,'Sr.','Person 2','Person 2','Person 1','(02)1234567','09121234567 / 09121234567','2000-01-20');
 
-####Inserting New Rate
-INSERT INTO Rates
-(RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate)
-VALUES
-('HR','PD','PD',40,50,50,30,40,35,35,20,60,40,'2013-06-01');
-INSERT INTO Rates
-(RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate)
-VALUES
-('HR','YE','YE',40,50,50,30,40,35,35,20,60,40,'2013-06-01');
-
 #Detachments
 INSERT INTO Detachments
-(ClientID,RateID,Code,Name,Address,City,StartDate,EndDate,Status)
+(ClientID,Code,Name,Address,City,StartDate,EndDate,Status)
 VALUES
-(1,1,'D000001','Test Test','Test Test','Test','2014-06-01','0000-00-00','Test');
+(1,'D000001','Test Test','Test Test','Test','2014-06-01','0000-00-00','Test');
 #DetachmentContactPersons
 INSERT INTO DetachmentContactPersons
 (DetachID,Suffix,LastName,FirstName,MiddleName,Landline,MobileNo,BirthDate)
@@ -1007,6 +997,16 @@ INSERT INTO DetachmentContactPersons
 (DetachID,Suffix,LastName,FirstName,MiddleName,Landline,MobileNo,BirthDate)
 VALUES
 (1,'Sr.','Person 2','Person 2','P.','(02)1234567','09121234567 / 09121234567','2000-01-20');
+
+####Inserting New Rate
+INSERT INTO Rates
+(DetachID,RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate)
+VALUES
+(1,'HR','PD','PD',40,50,50,30,40,35,35,20,60,40,'2013-06-01');
+INSERT INTO Rates
+(DetachID,RateType,HolidayType,IncentiveType,Regular,Overtime,NDifferential,ECOLA,ThirteenMonth,PhilHealth,PagibigPrem,Incentive,LegalHoliday,SpecialHoliday,EffectiveDate)
+VALUES
+(1,'HR','YE','YE',40,50,50,30,40,35,35,20,60,40,'2013-06-01');
 
 
 #######################   SAMPLE DATA   #####################
@@ -1025,9 +1025,9 @@ CALL addClient('Mc Donalds','Malate, Metro Manila','Quezon','(02)8154708');
 CALL addClientCP(2,'','Jamila','Nadine','ABCDEF','(02)1234567','09121234567 / 09121234567','2000-01-20');
 
 ####Inserting New Detachments
-CALL addDetachment(2,1,'Mc Donalds Valenzuela','McArthur Highway Marulas Valenzuela City','Valenzuela','2014-06-01','0000-00-00','Waiting');
-CALL addDetachment(2,1,'Mc Donalds Caloocan','Grace Park Caloocan City','Caloocan','2014-06-02','0000-00-00','Waiting');
-CALL addDetachment(2,1,'Mc Donalds SM North EDSA','Grace Park Caloocan City','Caloocan','2014-06-02','0000-00-00','Waiting');
+CALL addDetachment(2,'Mc Donalds Valenzuela','McArthur Highway Marulas Valenzuela City','Valenzuela','2014-06-01','0000-00-00','Waiting');
+CALL addDetachment(2,'Mc Donalds Caloocan','Grace Park Caloocan City','Caloocan','2014-06-02','0000-00-00','Waiting');
+CALL addDetachment(2,'Mc Donalds SM North EDSA','Grace Park Caloocan City','Caloocan','2014-06-02','0000-00-00','Waiting');
 
 ####Inserting New ContactPerson for Detachment
 
