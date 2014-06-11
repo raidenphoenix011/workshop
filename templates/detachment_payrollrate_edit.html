@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<div class="sidebar gradient">
+    <hr class='navline navline1'/>
+    <h2 class='navtitle'>CLIENT RECORDS</h2>
+    <hr class='navline'/>
+    
+    <div class='sidebar-menu'>
+        <h4>Client Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listClients') }}' class='opt2'>View Client</a></li>
+            <li class="nobullets"><a href='{{ url_for('addClient') }}' class='opt2'>Add New Client</a></li>
+        </ul> 
+        <h4>Detachment Information</h4>
+        <ul class="right">
+            <li class="nobullets"><a href='{{ url_for('listDetachments') }}' class='opt2'>View Detachment</a></li>
+        </ul> 
+    </div>
+
+</div>
+{% endblock sidebar %}
+
+
+{% block content %}
+<h1>Edit Payroll Rates</h1>
+<hr>
+<span style='float:right;'>Detachment Code: <b>{{ DE.Code }}</b></span>
+<br/>
+<h2>Detachment: {{ DE.Name }}</h2>
+<h3><a href='{{ url_for('viewClient', ID=Client.ID) }}'>{{ Client.Name }}</a></h3>
+
+<br/>
+
+    <form class='pure-form pure-form-aligned'>
+            
+        <table>
+            <tr>
+                <td><label>Effective Date: </label></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label>Rate type:</label></td>
+                <td>
+                    <select name="rate_type">
+                        <option value="H">Hourly</option>
+                        <option value="M">Monthly</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Regular: </label></td>
+                <td><input type='number' value=''/></td>
+            </tr>
+            <tr>
+                <td><label>OT: </label></td>
+                <td><input type='number' value=''/></td>
+            </tr>
+            <tr>
+                <td><label>Night differential: </label></td>
+                <td><input type='number' value=''/></td>
+            </tr>
+            <tr>
+                <td><label>ECOLA (daily): </label></td>
+                <td><input type='number' value=''/></td>
+            </tr>
+            <tr>
+                <td><label>Legal Holiday: </label></td>
+                <td><input type='number' value=''/></td>
+                <td><label>Mode of Release: </label></td>
+                <td>
+                    <select name="LH_MOR">
+                        <option value="PD">Pay Day</option>
+                        <option value="YE">Year End</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Special Holiday: </label></td>
+                <td><input type='number' value=''/></td>
+                <td><label>Mode of Release: </label></td>
+                <td>
+                    <select name="SH_MOR">
+                        <option value="PD">Pay Day</option>
+                        <option value="YE">Year End</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>5-days Incentive: </label></td>
+                <td><input type='number' value=''/></td>
+                <td><label>Mode of Release: </label></td>
+                <td>
+                    <select name="SH_MOR">
+                        <option value="PD">Pay Day</option>
+                        <option value="YE">Year End</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>13th Month: </label></td>
+                <td><input type='number' value=''/></td>
+            </tr>
+            <tr>
+                <td><label>Pag-ibig Premium: </label></td>
+                <td><input type='number' value=''/></td>
+            </tr>
+            <tr>
+                <td><label>PhilHealth Premium: </label></td>
+                <td><input type='number' value=''/></td>
+            </tr>
+        </table>
+        <input type='submit' value='Submit'>
+        <input type='reset' value='Reset'>
+    </form>
+ 
+    
+{% endblock content %}

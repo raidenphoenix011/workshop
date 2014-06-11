@@ -141,7 +141,9 @@ def addFieldEmployee(user=None):
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
-  
+
+# ---- CLIENTS -----
+
 @app.route('/clients', methods=['POST', 'GET'])
 def listClients(user=None):
   if 'usertype' in session:
@@ -203,8 +205,9 @@ def insertClient(user=None):
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
+# ---- END CLIENTS ----
 
-# CLIENT CONTACT PERSONS -------------------------
+# ---- CLIENT CONTACTS -----
 
 @app.route('/clients/get/<ID>/contacts/get/<ContactID>/edit', methods=['POST', 'GET'])
 def editClientContact(ID, ContactID, user=None):
@@ -266,6 +269,10 @@ def deleteClientContact(ID, ContactID, user=None):
       ClientContactPersonsDB.deleteContact(ContactID)
       flash('Contact Person successfully deleted.')
       return redirect(url_for('viewClient', ID=ID))
+    
+# ---- END CLIENT CONTACTS ----
+
+# ---- DETACHMENTS ----
 
 @app.route('/detachments/lists/', methods=['POST', 'GET'])
 def listDetachments(user=None):
@@ -286,11 +293,97 @@ def viewDetachment(ID, user=None):
       DE = DetachmentsDB.getDetachment(ID)
       ClientID = DE.ClientID
       Client = ClientsDB.getClient(ClientID)
-      return render_template('detachment_view.html', DE = DE, Client = Client, ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID), user=escape(session['user']))
+      ContactPersons = DetachmentContactPersonsDB.getDetachmentContactPersons(ID)
+
+      return render_template('detachment_view.html', DE=DE, Client=Client, ContactPersons=ContactPersons, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
+@app.route('/clients/get/<ID>/detachments/add/', methods=['POST', 'GET'])
+def addDetachment(ID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        Client = ClientsDB.getClient(ID)
+        return render_template('detachment_add.html', user=escape(session['user']), Client=Client)
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/get/<ID>/detachments/insert', methods=['POST', 'GET'])
+def insertDetachment(ID, user=None): 
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        if request.form['start']:
+            start = request.form['start']
+        else:
+            start = '0000-00-00'
+        detachment = Detachments.Detachments('0', ID, '0', request.form['name'], request.form['address'], request.form['city'], start, '0000-00-00', request.form['status'])
+        DetachmentsDB.insertDetachment(detachment)
+        ID = DetachmentsDB.getDetachmentID(detachment.Name)
+        flash('Detachment successfully added.')
+        return redirect(url_for('viewDetachment', ID=ID))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/clients/<ClientID>/detachments/get/<DetachID>/edit', methods=['POST', 'GET'])
+def editDetachment(ClientID, DetachID, user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        Client=ClientsDB.getClient(ClientID)
+        Detachment=DetachmentsDB.getDetachment(DetachID)
+        return render_template('detachment_edit.html', Client=Client, Detachment=Detachment)
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))    
+
+@app.route('/detachments/update', methods=['POST', 'GET'])
+def updateDetachment(user=None):
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+        if request.form['end_date']:
+          enddate = request.form['end_date']
+        else:
+          enddate = '0000-00-00'
+        detachment = Detachments.Detachments(request.form['ID'], request.form['client_ID'], request.form['code'], request.form['name'], request.form['address'], request.form['city'], request.form['start_date'], enddate, request.form['status'] )
+        DetachmentsDB.updateDetachment(detachment)
+        flash('Detachment information successfully updated.')
+        return redirect(url_for('viewDetachment', ID=detachment.ID))
+    else:
+        flash('Unauthorized access')
+        return redirect(url_for('logout'))
+
+# ---- END DETACHMENTS ----
+
+# ---- DETACHMENT CONTACT ----
+
+@app.route('/detachments/get/<DetachID>/contacts/add', methods=['POST', 'GET'])
+def addDetachmentContact(DetachID, user=None): 
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      return render_template('detachment_contact_add.html', Detachment = DetachmentsDB.getDetachment(DetachID), user=escape(session['user']))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+
+@app.route('/detachments/contacts/insert', methods=['POST', 'GET'])
+def insertDetachmentContact(user=None): 
+  if 'usertype' in session:
+    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
+      if request.form['birthdate']:
+        birthdate = request.form['birthdate']
+      else:
+        birthdate = '0000-00-00'
+      contact = DetachmentContactPersons.DetachmentContactPersons('0', request.form['detachid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], birthdate)
+      DetachmentContactPersonsDB.insertContact(contact)
+      detachID = contact.DetachID
+      flash('Contact successfully added.')
+      return redirect(url_for('viewDetachment', ID=detachID))
+    else:
+      flash('Unauthorized access')
+      return redirect(url_for('logout'))
+ 
 @app.route('/detachments/get/<DetachID>/contacts/get/<ContactID>/edit', methods=['POST', 'GET'])
 def editDetachmentContact(DetachID, ContactID, user=None):
   if 'usertype' in session:
@@ -325,87 +418,26 @@ def deleteDetachmentContact(ID, ContactID, user=None):
       DetachmentContactPersonsDB.deleteContact(ContactID)
       flash('Contact Person successfully deleted.')
       return redirect(url_for('viewDetachment', ID=ID))
-
-@app.route('/clients/get/<ID>/detachments/add/', methods=['POST', 'GET'])
-def addDetachment(ID, user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        Client = ClientsDB.getClient(ID)
-        return render_template('detachment_add.html', user=escape(session['user']), Client=Client)
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-
-@app.route('/clients/get/<ID>/detachments/insert', methods=['POST', 'GET'])
-def insertDetachment(ID, user=None): 
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        if request.form['start']:
-            start = request.form['start']
-        else:
-            start = '0000-00-00'
-        detachment = Detachments.Detachments('0', ID, '1', '0', request.form['name'], request.form['address'], request.form['city'], start, '0000-00-00', request.form['status'])
-        DetachmentsDB.insertDetachment(detachment)
-        ID = DetachmentsDB.getDetachmentID(detachment.Name)
-        flash('Detachment successfully added.')
-        return redirect(url_for('viewDetachment', ID=ID))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
-
-@app.route('/clients/<ClientID>/detachments/get/<DetachID>/edit', methods=['POST', 'GET'])
-def editDetachment(ClientID, DetachID, user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        Client=ClientsDB.getClient(ClientID)
-        Detachment=DetachmentsDB.getDetachment(DetachID)
-        return render_template('detachment_edit.html', Client=Client, Detachment=Detachment)
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))    
-
-@app.route('/detachments/update', methods=['POST', 'GET'])
-def updateDetachment(user=None):
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-        if request.form['end_date']:
-          enddate = request.form['end_date']
-        else:
-          enddate = '0000-00-00'
-        detachment = Detachments.Detachments(request.form['ID'], request.form['client_ID'], '1', request.form['code'], request.form['name'], request.form['address'], request.form['city'], request.form['start_date'], enddate, request.form['status'] )
-        DetachmentsDB.updateDetachment(detachment)
-        flash('Detachment information successfully updated.')
-        return redirect(url_for('viewDetachment', ID=detachment.ID))
-    else:
-        flash('Unauthorized access')
-        return redirect(url_for('logout'))
     
-@app.route('/detachments/get/<DetachID>/contacts/add', methods=['POST', 'GET'])
-def addDetachmentContact(DetachID, user=None): 
+# ---- END DETACHMENT CONTACT ----
+
+@app.route('/detachments/get/<DetachID>/rates/get/<RateID>/edit', methods=['POST', 'GET'])
+def editRates(DetachID, RateID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      return render_template('detachment_contact_add.html', Detachment = DetachmentsDB.getDetachment(DetachID), user=escape(session['user']))
+        Detachment=DetachmentsDB.getDetachment(DetachID)
+        Rate=RatesDB.getRate(RateID)
+        return render_template('detachment_payrollrate_edit.html', Detachment=Detachment, Rate=Rate)
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/detachments/contacts/insert', methods=['POST', 'GET'])
-def insertDetachmentContact(user=None): 
-  if 'usertype' in session:
-    if session['usertype'] == 'BiO' or session['usertype'] == 'ADM':
-      if request.form['birthdate']:
-        birthdate = request.form['birthdate']
-      else:
-        birthdate = '0000-00-00'
-      contact = DetachmentContactPersons.DetachmentContactPersons('0', request.form['detachid'], request.form['suffix'], request.form['lastname'], request.form['firstname'], request.form['middlename'], request.form['landline'], request.form['mobile'], birthdate)
-      DetachmentContactPersonsDB.insertContact(contact)
-      detachID = contact.DetachID
-      flash('Contact successfully added.')
-      return redirect(url_for('viewDetachment', ID=detachID))
-    else:
-      flash('Unauthorized access')
-      return redirect(url_for('logout'))
- 
+# ---- DETACHMENT RATES ----
+
+
+
+# ---- END DETACHMENT RATES ----
+
 @app.route('/manhours/detachments/get/id/add', methods=['POST', 'GET'])
 def addManhour(user=None):
   if 'usertype' in session:
