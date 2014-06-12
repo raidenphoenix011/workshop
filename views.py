@@ -459,24 +459,24 @@ def viewPayables(user=None):
 def viewLoansSSS(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BeO' or session['usertype'] == 'ADM':
-
-#      listDE = db.getAllDetachments()
-#      for DE in listDE:
-#        DE.setClientName(DE.ClientID)
-#      return render_template('detachment_search.html', DEs = listDE, user=escape(session['user']))
-     listSSS = db.getAllSSSLoans()
-     for SSS in listSSS:
-        SSS.setFEName(SSS.FieldEmpID) 
-        return render_template('loan_SSS.html', SSSs = listSSS, user=escape(session['user']))
+      if request.method == 'POST':
+        #need to validate input first
+        SSSLoansDB.addSSSLoan(request.form['id-field'], request.form['loan-field'], request.form['monthly-field'])
+        flash("Loan has been added")
+      listSSS = SSSLoansDB.getAllSSSLoans()
+      for SSS in listSSS:
+        SSS.setFEName(SSS.FieldEmpID)
+      return render_template('loan_SSS.html', SSSs = listSSS, EEs=FieldEmployeesDB.getAllFieldEmployees(), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/benefits/SSS/<ID>', methods=['POST', 'GET'])
+@app.route('/benefits/SSS/<ID>', methods=['POST'])
 def deleteLoansSSS(ID, user=None):
   if 'usertype' in session:
     if session['usertype'] == 'BeO' or session['usertype'] == 'ADM':
-      return redirect(url_for('viewLoanSSS'))
+      SSSLoansDB.deleteSSSLoan(ID)
+      return redirect(url_for('viewLoansSSS'))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))  

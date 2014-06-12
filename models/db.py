@@ -38,3 +38,8 @@ def SubList2(tableName, foreignKey1, value1, foreignKey2, value2):
     sql = "SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'" % (tableName, foreignKey1, value1, foreignKey2, value2)
     res = getAll(sql)
     return res
+
+def delete(tableName, ID):
+    sql = "DELETE FROM %s WHERE ID = '%s'" % (tableName, ID)
+    res = get(sql)
+    return res
