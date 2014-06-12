@@ -7,17 +7,17 @@ def getManHourLogs():
     ManHourLogsList = []
     for row in res:
         if row is not None:
-            ManHourLog = ManHourLogs.ManHourLogs( int(row[0]), int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row[7]), int(row[8]), str(row[9]), str(row[10]) )
+            ManHourLog = ManHourLogs.ManHourLogs( int(row[0]), int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row[7]), int(row[8]), str(row[9]), str(row[10]), str(row[11]), str(row[12]) )
             ManHourLogsList.append(ManHourLog)
             row = db.cur.fetchone()
     return ManHourLogsList
 
-def getLog(val1):
-    res = db.SubList("ManHourLogs", "DetachID", val1)
+def getLog(val):
+    res = db.SubListByPeriod("ManHourLogs", "DetachID", val)  
     ManHourLogsList = []
     for row in res:
         if row is not None:
-            ManHourLog = ManHourLogs.ManHourLogs( int(row[0]), int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row[7]), int(row[8]), str(row[9]), str(row[10]) )
+            ManHourLog = ManHourLogs.ManHourLogs( int(row[0]), int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row[7]), int(row[8]), str(row[9]), str(row[10]), str(row[11]), str(row[12]))
             ManHourLogsList.append(ManHourLog)
             row = db.cur.fetchone()
     return ManHourLogsList
@@ -27,7 +27,17 @@ def getLog2(val1, val2):
     ManHourLogsList = []
     for row in res:
         if row is not None:
-            ManHourLog = ManHourLogs.ManHourLogs( int(row[0]), int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row[7]), int(row[8]), str(row[9]), str(row[10]) )
+            ManHourLog = ManHourLogs.ManHourLogs( int(row[0]), int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row[7]), int(row[8]), str(row[9]), str(row[10]), str(row[11]), str(row[12]) )
+            ManHourLogsList.append(ManHourLog)
+            row = db.cur.fetchone()
+    return ManHourLogsList
+
+def getLogByPeriod(val1, val2):
+    res = db.SubListByPeriod("ManHourLogs", "DetachID", val1, "PeriodCode", val2)
+    ManHourLogsList = []
+    for row in res:
+        if row is not None:
+            ManHourLog = ManHourLogs.ManHourLogs( int(row[0]), int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row[7]), int(row[8]), str(row[9]), str(row[10]), str(row[11]), str(row[12]) )
             ManHourLogsList.append(ManHourLog)
             row = db.cur.fetchone()
     return ManHourLogsList

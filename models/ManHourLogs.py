@@ -2,7 +2,7 @@ import db
 
 class ManHourLogs(object):
     
-    def __init__(self, ID, DetachID, FieldEmpID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, DateCreated, PeriodCode):
+    def __init__(self, ID, DetachID, FieldEmpID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, DateCreated, StartDate, EndDate, PeriodCode):
         self.ID = ID
         self.DetachID = DetachID
         self.FieldEmpID = FieldEmpID
@@ -13,7 +13,10 @@ class ManHourLogs(object):
         self.LegHolidayHours = LegHolidayHours
         self.SpeHolidayHours = SpeHolidayHours
         self.DateCreated = DateCreated
+        self.StartDate = StartDate
+        self.EndDate = EndDate
         self.PeriodCode = PeriodCode
+        
     
     def save(self):
         sql = "insert into ManHourLogs (ID, DetachID, FieldEmpID, NoOfFullDays, NightHours, RegHours, OTHours, LegHolidayHours, SpeHolidayHours, DateCreated, PeriodCode) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"

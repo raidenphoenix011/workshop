@@ -39,6 +39,11 @@ def SubList2(tableName, foreignKey1, value1, foreignKey2, value2):
     res = getAll(sql)
     return res
 
+def SubListByPeriod(tableName, foreignKey, value):
+    sql = "SELECT * FROM %s WHERE %s = '%s' GROUP BY PeriodCode" % (tableName, foreignKey, value)
+    res = getAll(sql)
+    return res
+
 def delete(tableName, ID):
     sql = "DELETE FROM %s WHERE ID = '%s'" % (tableName, ID)
     res = get(sql)
