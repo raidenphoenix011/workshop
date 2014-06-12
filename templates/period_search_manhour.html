@@ -23,8 +23,7 @@
 <h1>Manhour Records</h1>
 <hr>
 
-
-<center><h2> {{ Detachment.Name }} </h2></center>
+<center><h2> {{ DE.Name }} </h2></center>
 
 <br/>
 <div id="periods">
@@ -37,26 +36,24 @@
   </form></center>
   <br/>
     <center>
-  <table class='search-results pure-table'>
-    <thead>
-      <tr>
-        <th class="sort" data-sort="period">Period</th>
-        <th class="sort" data-sort="start">Start Date</th>
-	<th class="sort" data-sort="end">End Date</th>
-      </tr>
-    </thead>
-
-    <tbody class="list">
-      {% for M in MH %}
-      <tr>
-         <td class="period"><a href='{{ url_for('manhour', ID=Detachment.ID, Code=M.PeriodCode) }}'>{{ M.PeriodCode }}</a></td>
-         <td class="start">Start Date</td>
-	       <td class="end">End Date</td>
-      </tr>
-      {% endfor %}
-
-    </tbody>
-  </table>
+    <table class='search-results pure-table'>
+	<thead>
+	    <tr>
+		<th class="sort" data-sort="period">Period</th>
+		<th class="sort" data-sort="start">Start Date</th>
+		<th class="sort" data-sort="end">End Date</th>
+	    </tr>
+	</thead>
+	<tbody class="list">
+	   {% for M in MH %}
+	    <tr>
+	        <td class="period"><a href='{{ url_for('manhour', ID=DE.ID, Code=M.PeriodCode) }}'>{{ M.PeriodCode }}</a></td>
+	        <td class="start">Start Date</td>
+		<td class="end">End Date</td>
+	    </tr>
+	   {% endfor %}
+	</tbody>
+    </table>
 </div>
 </center>
 

@@ -20,147 +20,101 @@
 {% endblock sidebar %}
 
 {% block content %}
-
 <h1>SSS Loans</h1>
 <hr>
-
-
-<br/>
-
-<br/><br/>
-
-    <div id="employees">
-    <form class='pure-form'>
-        <label>Search: </label><input type="text" class="search" placeholder="" id='search_employee' />
-        <br/><br/>
-        <table class='pure-table'>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th class="sort" data-sort="name">Name</th>
-            <th class="sort" data-sort="loan">Principal Loan</th>
-            <th class="sort" data-sort="payment">Monthly Payment</th>
-            <th class="sort" data-sort="balance">Balance</th>
-            <th class="sort" data-sort="datecreated">DateCreated</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody class="list">
-          <tr>
-            <td class="id" style="display:none;">1</td>
-            <td>1</td>
-            {% for SSS in SSSs %}
-            <td class="name" >{{ SSS.FieldEmpName }}</td>
-            <td class="loan">{{ SSS.Amount }}</td>
-            <td class="payment">{{ SSS.MonthlyPay }} </td>
-            <td class="balance"> {{ SSS.Balance }} </td>
-            <td class="datecreated"> {{ SSS.DateCreated }} </td>
-            <td class="remove"><a class='button' href=''>Remove</a></td>
-            {% endfor %}
-          </tr>
-          </tr>
-        </tbody>
-      </table>
-      <br/>
+<h4><span class="employee-name">&nbsp;</span></h4>
+  <div id="employees2">
+    <form class='pure-form' method='post' action="{{ url_for('viewLoansSSS') }}">
       <table>
-        <td class="name">
-          <input type="hidden" id="contact_id-field" />
-          <input type="text" id="name-field" placeholder="employee name" />
-        </td>
+        <td class="code">
+        <input type="text" id="code-field" name="code-field" class="search pure-input-2-3" placeholder="Employee code" autofocus />
+        <input type="hidden" id="id-field" name="id-field" placeholder="Employee ID" /></td>
         <td class="loan">
-          <input type="text" id="loan-field" placeholder="principal loan" />
+        <input type="text" id="loan-field" name="loan-field" placeholder="Principal loan" />
         </td>
         <td class="payment">
-          <input type="text" id="number-field" placeholder="monthly payment" />
+          <input type="text" id="monthly-field" name="monthly-field" placeholder="Monthly payment" />
         </td>
         <td class="add">
-          <button id="add-btn" class="pure-button">Add to Loans</button>
+          <button id="add-btn" type="submit" class="pure-button">Add to Loans</button>
         </td>
       </table>
     </form>
-    </div>
+
+    <ul class="list list1">
+      <p>will hide this later and show only when searched</p>
+      {% for EE in EEs %}
+      <li class="nobullets">
+        <p class="name"><a class="pure-button" href="#">{{ EE.LastName }}, {{ EE.FirstName}}</a></p>
+        <p class="code" style="display:none;">{{ EE.FECode }}</p>
+        <p class="id" style="display:none;">{{ EE.ID }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <br/>
+  <br/>
+
+  <div id="employees">
+  <label>Search: </label>
+  <input type="text" class="search pure-input-2-3" placeholder="" id='search_employee' />
+  <br/><br/>
+  <table class='pure-table'>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th class="sort" data-sort="name">Name</th>
+      <th class="sort" data-sort="loan">Principal Loan</th>
+      <th class="sort" data-sort="payment">Monthly Payment</th>
+      <th class="sort" data-sort="balance">Balance</th>
+      <th class="sort" data-sort="datecreated">DateCreated</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class="list">
+    {% for SSS in SSSs %}
+      <tr>
+        <td class="id">{{ SSS.ID }}</td>
+        <td class="name" >{{ SSS.FieldEmpName }}</td>
+        <td class="loan">{{ SSS.Amount }}</td>
+        <td class="payment">{{ SSS.MonthlyPay }} </td>
+        <td class="balance"> {{ SSS.Balance }} </td>
+        <td class="datecreated"> {{ SSS.DateCreated }} </td>
+        <form method="POST" action='{{ url_for('deleteLoansSSS', ID=SSS.ID) }}'>
+        <td class="remove"><button class='pure-button' type="submit">Remove</button></td>
+        </form>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br/>
+</div>
 
 <br/>
 
-<!-------SCRIPT FOR ListJS search detachment ------>
+<!-- SCRIPT FOR ListJS search contact  -->
 <script>
+var options2 = {
+  valueNames: [ 'code' ]
+};
+// Init list
+var employeeList = new List('employees2', options2);
+<!-- SCRIPT FOR ListJS search detachment  -->
 var options = {
   valueNames: [ 'id', 'name', 'loan', 'payment', 'balance' ]
 };
-
 // Init list
 var employeeList = new List('employees', options);
-
-var idField = $('#id-field'),
-    nameField = $('#name-field'),
-    loanField = $('#loan-field'),
-    paymentField = $('#payment-field'),
-    balanceField = $('#balance-field');
 </script>
-
-<!------SCRIPT FOR ListJS search contact ------->
 <script>
-var options2 = {
-  valueNames: [ 'id', 'name', 'position', 'number' ]
-};
-
-// Init list
-var employeeList = new List('employees', options2);
-
-var contact_idField = $('#contact_id-field'),
-    contact_nameField = $('#contact_name-field'),
-    positionField = $('#position-field'),
-    numberField = $('#number-field'),
-    addBtn = $('#add-btn'),
-    editBtn = $('#edit-btn').hide(),
-    removeBtns = $('.remove-item-btn'),
-    editBtns = $('.edit-item-btn');
-
-// Sets callbacks to the buttons in the list
-refreshCallbacks();
-
-addBtn.click(function() {
-  contactList.add({
-    contact_id: Math.floor(Math.random()*110000),
-    contact_name: contact_nameField.val(),
-    position: positionField.val(),
-    number: numberField.val()
+$( document ).ready(function() {
+  $(".name").click(function() {
+    $(".employee-name").html($(this).children().html());
+    $("#code-field").val($(this).next().html());
+    $("#id-field").val($(this).next().next().html());
+    $(".list1").hide('fast');
   });
-  clearFields();
-  refreshCallbacks();
 });
-
-editBtn.click(function() {
-  var item = contactList.get('contact_id', contact_idField.val())[0];
-  item.values({
-    contact_id:contact_idField.val(),
-    contact_name: contact_nameField.val(),
-    position: positionField.val(),
-    number: numberField.val()
-  });
-  clearFields();
-  editBtn.hide();
-  addBtn.show();
-});
-
-function refreshCallbacks() {
-  // Needed to add new buttons to jQuery-extended object
-  removeBtns = $(removeBtns.selector);
-  editBtns = $(editBtns.selector);
-  
-  removeBtns.click(function() {
-    var itemId = $(this).closest('tr').find('.contact_id').text();
-    contactList.remove('contact_id', itemId);
-  });
-  
-}
-
-function clearFields() {
-  contact_nameField.val('');
-  positionField.val('');
-  numberField.val('');
-}    
-</script>    
-
-    
+</script>
 {% endblock content %}
