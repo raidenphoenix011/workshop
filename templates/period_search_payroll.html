@@ -44,26 +44,13 @@
     </thead>
 
     <tbody class="list">
+         {% for MH in pMH %}
       <tr>
-        <td class="period"><a href='{{ url_for('viewPayrollRoster') }}'>0114</a></td>
-        <td class="start">Jan. 1, 2014</td>
-	<td class="end">Jan. 15, 2014</td>
+        <td class="period"><a href='{{ url_for('viewPayrollRoster', ID=pDE.ID, Code=MH.PeriodCode) }}'>{{ MH.PeriodCode }}</a></td>
+        <td class="start">{{ MH.StartDate }}</td>
+        <td class="end">{{ MH.EndDate }}</td>
       </tr>
-      <tr>
-        <td class="period">0214</td>
-        <td class="start">Jan. 16, 2014</td>
-	<td class="end">Jan. 31, 2014</td>
-      </tr>
-      <tr>
-        <td class="period">0314</td>
-        <td class="start">Feb. 1, 2014</td>
-	<td class="end">Feb. 15, 2014</td>
-      </tr>
-      <tr>
-        <td class="period">0414</td>
-        <td class="start">Feb. 16, 2014</td>
-	<td class="end">Feb. 28, 2014</td>
-      </tr>
+       {% endfor %}
     </tbody>
   </table>
 </div>

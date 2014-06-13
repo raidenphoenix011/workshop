@@ -34,7 +34,7 @@
             <table class='search-results pure-table'>
               <thead>
                 <tr>
-                  <th class="sort" data-sort="code">Company</th>
+                  <th class="sort" data-sort="code">Code</th>
                   <th class="sort" data-sort="name">Detachment Name</th>
                   <th class="sort" data-sort="city">City</th>
                   <th class="sort" data-sort="client">Company</th>
@@ -43,38 +43,16 @@
               </thead>
           
               <tbody class="list">
+                 {% for pDE in pDEs %}
                 <tr>
                   <td class="id" style="display:none;">1</td>
-                  <td class="code">D001234</td>
-                  <td class="name"><a href='{{ url_for('viewPeriodsPayroll') }}'>McDonalds Valenzuela</a></td>
-                  <td class="city">Quezon City</td>
-                  <td class="client">Accenture</td>
-                  <td class="status">Active</td>
+                  <td class="code">{{ pDE.Code }}</td>
+                  <td class="name"><a href='{{ url_for('viewPeriodsPayroll',ID=pDE.ID)}}'>{{ pDE.Name }}</a></td>
+                  <td class="city">{{ pDE.City }}</td>
+                  <td class="client">{{ pDE.ClientID }}</td>
+                  <td class="status">{{ pDE.Status }}</td>
                 </tr>
-                <tr>
-                  <td class="id" style="display:none;">2</td>
-                  <td class="code">D004354</td>
-                  <td class="name">Accenture Global One</td>
-                  <td class="city">Taguig</td>
-                  <td class="client">Accenture</td>
-                  <td class="status">Active</td>
-                </tr>
-                <tr>
-                  <td class="id" style="display:none;">3</td>
-                  <td class="code">D004354</td>
-                  <td class="name">Science Hub</td>
-                  <td class="city">Makati</td>
-                  <td class="client">Accenture</td>
-                  <td class="status">Pending</td>
-                </tr>
-                <tr>
-                  <td class="id" style="display:none;">4</td>
-                  <td class="code">D003245</td>
-                  <td class="name">Gateway</td>
-                  <td class="city">Quezon City</td>
-                  <td class="client">Accenture</td>
-                  <td class="status">Terminated</td>
-                </tr>
+                 {% endfor %}
               </tbody>
             </table>
         </div>

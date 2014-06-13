@@ -443,7 +443,7 @@ def listDetachmentsManhour(user=None):
 def listDetachmentsPayroll(user=None):
   if 'usertype' in session:
     if session['usertype'] == 'PrO' or session['usertype'] == 'ADM':
-      return render_template('detachment_search_payroll.html', user=escape(session['user']))
+      return render_template('detachment_search_payroll.html', pDEs = DetachmentsDB.getAllDetachments(), user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
@@ -486,22 +486,29 @@ def viewPeriodsManhour(ID, user=None):
       return redirect(url_for('logout'))
 
 @app.route('/payroll/detachments/get/<ID>/records', methods=['POST', 'GET'])
-def viewPeriodsPayroll(user=None):
+def viewPeriodsPayroll(ID,user=None):
   if 'usertype' in session:
     if session['usertype'] == 'PrO' or session['usertype'] == 'ADM':
-      return render_template('period_search_payroll.html', view='payroll', user=escape(session['user']))
+      pDE = DetachmentsDB.getDetachment(ID)
+      pMH = ManHourLogsDB.getLog(ID)
+      return render_template('period_search_payroll.html',pDE=pDE, pMH=pMH, user=escape(session['user']))
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
 
-@app.route('/payroll/detachments/get/ID/records/Period', methods=['POST', 'GET'])
-def viewPayrollRoster(user=None):
+@app.route('/payroll/detachments/get/<ID>/<Code>/records/', methods=['POST', 'GET'])
+def viewPayrollRoster(ID,Code,user=None):
   if 'usertype' in session:
     if session['usertype'] == 'PrO' or session['usertype'] == 'ADM':
-      return render_template('payroll_roster.html', user=escape(session['user']))
+        Detachment = DetachmentsDB.getDetachment(ID)
+        Logs=ManHourLogsDB.getLog2(ID, Code)
+        Period = Logs[0].PeriodCode           
+        return render_template('payroll_roster.html', Logs=Logs, Detachment=Detachment, Period=Period, user=escape(session['user']),dept='manhour')
+
     else:
       flash('Unauthorized access')
       return redirect(url_for('logout'))
+
 
 #PAYABLES ----TO BE ADDED ------
 

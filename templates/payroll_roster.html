@@ -24,28 +24,26 @@
     <h1>Payroll Roster</h1>
     <hr>
         
-<h2>Period: 0114 </h2>
-<h2>Detachment: Mc Donalds Valenzuela</h2>
+<h2>Period Code: {{ Logs.PeriodCode}} </h2>
+<h2>Detachment: {{ Detachment.Name}} </h2>
 
 <table class='pure-table'>
-    <tr>
-        <th></th>
-        <th>Name</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>
-            <a href='{{ url_for('viewPayroll') }}'>Guard1</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            2
-        </td>
-        <td>
-            <a href='{{ url_for('viewPayroll') }}'>Guard2</a>
-        </td>
-    </tr>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for L in Logs %}
+        <tr>
+            <td></td>
+            <td>
+                <a href='{{ url_for('viewPayroll') }}'>{{ L.FieldEmpID}}</a>
+            </td>
+        </tr>
+    </tbody>
+    {% endfor %}
 </table>
 <br/>
 <form method='link' action='{{ url_for('viewPayrollRoster') }}'>
