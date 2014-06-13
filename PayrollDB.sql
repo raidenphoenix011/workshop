@@ -217,22 +217,24 @@ FOREIGN KEY (FieldEmpID) REFERENCES FieldEmployees(ID)
 CREATE TABLE PayrollRecord (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 MHLogID INT NOT NULL,
-UniDepoID INT NOT NULL,
-Regular DECIMAL(10,2) NOT NULL,
-Overtime DECIMAL(10,2) NOT NULL,
-NDifferential DECIMAL(10,2) NOT NULL,
-ECOLA DECIMAL(10,2) NOT NULL,
-LegalHoliday DECIMAL(10,2) NOT NULL,
-SpecialHoliday DECIMAL(10,2) NOT NULL,
-Allowance DECIMAL(10,2) NOT NULL,
-SSSCon DECIMAL(10,2) NOT NULL,
-SSSLoan DECIMAL(10,2) NOT NULL,
-CalamityLoan DECIMAL(10,2) NOT NULL,
-SalaryLoan DECIMAL(10,2) NOT NULL,
-PersonalPayable DECIMAL(10,2) NOT NULL,
-NetPays DECIMAL(10,2) NOT NULL,
-FOREIGN KEY (MHLogID) REFERENCES ManHourLogs(ID),
-FOREIGN KEY (UniDepoID) REFERENCES UniformDeposits(ID)
+Regular DECIMAL(10,2),
+Overtime DECIMAL(10,2),
+NDifferential DECIMAL(10,2),
+ECOLA DECIMAL(10,2),
+LegalHoliday DECIMAL(10,2),
+SpecialHoliday DECIMAL(10,2),
+Allowance DECIMAL(10,2),
+SSSCon DECIMAL(10,2),
+SSSLoan DECIMAL(10,2),
+CalamityLoan DECIMAL(10,2),
+SalaryLoan DECIMAL(10,2),
+Cashbond DECIMAL(10,2),
+UniformDepo DECIMAL(10,2),
+CholFee DECIMAL(10,2),
+FileFee DECIMAL(10,2),
+PersonalPayable DECIMAL(10,2),
+NetPays DECIMAL(10,2),
+FOREIGN KEY (MHLogID) REFERENCES ManHourLogs(ID)
 );
 
 CREATE TABLE Receivables (
@@ -1050,9 +1052,15 @@ CALL addAllowance(2,2,650,'Active');
 CALL addAuthManHour(2,10,2,3,'2014-06-01');
 
 ####ManHourLogs
-
-CALL addManHour(2,3,13,0,104,52,0,0,'1114');
-CALL addManHour(2,4,13,0,104,52,0,0,'1114');
+#1st cutoff
+CALL addManHour(2,3,13,0,104,52,0,0,'2014-01-01','2014-01-15','0114');
+CALL addManHour(2,4,13,0,104,52,0,0,'2014-01-01','2014-01-15','0114');
+#2nd cutoff
+CALL addManHour(2,3,13,0,104,52,0,0,'2014-01-16','2014-01-30','0214');
+CALL addManHour(2,4,13,0,104,52,0,0,'2014-01-16','2014-01-30','0214');
+#1st cutoff - not yet record in payroll
+CALL addManHour(2,3,13,0,104,52,0,0,'2014-02-01','2014-02-15','0314');
+CALL addManHour(2,4,13,0,104,52,0,0,'2014-02-01','2014-02-15','0314');
 
 ####PersonalPayables
 CALL addPersonalPayable(3,'Payable',150,'1114');
@@ -1075,16 +1083,28 @@ CALL addCalamityLoan(4,10000,120);
 CALL addSalaryLoan(4,10000,120);
 
 ####PayrollRecord
-# Field EmpID No 3
+# Field EmpID No 3 - 1st Cut Off
 INSERT INTO PayrollRecord
-(MHLogID,UniDepoID,Allowance,Regular,Overtime,NDifferential,ECOLA,LegalHoliday,SpecialHoliday,SSSCon,SSSLoan,CalamityLoan,SalaryLoan,PersonalPayable,NetPays)
+(MHLogID,Allowance,Regular,Overtime,NDifferential,ECOLA,LegalHoliday,SpecialHoliday,SSSCon,SSSLoan,CalamityLoan,SalaryLoan,Cashbond,UniformDepo,CholFee,FileFee,PersonalPayable,NetPays)
 VALUES
-(1,2,0,4160,2600,0,390,0,0,233.30,0,0,0,0,6742);
-# Field EmpID No 4
+(1,0,4160,2600,0,390,0,0,233.30,0,0,0,100,175,0,0,0,6641.7);
+# Field EmpID No 4 - 1st Cut Off
 INSERT INTO PayrollRecord
-(MHLogID,UniDepoID,Allowance,Regular,Overtime,NDifferential,ECOLA,LegalHoliday,SpecialHoliday,SSSCon,SSSLoan,CalamityLoan,SalaryLoan,PersonalPayable,NetPays)
+(MHLogID,Allowance,Regular,Overtime,NDifferential,ECOLA,LegalHoliday,SpecialHoliday,SSSCon,SSSLoan,CalamityLoan,SalaryLoan,Cashbond,UniformDepo,CholFee,FileFee,PersonalPayable,NetPays)
 VALUES
-(1,3,0,4160,2600,0,390,0,0,233.30,120,120,120,360,6742);
+(2,0,4160,2600,0,390,0,0,233.30,0,0,0,100,175,0,0,0,6641.7);
+
+# Field EmpID No 3 - 2nd Cut Off
+INSERT INTO PayrollRecord
+(MHLogID,Allowance,Regular,Overtime,NDifferential,ECOLA,LegalHoliday,SpecialHoliday,SSSCon,SSSLoan,CalamityLoan,SalaryLoan,Cashbond,UniformDepo,CholFee,FileFee,PersonalPayable,NetPays)
+VALUES
+(2,0,4160,2600,0,390,0,0,233.30,0,0,0,100,175,0,0,0,6641.7);
+# Field EmpID No 4 - 2nd Cut Off
+INSERT INTO PayrollRecord
+(MHLogID,Allowance,Regular,Overtime,NDifferential,ECOLA,LegalHoliday,SpecialHoliday,SSSCon,SSSLoan,CalamityLoan,SalaryLoan,Cashbond,UniformDepo,CholFee,FileFee,PersonalPayable,NetPays)
+VALUES
+(4,0,4160,2600,0,390,0,0,233.30,120,120,120,100,175,0,0,360,5921.7);
+
 
 #DROP USER 'AdminPayroll';
 
