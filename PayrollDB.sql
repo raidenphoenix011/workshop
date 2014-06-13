@@ -170,9 +170,9 @@ EffectiveYear YEAR NOT NULL
 CREATE TABLE PersonalPayables (
 ID INT AUTO_INCREMENT PRIMARY KEY,
 FieldEmpID INT NOT NULL,
-Type VARCHAR(30) NOT NULL,
-Amount DECIMAL(10,2) NOT NULL,
-PeriodCode INT(4) NOT NULL,
+Type VARCHAR(30),
+Amount DECIMAL(10,2),
+PeriodCode INT(4),
 DateCreated DATE NOT NULL,
 FOREIGN KEY (FieldEmpID) REFERENCES FieldEmployees(ID)
 );
@@ -640,12 +640,14 @@ CREATE PROCEDURE addManHour(
 	OTHours INT(5),
 	LegHolidayHours INT(5),
 	SpeHolidayHours INT(5),
+	StartDate DATE,
+	EndDate DATE,
 	PeriodCode VARCHAR(4))
 BEGIN	
 	INSERT INTO ManHourLogs
-	(DetachID,FieldEmpID,NoOfFullDays,NightHours,RegHours,OTHours,LegHolidayHours,SpeHolidayHours,DateCreated,PeriodCode)
+	(DetachID,FieldEmpID,NoOfFullDays,NightHours,RegHours,OTHours,LegHolidayHours,SpeHolidayHours,DateCreated,StartDate,EndDate,PeriodCode)
 	VALUES
-	(DetachID,FieldEmpID,NoOfFullDays,NightHours,RegHours,OTHours,LegHolidayHours,SpeHolidayHours,CURDATE(),PeriodCode);
+	(DetachID,FieldEmpID,NoOfFullDays,NightHours,RegHours,OTHours,LegHolidayHours,SpeHolidayHours,CURDATE(),StartDate,EndDate,PeriodCode);
 
 END $$
 #CALL addManHour(DetachID,FieldEmpID,NoOfFullDays,NightHours,RegHours,OTHours,LegHolidayHours,SpeHolidayHours,PeriodCode);
@@ -660,11 +662,13 @@ CREATE PROCEDURE updateManHour(
 	iOTHours INT(5),
 	iLegHolidayHours INT(5),
 	iSpeHolidayHours INT(5),
+	iStartDate DATE,
+	iEndDate DATE,
 	iPeriodCode VARCHAR(4))
 BEGIN	
 	UPDATE ManHourLogs
 	SET
-	DetachID = iDetachID, FieldEmpID = iFieldEmpID, NoOfFullDays = iNoOfFullDays, NightHours = iNightHours, RegHours = iRegHours, OTHours = iOTHours, LegHolidayHours = iLegHolidayHours, SpeHolidayHours = iSpeHolidayHours, PeriodCode = iPeriodCode
+	DetachID = iDetachID, FieldEmpID = iFieldEmpID, NoOfFullDays = iNoOfFullDays, NightHours = iNightHours, RegHours = iRegHours, OTHours = iOTHours, LegHolidayHours = iLegHolidayHours, SpeHolidayHours = iSpeHolidayHours, StartDate=iStartDate, EndDate=iEndDate, PeriodCode = iPeriodCode
 	WHERE
 	ID = iID;
 
